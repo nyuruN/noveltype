@@ -53,7 +53,7 @@ export class Book {
         for (var i = 0; i <= last; i++) {
             var section = this.epub.spine.get(i)
             var navItem = nav.get('#' + section.idref) || nav.get(section.href)
-            var label = navItem ? navItem.label : 'none'
+            var label = navItem ? navItem.label : 'undefined'
             this.toc.push([label, section.href])
         }
         this.chapterCount = this.toc.length

@@ -7,9 +7,31 @@ import Dialog from './Dialog.vue'
 </template>
 
 <style>
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: normal;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #292929;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   height: 100%;
   margin: 0;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: #757575 #ffffff00;
 }
 #app {
   width: 100%;

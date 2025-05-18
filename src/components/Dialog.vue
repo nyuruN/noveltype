@@ -7,6 +7,7 @@ import { storeToRefs } from 'pinia'
 const { library, book } = storeToRefs(useLibraryStore())
 
 let chapter: Ref<Chapter | undefined> = ref(undefined)
+let showTOC = ref(false)
 
 document.addEventListener('keydown', async (event: Event) => {
     let keyevent = event as KeyboardEvent
@@ -52,16 +53,19 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 </script>
 
 <template>
+        <div id="toc-container">
+            <div v-if="book" id="toc-content" class="thin-scrollbar" :style="{ left: showTOC ? '0px' : '-50vw' }">
+                <ul v-for="( arr, index ) in book?.toc" @click="toChapter(index)">
+                    {{ arr[0] }}
+                </ul>
+            </div>
+            <div v-if="showTOC" id="toc-background" @click="showTOC = false"></div>
+        </div>
     <div id="container">
         <!-- <h1>{{ book ? book.title : 'Choose a file' }}</h1> -->
         <div id="options">
-            <button id="toc" class="button active-border" :disabled="!book">
+            <button id="toc" class="button active-border" :disabled="!book" @click="showTOC = ! showTOC">
                 <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
-                <div v-if="book" id="toc-content">
-                    <div v-for="( arr, index ) in book?.toc" @click="toChapter(index)">
-                        {{ arr[0] }}
-                    </div>
-                </div>
             </button>
             <button class="button active-border" onclick="document.getElementById('file-input').click();">
                 <font-awesome-icon :icon="['fas', 'folder-open']" fixed-width />
@@ -93,34 +97,51 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 </template>
 
 <style>
-#toc {
-    position: relative;
-    display: inline-block;
-}
-#toc-content {
-    display: none;
-    position: absolute;
-    background-color: #383838;
-    min-width: 20rem;
-    height: auto;
-    max-height: 80vh;
-    overflow: scroll;
-    overflow-x: hidden;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
+#toc-background {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
     z-index: 1;
 }
-#toc:hover #toc-content {
+#toc-content {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 20rem;
+    max-width: 50vw;
+    height: 100%;
+
+    background-color: #252525de;
+    backdrop-filter: blur(4px);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.5);
+
+    scrollbar-width: thin;
+    scrollbar-color: #757575 #ffffff00;
+    overscroll-behavior: contain;
+    overflow: scroll;
+    overflow-x: hidden;
+
+    transition: left 0.2s ease;
 }
-#toc-content > div {
-    display: block;
-    padding: 0.6em .8em;
+#toc-content > ul {
     text-wrap: wrap;
     text-align: left;
+    padding-block-start: 1em;
+    padding-block-end: 1em;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    user-select: none;
+
+    transition: background-color 0.3s ease;
 }
-#toc-content > div:hover {
+#toc-content > ul:hover {
     background-color: #474747;
 }
 
