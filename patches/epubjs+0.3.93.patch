@@ -1,0 +1,39 @@
+diff --git a/node_modules/epubjs/dist/epub.js b/node_modules/epubjs/dist/epub.js
+index 21d7615..b6c695b 100644
+--- a/node_modules/epubjs/dist/epub.js
++++ b/node_modules/epubjs/dist/epub.js
+@@ -15881,7 +15881,7 @@ class navigation_Navigation {
+ 
+     const item = navItems[index];
+ 
+-    if (item && (target === item.id || target === item.href)) {
++    if (item && (target.substring(1) === item.id || target === item.href)) {
+       return item;
+     } else {
+       let result;
+diff --git a/node_modules/epubjs/src/navigation.js b/node_modules/epubjs/src/navigation.js
+index 801598b..47e6cfd 100644
+--- a/node_modules/epubjs/src/navigation.js
++++ b/node_modules/epubjs/src/navigation.js
+@@ -109,7 +109,7 @@ class Navigation {
+ 		}
+ 
+ 		const item = navItems[index];
+-		if (item && (target === item.id || target === item.href)) {
++		if (item && (target.substring(1) === item.id || target === item.href)) {
+ 			return item;
+ 		} else {
+ 			let result;
+diff --git a/node_modules/epubjs/types/book.d.ts b/node_modules/epubjs/types/book.d.ts
+index 7835053..8547496 100644
+--- a/node_modules/epubjs/types/book.d.ts
++++ b/node_modules/epubjs/types/book.d.ts
+@@ -39,7 +39,7 @@ export default class Book {
+     isOpen: boolean;
+     loaded: {
+       metadata: Promise<PackagingMetadataObject>,
+-      spine: Promise<SpineItem[]>,
++      spine: Promise<Spine>,
+       manifest: Promise<PackagingManifestObject>,
+       cover: Promise<string>,
+       navigation: Promise<Navigation>,
