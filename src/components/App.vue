@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import Dialog from './Dialog.vue'
+import Dialog from './Typer.vue'
+import Menu from './Menu.vue'
 </script>
 
 <template>
-  <Dialog/>
+  <div id="container">
+    <Menu />
+    <Dialog />
+    <div style="height: 8rem"></div>
+  </div>
 </template>
 
 <style>
@@ -26,17 +31,32 @@ import Dialog from './Dialog.vue'
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   scrollbar-width: thin;
   scroll-behavior: smooth;
   scrollbar-color: #757575 #ffffff00;
 }
+
 #app {
   width: 100%;
   height: 100%;
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+#container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#container>* {
+    width: 80rem;
+    max-width: 85vw;
 }
 </style>
