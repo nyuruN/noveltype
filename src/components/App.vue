@@ -14,7 +14,6 @@ import Menu from './Menu.vue'
 <style>
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
   font-weight: normal;
 
   color-scheme: light dark;

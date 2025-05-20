@@ -48,7 +48,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
             <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
         </button>
 
-        <span v-if="chapter" style="flex-grow: 1; text-align: center;">{{ chapter.title }}</span>
+        <span v-if="chapter" style="flex-grow: 1; text-align: center; text-overflow: ellipsis; overflow: hidden">{{ chapter.title }}</span>
         <span v-if="!chapter" style="flex-grow: 1;">Upload a <b>*.epub</b> file to get started</span>
 
         <button v-if="chapter" @click="prev" class="button active-border">

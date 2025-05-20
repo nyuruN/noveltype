@@ -33,11 +33,11 @@ export class Library {
 
     length() { return this.books.length }
     async loadBook(file: File): Promise<Book> {
-        var epub = ePub(await file.arrayBuffer())
+        let epub = ePub(await file.arrayBuffer())
         await epub.ready
-        var metadata = await epub.loaded.metadata
-        var nav = await epub.loaded.navigation
-        var book = new Book(epub, nav, metadata)
+        let metadata = await epub.loaded.metadata
+        let nav = await epub.loaded.navigation
+        let book = new Book(epub, nav, metadata)
 
         this.books.push(book)
 
@@ -49,11 +49,11 @@ export class Book {
     constructor(epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
         this.epub = epub
 
-        var last = this.epub.spine.last().index
-        for (var i = 0; i <= last; i++) {
-            var section = this.epub.spine.get(i)
-            var navItem = nav.get('#' + section.idref) || nav.get(section.href)
-            var label = navItem ? navItem.label : 'undefined'
+        let last = this.epub.spine.last().index
+        for (let i = 0; i <= last; i++) {
+            let section = this.epub.spine.get(i)
+            let navItem = nav.get('#' + section.idref) || nav.get(section.href)
+            let label = navItem ? navItem.label : 'undefined'
             this.toc.push([label, section.href])
         }
         this.chapterCount = this.toc.length
@@ -78,8 +78,8 @@ export class Book {
     lang: string
 
     async getChapter(n: number): Promise<Chapter> {
-        var href = this.toc[n][1]
-        var doc = await this.epub.load(href) as XMLDocument
+        let href = this.toc[n][1]
+        let doc = await this.epub.load(href) as XMLDocument
 
         return new Chapter(this, n, doc)
     }
@@ -91,9 +91,9 @@ export class Chapter {
         this.title = doc.getElementsByTagName('title')[0].textContent as string
         this.index = index
 
-        var paragraphElements = doc.querySelectorAll('p, blockquote, li, pre, h1, h2, h3, h4, h5, h6');
-        paragraphElements.forEach(el => {
-            var text = (el as HTMLElement).innerText.trim()
+        const paragraphs = doc.querySelectorAll('p, blockquote, li, pre, h1, h2, h3, h4, h5, h6');
+        paragraphs.forEach(el => {
+            let text = (el as HTMLElement).innerText.trim()
 
             if (text) {
                 // Clean text
@@ -104,6 +104,10 @@ export class Chapter {
                 this.paragraphs.push(new Paragraph(text));
             }
         });
+
+        if (this.paragraphs[0]) {
+            this.paragraphs[0].render();
+        }
     }
 
     book: WeakRef<Book>
@@ -166,6 +170,7 @@ export class Chapter {
             caret.style['left'] = offset.left + 'px'
 
             this.scrollToCaret(offset.top - caret.offsetTop)
+            this.paragraphs[this.caret.p].render()
         }
     }
     scrollToCaret(deltaTop: number) {
@@ -215,13 +220,17 @@ export class Chapter {
 export class Paragraph {
     constructor(text: string) {
         this.source = text
-        this.words = text.split(' ').map((word: string): Word => {
+        this.words = this.source.split(' ').map((word: string): Word => {
             return new Word(word)
         })
     }
 
-    words: Word[]
+    words: Word[] = []
     source: string
+    /**
+     * Indicates whether the Paragraph should render as indivudual letters
+     */
+    isRendered: boolean = false
 
     input(key: string, pos: number): boolean {
         if (key == this.getLetter(pos)) {
@@ -229,6 +238,15 @@ export class Paragraph {
             return true;
         }
         return false;
+    }
+    /**
+     * Renders the paragraph as individual letters (expensive!)
+     */
+    render() {
+        this.words.forEach((word) => {
+            word.render()
+        })
+        this.isRendered = true
     }
     getLetter(index: number): string | undefined {
         return this.source.at(index)
@@ -247,6 +265,14 @@ export class Paragraph {
         }
     }
     getLetterOffset(p: HTMLElement, index: number): Offset {
+        if (!this.isRendered) {
+            let d = p.getElementsByClassName('word')[0] as HTMLElement
+            return {
+                top: d.offsetTop,
+                left: d.offsetLeft
+            }
+        }
+
         let i = 0, j = 0;
         for (; j < this.words.length; j++) {
             let word = this.words[j]
@@ -277,13 +303,18 @@ export class Paragraph {
 
 export class Word {
     constructor(word: string) {
-        this.letters = word.split('')
+        this.word = word
     }
 
-    letters: string[]
+    word: string
+    letters: string[] = []
     cLetters: boolean[] = []
     eLetters: boolean[] = []
 
     correct: boolean = false
     error: boolean = false
+
+    render() {
+        this.letters = this.word.split('')
+    }
 }

@@ -31,13 +31,24 @@ document.addEventListener('keydown', async (event: Event) => {
     <div id="typing-area" v-if="chapter">
         <div id="caret" style="top: 0px; left: 0px;"></div>
         <div class="paragraph" v-for="p in chapter?.paragraphs">
-            <div class="word" v-for="w in p.words">
-                <div class="letter" v-for="(l, index) in w.letters" :class="{ correct: w.cLetters[index] }">{{ l }}
+            <template v-if="p.isRendered">
+                <div class="word" v-for="w in p.words">
+                    <div class="letter" v-for="(l, index) in w.letters" :class="{ correct: w.cLetters[index] }">{{ l }}
+                    </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="word" v-for="w in p.words">
+                    {{ w.word }}
+                </div>
+            </template>
+
             <div class="newline">
                 <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
             </div>
+        </div>
+        <div class="newline" v-if="!chapter?.paragraphs[0]" style="padding: .2em">
+            <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
         </div>
     </div>
 </template>
@@ -57,12 +68,15 @@ document.addEventListener('keydown', async (event: Event) => {
 .word {
     display: inline;
     padding: .2em;
+    color: #9C9C9C;
+}
+
+.word.correct {
+    color: #f3f3f3
 }
 
 .letter {
     display: inline;
-    font-size: 1em;
-    line-height: 1em;
     color: #9C9C9C;
     user-select: none;
 }
@@ -78,6 +92,7 @@ document.addEventListener('keydown', async (event: Event) => {
     border-radius: 0.1em;
     background-color: white;
     transition: top 0.1s ease, left 0.1s ease;
+    z-index: 1;
 }
 
 #typing-area {
@@ -85,5 +100,6 @@ document.addEventListener('keydown', async (event: Event) => {
     position: relative;
     height: 60rem;
     font-size: 1.4rem;
+    line-height: 1.4rem;
 }
 </style>
