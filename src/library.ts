@@ -122,24 +122,20 @@ export class Chapter {
     }
 
     input(key: string) {
-        let typed = this.paragraphs[this.caret.p].input(key, this.caret.l);
+        let movement = this.paragraphs[this.caret.p].input(key, this.caret.l);
 
-        if (typed) {
-            this.caret.l += 1;
+        if (movement !== 0) {
+            this.moveCaret(movement)
+        }
+    }
+    /**
+     * Required for undoing errors
+     */
+    backspace() {
+        let movement = this.paragraphs[this.caret.p].backspace(this.caret.l);
 
-            let p = document.getElementsByClassName('paragraph')[this.caret.p]
-            let offset = this.paragraphs[this.caret.p].getLetterOffset(p as HTMLElement, this.caret.l);
-
-            let caret = document.getElementById('caret') as HTMLElement;
-
-            // Caret line changed
-            if (caret.offsetTop != offset.top) {
-                console.log('line changed')
-                this.scrollToCaret(offset.top - caret.offsetTop)
-            }
-
-            caret.style['top'] = offset.top + 'px'
-            caret.style['left'] = offset.left + 'px'
+        if (movement !== 0) {
+            this.moveCaret(movement)
         }
     }
     /**
@@ -172,6 +168,23 @@ export class Chapter {
             this.scrollToCaret(offset.top - caret.offsetTop)
             this.paragraphs[this.caret.p].render()
         }
+    }
+    moveCaret(movement: number) {
+        this.caret.l += movement;
+
+        let p = document.getElementsByClassName('paragraph')[this.caret.p]
+        let offset = this.paragraphs[this.caret.p].getLetterOffset(p as HTMLElement, this.caret.l);
+
+        let caret = document.getElementById('caret') as HTMLElement;
+
+        // Caret line changed (Scroll update)
+        if (caret.offsetTop != offset.top) {
+            console.log('line changed')
+            this.scrollToCaret(offset.top - caret.offsetTop)
+        }
+
+        caret.style['top'] = offset.top + 'px'
+        caret.style['left'] = offset.left + 'px'
     }
     scrollToCaret(deltaTop: number) {
         let body = document.querySelector('html, body') as HTMLElement
@@ -228,19 +241,28 @@ export class Paragraph {
     words: Word[] = []
     source: string
     /**
-     * Indicates whether the Paragraph should render as indivudual letters
+     * Indicates whether each word should render as indivudual letters
      */
     isRendered: boolean = false
 
-    input(key: string, pos: number): boolean {
-        if (key == this.getLetter(pos)) {
-            this.setLetterCorrect(pos)
-            return true;
-        }
-        return false;
+    /**
+     * @param idx Caret position in this.source
+     * @returns Horizontal movement of the caret
+     */
+    input(key: string, idx: number): number {
+        let [wid, lid] = this.getWordLetterIdx(idx)
+        return this.words[wid].input(key, lid)
     }
     /**
-     * Renders the paragraph as individual letters (expensive!)
+     * @param idx Caret position on this.source
+     * @returns Horizontal movement of the caret
+     */
+    backspace(idx: number): number {
+        let [wid, lid] = this.getWordLetterIdx(idx)
+        return this.words[wid].backspace(lid)
+    }
+    /**
+     * Renders the each word as individual letters (expensive!)
      */
     render() {
         this.words.forEach((word) => {
@@ -248,23 +270,21 @@ export class Paragraph {
         })
         this.isRendered = true
     }
-    getLetter(index: number): string | undefined {
-        return this.source.at(index)
-    }
-    setLetterCorrect(index: number) {
-        let i = 0
-        for (let j = 0; j < this.words.length; j++) {
+    getWordLetterIdx(index: number): [number, number] {
+        let i = 0, j = 0
+        for (j = 0; j < this.words.length; j++) {
             let word = this.words[j]
 
             if ((i + word.letters.length) < index) {
                 i += word.letters.length + 1
             } else {
-                word.cLetters[index - i] = true
-                return;
+                return [j, index - i];
             }
         }
+        return [0, 0]
     }
     getLetterOffset(p: HTMLElement, index: number): Offset {
+        // Choose first word when first changing paragraphs
         if (!this.isRendered) {
             let d = p.getElementsByClassName('word')[0] as HTMLElement
             return {
@@ -273,17 +293,10 @@ export class Paragraph {
             }
         }
 
-        let i = 0, j = 0;
-        for (; j < this.words.length; j++) {
-            let word = this.words[j]
-
-            if ((i + word.letters.length) < index) {
-                i += word.letters.length + 1
-            } else {
-                i = index - i
-                break;
-            }
-        }
+        // Convert index
+        let [j, i] = (index < this.source.length) ? 
+            this.getWordLetterIdx(index) :
+            [this.words.length - 1, this.words[this.words.length - 1].letters.length];
 
         if (i < this.words[j].letters.length) {
             let l = p.getElementsByClassName('word')[j].getElementsByClassName('letter')[i] as HTMLElement;
@@ -308,12 +321,35 @@ export class Word {
 
     word: string
     letters: string[] = []
+    overflow: string[] = []
     cLetters: boolean[] = []
-    eLetters: boolean[] = []
 
-    correct: boolean = false
+    // Error underline
     error: boolean = false
 
+    /**
+     * Behaviour 1: Stops on error, requires correct input to proceed
+     * Behaviour 2: Writes into overflow buffer, appears as extra letters
+     */
+    input(key: string, idx: number): number {
+        let letter = this.letters[idx] ? this.letters[idx] : ' '
+        let isCorrect = key === letter
+        
+        // Stop behaviour
+        this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false; // Keep error state
+
+        return isCorrect ? 1 : 0
+
+        // Overflow behaviour
+        // let isLast = this.word.length === idx - 1;
+        // isLast ? this.overflow.push(key) : 0
+    }
+    /**
+     * Revert any errors caused by overflow bahaviour
+     */
+    backspace(_: number): number {
+        return 0
+    }
     render() {
         this.letters = this.word.split('')
     }

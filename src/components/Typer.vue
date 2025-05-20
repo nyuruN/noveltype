@@ -22,6 +22,9 @@ document.addEventListener('keydown', async (event: Event) => {
             if (chapter.value.finished) {
                 chapter.value = await chapter.value.next(); await nextTick(); chapter.value?.resetCaret();
             }
+        } else if (key === 'Backspace') {
+            chapter.value.backspace()
+            keyevent.preventDefault()
         }
     }
 })
@@ -33,7 +36,9 @@ document.addEventListener('keydown', async (event: Event) => {
         <div class="paragraph" v-for="p in chapter?.paragraphs">
             <template v-if="p.isRendered">
                 <div class="word" v-for="w in p.words">
-                    <div class="letter" v-for="(l, index) in w.letters" :class="{ correct: w.cLetters[index] }">{{ l }}
+                    <div class="letter" v-for="(l, index) in w.letters"
+                        :class="{ correct: w.cLetters[index], error: w.cLetters[index] === false }">
+                        {{ l }}
                     </div>
                 </div>
             </template>
@@ -71,18 +76,19 @@ document.addEventListener('keydown', async (event: Event) => {
     color: #9C9C9C;
 }
 
-.word.correct {
-    color: #f3f3f3
-}
-
 .letter {
     display: inline;
     color: #9C9C9C;
     user-select: none;
+    transition: color 0.1s;
 }
 
 .letter.correct {
     color: #f3f3f3
+}
+
+.letter.error {
+    color: #f37575
 }
 
 #caret {
