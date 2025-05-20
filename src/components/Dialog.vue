@@ -24,7 +24,7 @@ document.addEventListener('keydown', async (event: Event) => {
 
             // Next Chapter if completed
             if (chapter.value.finished) {
-                chapter.value = await chapter.value.next(); await nextTick(); chapter.value?.resetCaret()
+                chapter.value = await chapter.value.next(); await nextTick(); chapter.value?.resetCaret();
             }
         }
     }
@@ -53,14 +53,14 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 </script>
 
 <template>
-        <div id="toc-container">
-            <div v-if="book" id="toc-content" class="thin-scrollbar" :style="{ left: showTOC ? '0px' : '-50vw' }">
-                <ul v-for="( arr, index ) in book?.toc" @click="toChapter(index)">
-                    {{ arr[0] }}
-                </ul>
-            </div>
-            <div v-if="showTOC" id="toc-background" @click="showTOC = false"></div>
+    <div id="toc-container">
+        <div v-if="book" id="toc-content" class="thin-scrollbar" :style="{ left: showTOC ? '0px' : '-50vw' }">
+            <ul v-for="( arr, index ) in book?.toc" @click="toChapter(index)">
+                {{ arr[0] }}
+            </ul>
         </div>
+        <div v-if="showTOC" id="toc-background" @click="showTOC = false"></div>
+    </div>
     <div id="container">
         <!-- <h1>{{ book ? book.title : 'Choose a file' }}</h1> -->
         <div id="options">
@@ -71,7 +71,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
                 <font-awesome-icon :icon="['fas', 'folder-open']" fixed-width />
                 <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
             </button>
-            <span v-if="chapter" style="flex-grow: 1; text-align: center;">{{ chapter.title }}</span>
+            <span v-if="chapter" style="flex-grow: 1; text-align: center;">{{ chapter.title }} {{ chapter.caret.l }}</span>
             <span v-if="!chapter" style="flex-grow: 1;">Upload a <b>*.epub</b> file to get started</span>
             <button v-if="chapter" @click="prev" class="button active-border">
                 <font-awesome-icon :icon="['fas', 'caret-left']" fixed-width />

@@ -128,6 +128,12 @@ export class Chapter {
 
             let caret = document.getElementById('caret') as HTMLElement;
 
+            // Caret line changed
+            if (caret.offsetTop != offset.top) {
+                console.log('line changed')
+                this.scrollToCaret(offset.top - caret.offsetTop)
+            }
+
             caret.style['top'] = offset.top + 'px'
             caret.style['left'] = offset.left + 'px'
         }
@@ -143,7 +149,7 @@ export class Chapter {
             return
         }
         // If the end of paragraph was reached
-        if (this.caret.l >= paragraph.source.length - 1) {
+        if (this.caret.l >= paragraph.source.length) {
             // The entire chapter was typed
             if (this.caret.p + 1 > this.paragraphs.length - 1) {
                 this.finished = true
@@ -158,6 +164,28 @@ export class Chapter {
 
             caret.style['top'] = offset.top + 'px'
             caret.style['left'] = offset.left + 'px'
+
+            this.scrollToCaret(offset.top - caret.offsetTop)
+        }
+    }
+    scrollToCaret(deltaTop: number) {
+        let body = document.querySelector('html, body') as HTMLElement
+        let caret = document.getElementById('caret') as HTMLElement
+        
+        //caret.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        
+        let bodyR = body.getBoundingClientRect()
+        let caretR = caret.getBoundingClientRect()
+        let caretTop = caretR.top + deltaTop
+        let dY = caretTop - bodyR.top;
+
+        let max = window.visualViewport?.height || Infinity
+
+        if (caretTop < 0 + max * 0.4) {
+            body.scrollTop = dY - (max * 0.35)
+        }
+        if (caretR.top > max - max * 0.5) {
+            body.scrollTop = dY - (max * 0.375)
         }
     }
     /**
