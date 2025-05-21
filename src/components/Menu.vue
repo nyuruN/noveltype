@@ -37,18 +37,18 @@ async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = 
             <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
         </button>
 
-        <span v-if="chapter" class="title"
-            style="">{{
+        <span v-if="chapter" class="title">{{
                 chapter.title }}</span>
-        <span v-if="!chapter" style="flex-grow: 1;">Upload a <b>*.epub</b> file to get started</span>
+        <span v-else style="flex-grow: 1;">Upload a <b>*.epub</b> file to get started</span>
 
-        <button v-if="chapter" @click="prev" class="menu-button">
-            <font-awesome-icon :icon="['fas', 'caret-left']" fixed-width />
-        </button>
-
-        <button v-if="chapter" @click="next" class="menu-button">
-            <font-awesome-icon :icon="['fas', 'caret-right']" fixed-width />
-        </button>
+        <template v-if="chapter">
+            <button @click="prev" class="menu-button">
+                <font-awesome-icon :icon="['fas', 'caret-left']" fixed-width />
+            </button>
+            <button @click="next" class="menu-button">
+                <font-awesome-icon :icon="['fas', 'caret-right']" fixed-width />
+            </button>
+        </template>
     </div>
 </template>
 
@@ -68,26 +68,24 @@ async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = 
     flex-grow: 1;
     text-align: center;
     text-overflow: ellipsis;
-    overflow: hidden;
     text-wrap: nowrap;
+    overflow: hidden;
 }
 
 .menu-button {
     border-radius: 8px;
-    padding: 0.5rem 0.7rem;
-    font-size: 1rem;
-    line-height: normal;
-    background-color: #252525;
-    cursor: pointer;
     border: 0;
-}
+    padding: 0.4rem 0.6rem;
+    font-size: 1.1rem;
+    line-height: normal;
+    background-color: transparent;
+    color: #808080;
+    cursor: pointer;
 
-.menu-button {
-    border: 1px solid transparent;
-    transition: border-color 0.25s;
+    transition: color 0.25s;
 }
 
 .menu-button:hover {
-    border-color: #646cff;
+    color: #c4c4c4;
 }
 </style>
