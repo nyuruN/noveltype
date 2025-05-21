@@ -21,6 +21,8 @@ function removeFancyTypography(textToClean: string) {
     });
 }
 
+const StopOnError = false
+
 interface Offset {
     top: number,
     left: number
@@ -122,21 +124,15 @@ export class Chapter {
     }
 
     input(key: string) {
-        let movement = this.paragraphs[this.caret.p].input(key, this.caret.l);
-
-        if (movement !== 0) {
-            this.moveCaret(movement)
-        }
+        let movement = this.paragraphs[this.caret.p].input(key, this.caret.l)
+        this.moveCaret(movement)
     }
     /**
      * Required for undoing errors
      */
     backspace() {
-        let movement = this.paragraphs[this.caret.p].backspace(this.caret.l);
-
-        if (movement !== 0) {
-            this.moveCaret(movement)
-        }
+        let movement = this.paragraphs[this.caret.p].backspace(this.caret.l)
+        this.moveCaret(movement)
     }
     /**
      * Call when enter is pressed
@@ -159,7 +155,7 @@ export class Chapter {
             this.caret.l = 0
 
             let p = document.getElementsByClassName('paragraph')[this.caret.p]
-            let offset = this.paragraphs[this.caret.p].getLetterOffset(p as HTMLElement, this.caret.l);
+            let offset = this.paragraphs[this.caret.p].getLetterOffset(p as HTMLElement, this.caret.l)
             let caret = document.getElementById('caret') as HTMLElement;
 
             caret.style['top'] = offset.top + 'px'
@@ -173,9 +169,14 @@ export class Chapter {
         this.caret.l += movement;
 
         let p = document.getElementsByClassName('paragraph')[this.caret.p]
-        let offset = this.paragraphs[this.caret.p].getLetterOffset(p as HTMLElement, this.caret.l);
+        let offset = this.paragraphs[this.caret.p].getLetterOffset(p as HTMLElement, this.caret.l)
 
-        let caret = document.getElementById('caret') as HTMLElement;
+        // Distinguish caret position and actual offset
+        if (offset.left == 0 && offset.top == 0) {
+            return
+        }
+
+        let caret = document.getElementById('caret') as HTMLElement
 
         // Caret line changed (Scroll update)
         if (caret.offsetTop != offset.top) {
@@ -189,9 +190,9 @@ export class Chapter {
     scrollToCaret(deltaTop: number) {
         let body = document.querySelector('html, body') as HTMLElement
         let caret = document.getElementById('caret') as HTMLElement
-        
+
         //caret.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        
+
         let bodyR = body.getBoundingClientRect()
         let caretR = caret.getBoundingClientRect()
         let caretTop = caretR.top + deltaTop
@@ -294,23 +295,13 @@ export class Paragraph {
         }
 
         // Convert index
-        let [j, i] = (index < this.source.length) ? 
+        let [j, i] = (index < this.source.length) ?
             this.getWordLetterIdx(index) :
-            [this.words.length - 1, this.words[this.words.length - 1].letters.length];
+            [this.words.length - 1, this.words[this.words.length - 1].letters.length]
 
-        if (i < this.words[j].letters.length) {
-            let l = p.getElementsByClassName('word')[j].getElementsByClassName('letter')[i] as HTMLElement;
-            return {
-                top: l.offsetTop,
-                left: l.offsetLeft
-            }
-        } else {
-            let l = p.getElementsByClassName('word')[j].getElementsByClassName('letter')[i - 1] as HTMLElement;
-            return {
-                top: l.offsetTop,
-                left: l.offsetLeft + l.getBoundingClientRect().width
-            }
-        }
+        let w = p.getElementsByClassName('word')[j] as HTMLElement
+
+        return this.words[j].getOffset(w, i)
     }
 }
 
@@ -319,13 +310,15 @@ export class Word {
         this.word = word
     }
 
-    word: string
     letters: string[] = []
     overflow: string[] = []
     cLetters: boolean[] = []
 
+    word: string
+
     // Error underline
     error: boolean = false
+    typed: boolean = false
 
     /**
      * Behaviour 1: Stops on error, requires correct input to proceed
@@ -333,24 +326,67 @@ export class Word {
      */
     input(key: string, idx: number): number {
         let letter = this.letters[idx] ? this.letters[idx] : ' '
-        let isCorrect = key === letter
-        
+
         // Stop behaviour
-        this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false; // Keep error state
-
-        return isCorrect ? 1 : 0
-
+        if (StopOnError) {
+            let isCorrect = key === letter
+            this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false // Keep error state
+            return isCorrect ? 1 : 0
+        }
         // Overflow behaviour
-        // let isLast = this.word.length === idx - 1;
-        // isLast ? this.overflow.push(key) : 0
+        else {
+            let isCorrect = key === letter
+            if (idx == this.letters.length) {
+                if (!isCorrect) {
+                    this.overflow.push(key)
+                    this.error = true;
+                } else {
+                    this.typed = true
+                }
+                return isCorrect ? 1 : 0
+            }
+
+            let justErroed = !this.error && !isCorrect
+            this.cLetters[idx] = (this.error) ? false : isCorrect
+            this.error = (justErroed) ? true : this.error
+
+            return 1
+        }
     }
     /**
      * Revert any errors caused by overflow bahaviour
      */
-    backspace(_: number): number {
-        return 0
+    backspace(idx: number): number {
+        if (StopOnError) {
+            return 0
+        } else {
+            this.error = (this.error) ? !(this.cLetters[idx - 2] || true) : false
+            let hasOverflow = this.overflow.pop() !== undefined
+            let letterPopped = (hasOverflow) ? true : this.cLetters.pop() == undefined
+            return (letterPopped) ? 0 : -1
+        }
     }
     render() {
         this.letters = this.word.split('')
+    }
+    getOffset(w: HTMLElement, idx: number): Offset {
+        if (idx < this.letters.length) {
+            let l = w.getElementsByClassName('letter')[idx] as HTMLElement
+            return {
+                top: l.offsetTop,
+                left: l.offsetLeft
+            }
+        } else {
+            // We can only estimate based on the current letter width
+            let overflow = Math.max(this.overflow.length - 1, 0)
+            let l = w.getElementsByClassName('letter')[idx - 1 + overflow] as HTMLElement
+            let width = l.getBoundingClientRect().width
+            return {
+                top: l.offsetTop,
+                // Sadly, because the offset is immediately needed after input()
+                // we cannot use the last overflow letter since it is unrendered
+                left: l.offsetLeft + width * (this.overflow.length ? 2 : 1)
+            }
+        }
     }
 }

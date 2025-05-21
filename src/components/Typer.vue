@@ -35,9 +35,12 @@ document.addEventListener('keydown', async (event: Event) => {
         <div id="caret" style="top: 0px; left: 0px;"></div>
         <div class="paragraph" v-for="p in chapter?.paragraphs">
             <template v-if="p.isRendered">
-                <div class="word" v-for="w in p.words">
+                <div class="word" v-for="w in p.words" :class="{ typed: w.typed, error: w.error }">
                     <div class="letter" v-for="(l, index) in w.letters"
                         :class="{ correct: w.cLetters[index], error: w.cLetters[index] === false }">
+                        {{ l }}
+                    </div>
+                    <div class="letter overflow" v-for="l in w.overflow">
                         {{ l }}
                     </div>
                 </div>
@@ -72,8 +75,14 @@ document.addEventListener('keydown', async (event: Event) => {
 
 .word {
     display: inline;
-    padding: .2em;
+    margin: .2em;
     color: #9C9C9C;
+}
+
+.word.typed.error {
+    border-bottom-style: solid;
+    border-bottom-color: #f37575;
+    border-bottom-width: .09em;
 }
 
 .letter {
@@ -89,6 +98,10 @@ document.addEventListener('keydown', async (event: Event) => {
 
 .letter.error {
     color: #f37575
+}
+
+.letter.overflow {
+    color: #944949
 }
 
 #caret {
