@@ -34,7 +34,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
         <button id="toc" class="button active-border" v-if="book" @click="showTOC = !showTOC">
             <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
             <div id="toc-container">
-                <div v-if="book" id="toc-content" class="thin-scrollbar" :style="{ left: showTOC ? '0px' : '-75vw' }">
+                <div v-if="book" id="toc-content" class="thin-scrollbar" :style="{ left: showTOC ? '0px' : '-100vw' }">
                     <ul v-for="(arr, index) in book?.toc" @click="toChapter(index)">
                         {{ arr[0] }}
                     </ul>
@@ -48,7 +48,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
             <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
         </button>
 
-        <span v-if="chapter" style="flex-grow: 1; text-align: center; text-overflow: ellipsis; overflow: hidden">{{ chapter.title }}</span>
+        <span v-if="chapter" style="flex-grow: 1; text-align: center; text-overflow: ellipsis; overflow: hidden; text-wrap: nowrap;">{{ chapter.title }}</span>
         <span v-if="!chapter" style="flex-grow: 1;">Upload a <b>*.epub</b> file to get started</span>
 
         <button v-if="chapter" @click="prev" class="button active-border">
@@ -63,6 +63,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 
 <style>
 #toc-screenquad {
+    cursor: default;
     display: block;
     position: fixed;
     top: 0;

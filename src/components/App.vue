@@ -7,7 +7,7 @@ import Menu from './Menu.vue'
   <div id="container">
     <Menu />
     <Dialog />
-    <div style="height: 8rem"></div>
+    <div style="min-height: 6rem"></div>
   </div>
 </template>
 
@@ -45,17 +45,18 @@ body {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
+
 #container {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.5rem;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 #container>* {
-    width: 80rem;
-    max-width: 85vw;
+  width: 80rem;
+  max-width: 85vw;
 }
 </style>

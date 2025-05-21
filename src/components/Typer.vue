@@ -67,6 +67,7 @@ document.addEventListener('keydown', async (event: Event) => {
 }
 
 .paragraph {
+    user-select: none;
     display: flex;
     flex-wrap: wrap;
     height: fit-content;
@@ -88,7 +89,6 @@ document.addEventListener('keydown', async (event: Event) => {
 .letter {
     display: inline;
     color: #9C9C9C;
-    user-select: none;
     transition: color 0.1s;
 }
 
@@ -117,8 +117,8 @@ document.addEventListener('keydown', async (event: Event) => {
 #typing-area {
     display: block;
     position: relative;
-    height: 60rem;
-    font-size: 1.4rem;
-    line-height: 1.4rem;
+    min-height: 20rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
 }
 </style>
