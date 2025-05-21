@@ -15,8 +15,12 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     <button id="toc" class="menu-button" v-if="book" @click="showTOC = !showTOC">
         <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
         <div id="toc-container">
-            <div v-if="book" id="toc-content" class="thin-scrollbar"
-                :style="{ left: showTOC ? '0vw' : '-100vw', opacity: showTOC ? '100' : '0' }">
+            <div id="toc-content" class="thin-scrollbar"
+                :style="{
+                    left: showTOC ? '0vw' : '-60vw',
+                    opacity: showTOC ? '100' : '0',
+                    pointerEvents: showTOC ? 'auto' : 'none'
+                }">
                 <ul v-for="(arr, index) in book?.toc" @click="toChapter(index)">
                     {{ arr[0] }}
                 </ul>
@@ -46,8 +50,8 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     position: fixed;
     top: 0;
     left: 0;
-    min-width: 20rem;
-    max-width: 50vw;
+    min-width: 25rem;
+    max-width: 40vw;
     height: 100%;
 
     background-color: #252525de;

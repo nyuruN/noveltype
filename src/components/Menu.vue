@@ -29,8 +29,12 @@ async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = 
 </script>
 
 <template>
-    <div id="options">
+    <div id="menu-items">
         <Nav></Nav>
+
+        <!-- <button class="menu-button">
+            <font-awesome-icon :icon="['fas', 'gear']" fixed-width />
+        </button> -->
 
         <button class="menu-button" onclick="document.getElementById('file-input').click();">
             <font-awesome-icon :icon="['fas', 'folder-open']" fixed-width />
@@ -52,12 +56,12 @@ async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = 
     </div>
 </template>
 
-<style>
-#options {
+<style scoped>
+#menu-items {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.5rem;
+    gap: .3rem;
     padding: .3rem;
     background-color: #303030;
     border-radius: 10px;
