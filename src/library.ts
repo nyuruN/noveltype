@@ -162,6 +162,7 @@ export class Chapter {
             caret.style['left'] = offset.left + 'px'
 
             this.scrollToCaret(offset.top - caret.offsetTop)
+            paragraph.finish()
             this.paragraphs[this.caret.p].render()
         }
     }
@@ -251,6 +252,10 @@ export class Paragraph {
      * @returns Horizontal movement of the caret
      */
     input(key: string, idx: number): number {
+        // Don't let Word.input() complete but allow overflows
+        if (idx == this.source.length && key == ' ') {
+            return 0;
+        }
         let [wid, lid] = this.getWordLetterIdx(idx)
         return this.words[wid].input(key, lid)
     }
@@ -261,6 +266,13 @@ export class Paragraph {
     backspace(idx: number): number {
         let [wid, lid] = this.getWordLetterIdx(idx)
         return this.words[wid].backspace(lid)
+    }
+    /**
+     * Completes formatting of paragraph
+     * @param idx Caret position on this.source
+     */
+    finish() {
+        this.words[this.words.length - 1].typed = true
     }
     /**
      * Renders the each word as individual letters (expensive!)
