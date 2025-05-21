@@ -101,8 +101,8 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 #toc-content>ul {
     text-wrap: wrap;
     text-align: left;
-    padding-block-start: 1em;
-    padding-block-end: 1em;
+    padding-block-start: 1rem;
+    padding-block-end: 1rem;
     margin-block-start: 0;
     margin-block-end: 0;
     user-select: none;
@@ -119,9 +119,10 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     flex-direction: row;
     align-items: center;
     gap: 0.75rem;
-    padding: .3em;
+    padding: .3rem;
     background-color: #303030;
     border-radius: 10px;
+    margin-bottom: 1rem;
 }
 
 .button {

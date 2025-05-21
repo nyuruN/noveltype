@@ -117,8 +117,8 @@ document.addEventListener('keydown', async (event: Event) => {
 #typing-area {
     display: block;
     position: relative;
-    min-height: 20rem;
     font-size: 1.5rem;
     line-height: 1.5rem;
+    margin-bottom: 6rem;
 }
 </style>
