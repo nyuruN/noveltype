@@ -16,6 +16,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "epubjs": "^0.3.93",
     "pinia": "^3.0.2",
+    "pinia-plugin-persistedstate": "^4.3.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
