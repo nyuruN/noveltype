@@ -21,6 +21,8 @@ async function loadEpub(e: Event) {
         book.value = epub
         chapter.value = await epub.getChapter(0)
         isTyping.value = true
+
+        console.log(epub)
     }
 }
 async function triggerInput() {
@@ -32,6 +34,9 @@ async function triggerInput() {
     <h1>Your Library</h1>
     <div class="book-container" style="margin-top: 2rem;">
         <div v-for="book in library.books" class="card" @click="console.log('I\'m clicked!')">
+            <div class="card-more">
+                <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
+            </div>
             <div class="card-image">
                 <font-awesome-icon :icon="['fas', 'book']" fixed-width />
             </div>
@@ -48,8 +53,27 @@ async function triggerInput() {
 </template>
 
 <style>
+.card-more {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.4rem 0.5rem;
+    font-size: 1.3em;
+    border-radius: 8px;
+    z-index: 1;
+    opacity: 0;
+}
+.card:hover .card-more {
+    opacity: 1;
+    background-color: #42424250;
+}
+.card:hover .card-more:hover {
+    background-color: #424242d2;
+}
+
+
 .card-image {
-    background-color: #888888;
+    background-color: #7e7e7e;
     height: 75%;
     border-radius: 8px;
     font-size: 9.5rem;
@@ -62,13 +86,21 @@ async function triggerInput() {
 }
 
 .card {
-    height: 18rem;
-    width: 12rem;
+    position: relative;
+    height: 20rem;
+    width: 14rem;
+    padding: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card:hover {
+    background-color: #575757;
 }
 
 .book-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1rem;
 }
 </style>
