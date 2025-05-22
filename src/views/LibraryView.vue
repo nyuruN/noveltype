@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { saveEpubFile, loadEpubFile } from '@/db'
+import type { BookRecord } from '@/library'
 import { useLibraryStore, useSessionStore } from '@/stores/library'
 import { storeToRefs } from 'pinia'
 
@@ -39,13 +40,18 @@ async function openBook(filename: string, _: number) {
 async function triggerInput() {
     document.getElementById('file-input')?.click();
 }
+async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
+    event.stopPropagation()
+
+    // Change view to book inspection
+}
 </script>
 
 <template>
     <h1>Your Library</h1>
     <div class="book-container" style="margin-top: 2rem;">
         <div v-for="(book, index) in library.books" class="card" @click="openBook(book.filename, index)">
-            <div class="card-more">
+            <div class="card-more" @click="event => inspectBook(event, book, index)">
                 <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
             </div>
             <div class="card-image">

@@ -40,6 +40,7 @@ const { isTyping } = storeToRefs(useSessionStore())
   padding: 1rem 1rem;
   font-size: 1.2rem;
   border-radius: 8px;
+  user-select: none;
 }
 .nav-item:hover {
   background-color: #525252;
