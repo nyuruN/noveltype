@@ -227,14 +227,17 @@ export class Chapter {
         // TODO: Why 'null' here?
         let max = window.visualViewport?.height || Infinity
 
-        // Caret is inside upper 40% (of viewport)
-        let scroll = (caretTop < max * 0.4)
+        // Caret is inside upper 30% (of viewport)
+        let scroll = (caretTop < max * 0.30)
             // Caret is inside lower 40% (of viewport)
-            || (caretTop > max - max * 0.4);
+            || (caretTop > max - max * 0.40);
 
         if (scroll) {
-            // Position cursor at (roughly) 32% of viewport
-            container.scrollTop = scrollY - (max * 0.32)
+            // Scroll caret to roughly 32% (of viewport)
+            container.scrollTo({
+                top: scrollY - (max * 0.32),
+                behavior: 'smooth'
+            })
         }
     }
     /**
