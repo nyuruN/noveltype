@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { saveEpub } from '@/db'
+import { saveEpubFile, loadEpubFile } from '@/db'
 import { useLibraryStore, useSessionStore } from '@/stores/library'
 import { storeToRefs } from 'pinia'
 
@@ -16,17 +16,25 @@ async function loadEpub(e: Event) {
     // Load book
     if (!library.value.exists(input.files[0].name)) {
         let epub = await library.value.loadBook(input.files[0])
-        saveEpub(input.files[0])
 
         book.value = epub
         chapter.value = await epub.getChapter(0)
+
+        await saveEpubFile(input.files[0])
     }
 }
 async function openBook(filename: string, _: number) {
     if (book.value?.record.filename == filename) {
         isTyping.value = true;
+        return;
     }
-    console.log('Attempting to load from DB')
+
+    let file = await loadEpubFile(filename)
+    let epub = await library.value.loadBook(file)
+
+    book.value = epub
+    chapter.value = await epub.getChapter(0)
+    isTyping.value = true
 }
 async function triggerInput() {
     document.getElementById('file-input')?.click();

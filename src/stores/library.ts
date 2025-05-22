@@ -7,7 +7,7 @@ export const useLibraryStore = defineStore('library', {
   state: () => ({
     library: new Library()
   }),
-  // persist: true,
+  persist: true,
 })
 
 export const useSessionStore = defineStore('session', () => {

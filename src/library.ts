@@ -48,7 +48,11 @@ export class Library {
         let nav = await epub.loaded.navigation
         let book = new Book(file.name, epub, nav, metadata)
 
-        this.books.push(book.record)
+        // Load epub file from book records
+        if (!this.exists(file.name)) {
+            this.books.push(book.record)
+        }
+
         return book
     }
 }
