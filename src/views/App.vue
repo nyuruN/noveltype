@@ -58,6 +58,7 @@ const { isTyping } = storeToRefs(useSessionStore())
   flex-grow: 1;
   padding: 2rem;
   background-color: #525252;
+  overflow-y: scroll;
 }
 
 .center-container {
@@ -73,7 +74,7 @@ const { isTyping } = storeToRefs(useSessionStore())
   background-color: #444444;
   border-radius: 16px;
 
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 #app {

@@ -20,6 +20,9 @@ import Menu from '@/components/Menu.vue'
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
+
+  overflow-y: scroll;
+  scrollbar-width: thin;
 }
 
 #typer-container>* {

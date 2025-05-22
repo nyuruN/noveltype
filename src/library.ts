@@ -208,24 +208,33 @@ export class Chapter {
         caret.style['top'] = offset.top + 'px'
         caret.style['left'] = offset.left + 'px'
     }
-    scrollToCaret(deltaTop: number) {
-        let body = document.querySelector('html, body') as HTMLElement
+    scrollToCaret(offset: number) {
+        let container = document.querySelector('#typer-container') as HTMLElement
         let caret = document.getElementById('caret') as HTMLElement
 
-        //caret.scrollIntoView({ behavior: 'smooth', block: 'center' })
-
-        let bodyR = body.getBoundingClientRect()
+        let containerR = container.getBoundingClientRect()
         let caretR = caret.getBoundingClientRect()
-        let caretTop = caretR.top + deltaTop
-        let dY = caretTop - bodyR.top;
+        // Calculate next 'top' position relative to viewport
+        let caretTop = caretR.top + offset
+        // Usually 'top' would be negative to account for current scroll
+        let scrollY = caretTop - Math.max(containerR.top, 0)
+        // Adjust for current scroll, needed since 'overflow: hidden' clips negative 'top' positions ()
+        scrollY += container.scrollTop
+        // Adjust center of caret to center of scroll
+        scrollY += (caretR.height / 2)
 
+        // Get viewport size
+        // TODO: Why 'null' here?
         let max = window.visualViewport?.height || Infinity
 
-        if (caretTop < 0 + max * 0.4) {
-            body.scrollTop = dY - (max * 0.35)
-        }
-        if (caretR.top > max - max * 0.5) {
-            body.scrollTop = dY - (max * 0.375)
+        // Caret is inside upper 40% (of viewport)
+        let scroll = (caretTop < max * 0.4)
+            // Caret is inside lower 40% (of viewport)
+            || (caretTop > max - max * 0.4);
+
+        if (scroll) {
+            // Position cursor at (roughly) 32% of viewport
+            container.scrollTop = scrollY - (max * 0.32)
         }
     }
     /**
