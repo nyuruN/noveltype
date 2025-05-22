@@ -31,18 +31,13 @@ async function triggerInput() {
 <template>
     <h1>Your Library</h1>
     <div class="book-container" style="margin-top: 2rem;">
-        <template v-if="library.books.length > 0">
-            <div v-for="book in library.books" class="card" @click="console.log('I\'m clicked!')">
-                <div class="card-image">
-                    <font-awesome-icon :icon="['fas', 'book']" fixed-width />
-                </div>
-                <div class="card-text">{{ book.title }}</div>
+        <div v-for="book in library.books" class="card" @click="console.log('I\'m clicked!')">
+            <div class="card-image">
+                <font-awesome-icon :icon="['fas', 'book']" fixed-width />
             </div>
-        </template>
-        <!-- <div v-else>
-            Upload an *.epub file to get started
-        </div> -->
-        <div v-else class="card" @click="triggerInput">
+            <div class="card-text">{{ book.title }}</div>
+        </div>
+        <div class="card" @click="triggerInput">
             <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
             <div class="card-image">
                 <font-awesome-icon :icon="['fas', 'plus']" fixed-width />
@@ -53,7 +48,6 @@ async function triggerInput() {
 </template>
 
 <style>
-
 .card-image {
     background-color: #888888;
     height: 75%;

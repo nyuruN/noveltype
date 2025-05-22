@@ -10,13 +10,20 @@ const { isTyping } = storeToRefs(useSessionStore())
   <div class="app-container">
     <div class="center-container" v-show="!isTyping">
       <nav class="nav">
-        <div class="nav-item">
-          <font-awesome-icon :icon="['fas', 'book-open']" fixed-width />
-          <span style="margin-left: 0.5rem;">Library</span>
+        <div class="nav-items">
+          <div class="nav-item">
+            <font-awesome-icon :icon="['fas', 'book-open']" fixed-width />
+            <span style="margin-left: 0.5rem;">Library</span>
+          </div>
+          <div class="nav-item">
+            <font-awesome-icon :icon="['fas', 'gear']" fixed-width />
+            <span style="margin-left: 0.5rem;">Settings</span>
+          </div>
         </div>
-        <div class="nav-item">
-          <font-awesome-icon :icon="['fas', 'gear']" fixed-width />
-          <span style="margin-left: 0.5rem;">Settings</span>
+        <div style="flex-grow: 1;"></div>
+        <div class="nav-item" style="font-size: 1.1rem" @click="isTyping = true">
+          <font-awesome-icon :icon="['fas', 'keyboard']" fixed-width />
+          <span style="margin-left: 0.5rem;">Resume</span>
         </div>
       </nav>
       <div class="view-container">
@@ -32,7 +39,12 @@ const { isTyping } = storeToRefs(useSessionStore())
 .nav-item {
   padding: 1rem 1rem;
   font-size: 1.2rem;
+  border-radius: 8px;
 }
+.nav-item:hover {
+  background-color: #525252;
+}
+
 .nav {
   min-width: 15%;
   max-width: 25%;

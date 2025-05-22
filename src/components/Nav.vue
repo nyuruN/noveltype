@@ -13,7 +13,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 
 <template>
     <button id="toc" class="menu-button" v-if="book" @click="showTOC = !showTOC">
-        <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
+        <slot></slot>
         <div id="toc-container">
             <div id="toc-content" class="thin-scrollbar"
                 :style="{

@@ -6,7 +6,7 @@ import Menu from '@/components/Menu.vue'
 
 <template>
   <div id="typer-container">
-    <Menu />
+    <Menu style="margin-top: 2rem;" />
     <Typer />
     <div style="min-height: 6rem"></div>
   </div>
