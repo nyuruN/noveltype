@@ -20,10 +20,13 @@ async function loadEpub(e: Event) {
 
         book.value = epub
         chapter.value = await epub.getChapter(0)
-        isTyping.value = true
-
-        console.log(epub)
     }
+}
+async function openBook(filename: string, _: number) {
+    if (book.value?.record.filename == filename) {
+        isTyping.value = true;
+    }
+    console.log('Attempting to load from DB')
 }
 async function triggerInput() {
     document.getElementById('file-input')?.click();
@@ -33,7 +36,7 @@ async function triggerInput() {
 <template>
     <h1>Your Library</h1>
     <div class="book-container" style="margin-top: 2rem;">
-        <div v-for="book in library.books" class="card" @click="console.log('I\'m clicked!')">
+        <div v-for="(book, index) in library.books" class="card" @click="openBook(book.filename, index)">
             <div class="card-more">
                 <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
             </div>

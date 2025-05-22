@@ -63,7 +63,7 @@ document.addEventListener('keydown', async (event: Event) => {
 
 <style>
 .newline {
-    color: #474747;
+    color: #4d4d4d;
 }
 
 .paragraph {
