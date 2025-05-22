@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import Dialog from './Typer.vue'
-import Menu from './Menu.vue'
+import TypingView from './TypingView.vue';
 </script>
 
 <template>
-  <div id="container">
-    <Menu />
-    <Dialog />
-    <div style="min-height: 6rem"></div>
-  </div>
+  <!-- <RouterView/> -->
+  <TypingView></TypingView>
 </template>
 
 <style>
@@ -44,19 +40,5 @@ body {
   height: 100%;
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-#container {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-#container>* {
-  width: 80rem;
-  max-width: 85vw;
 }
 </style>

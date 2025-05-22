@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
-import { useLibraryStore } from '../stores/library'
 import { storeToRefs } from 'pinia'
+import { useLibraryStore } from '@/stores/library'
 
 const { book, chapter } = storeToRefs(useLibraryStore())
 
@@ -50,8 +50,8 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     position: fixed;
     top: 0;
     left: 0;
-    min-width: 25rem;
     max-width: 40vw;
+    min-width: 20rem;
     height: 100%;
 
     background-color: #252525de;

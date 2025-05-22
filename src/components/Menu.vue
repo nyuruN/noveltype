@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Nav from './Nav.vue'
-
 import { nextTick } from 'vue'
-import { useLibraryStore } from '../stores/library'
 import { storeToRefs } from 'pinia'
+import { useLibraryStore } from '@/stores/library'
+
+import Nav from './Nav.vue'
 
 const { library, book, chapter } = storeToRefs(useLibraryStore())
 

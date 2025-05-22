@@ -1,10 +1,14 @@
 import { createApp } from 'vue'
-import App from './components/App.vue'
+import { createRouter, createMemoryHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faBars, faBook, faBookmark, faBookOpen, faCaretLeft, faCaretRight, faFolderOpen, faGear, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+
+import App from './views/App.vue'
+import HomeView from './views/HomeView.vue'
 
 // Font-Awesome Icon definitions
 library.add(
@@ -19,11 +23,22 @@ library.add(
     faGear,
 )
 
+const routes = [
+    { path: '/', component: HomeView }
+]
+
+const router = createRouter({
+    history: createMemoryHistory(),
+    routes,
+})
+
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
 const app = createApp(App)
-app.use(pinia)
 
+app.use(pinia)
+app.use(router)
 app.component('font-awesome-icon', FontAwesomeIcon)
+
 app.mount('#app')
