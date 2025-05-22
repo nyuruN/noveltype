@@ -41,7 +41,9 @@ const { isTyping } = storeToRefs(useSessionStore())
   font-size: 1.2rem;
   border-radius: 8px;
   user-select: none;
+  cursor: pointer;
 }
+
 .nav-item:hover {
   background-color: #525252;
 }
@@ -49,7 +51,7 @@ const { isTyping } = storeToRefs(useSessionStore())
 .nav {
   min-width: 15%;
   max-width: 25%;
-  padding: 1rem;
+  padding: 2rem 0.5rem;
   display: flex;
   flex-direction: column;
 }

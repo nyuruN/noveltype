@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import Typer from '@/components/Typer.vue'
 import Menu from '@/components/Menu.vue'

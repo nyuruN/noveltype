@@ -80,10 +80,12 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
     z-index: 1;
     opacity: 0;
 }
+
 .card:hover .card-more {
     opacity: 1;
     background-color: #42424250;
 }
+
 .card:hover .card-more:hover {
     background-color: #424242d2;
 }
@@ -113,6 +115,7 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
 
 .card:hover {
     background-color: #575757;
+    cursor: pointer;
 }
 
 .book-container {

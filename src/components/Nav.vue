@@ -15,12 +15,11 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     <button id="toc" class="menu-button" v-if="book" @click="showTOC = !showTOC">
         <slot></slot>
         <div id="toc-container">
-            <div id="toc-content" class="thin-scrollbar"
-                :style="{
-                    left: showTOC ? '0vw' : '-60vw',
-                    opacity: showTOC ? '100' : '0',
-                    pointerEvents: showTOC ? 'auto' : 'none'
-                }">
+            <div id="toc-content" class="thin-scrollbar" :style="{
+                left: showTOC ? '0vw' : '-60vw',
+                opacity: showTOC ? '100' : '0',
+                pointerEvents: showTOC ? 'auto' : 'none'
+            }">
                 <ul v-for="(arr, index) in book?.record.toc" @click="toChapter(index)">
                     {{ arr[0] }}
                 </ul>

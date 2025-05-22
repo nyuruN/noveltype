@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
 
 export interface TypingConfig {
-    stopOnError: boolean
+  stopOnError: boolean
 }
 
 export interface Config {
-    typing: TypingConfig,
+  typing: TypingConfig,
 }
 
 export const useLibraryStore = defineStore('library', {
   state: (): Config => ({
     typing: {
-        stopOnError: false,
+      stopOnError: false,
     }
   }),
   persist: true,
