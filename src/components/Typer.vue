@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useLibraryStore } from '@/stores/library'
+import { useSessionStore } from '@/stores/library'
 
-const { chapter } = storeToRefs(useLibraryStore())
+const { chapter } = storeToRefs(useSessionStore())
 
 document.addEventListener('keydown', async (event: Event) => {
     let keyevent = event as KeyboardEvent

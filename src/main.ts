@@ -5,10 +5,10 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faBars, faBook, faBookmark, faBookOpen, faCaretLeft, faCaretRight, faFolderOpen, faGear, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faBook, faBookmark, faBookOpen, faCaretLeft, faCaretRight, faFolderOpen, faGear, faHouse, faPlus, faTurnDown } from '@fortawesome/free-solid-svg-icons'
 
 import App from './views/App.vue'
-import HomeView from './views/HomeView.vue'
+import HomeView from './views/LibraryView.vue'
 
 // Font-Awesome Icon definitions
 library.add(
@@ -21,6 +21,8 @@ library.add(
     faFolderOpen,
     faTurnDown,
     faGear,
+    faHouse,
+    faPlus,
 )
 
 const routes = [

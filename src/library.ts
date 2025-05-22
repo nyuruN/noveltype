@@ -31,56 +31,72 @@ interface Offset {
 export class Library {
     constructor() { }
 
-    books: Book[] = [];
+    books: BookRecord[] = [];
 
-    length() { return this.books.length }
+    exists(filename: string): boolean {
+        for (let i = 0; i < this.books.length; i++) {
+            if (this.books[i].filename == filename) {
+                return true
+            }
+        }
+        return false;
+    }
     async loadBook(file: File): Promise<Book> {
         let epub = ePub(await file.arrayBuffer())
         await epub.ready
         let metadata = await epub.loaded.metadata
         let nav = await epub.loaded.navigation
-        let book = new Book(epub, nav, metadata)
+        let book = new Book(file.name, epub, nav, metadata)
 
-        this.books.push(book)
-
+        this.books.push(book.record)
         return book
     }
 }
 
+export class BookRecord {
+    toc: [string, string][] = []
+    chapterCount: number = 0
+
+    filename: string = ''
+    author: string = ''
+    title: string = ''
+    description: string = ''
+    date: string = ''
+    id: string = ''
+    lang: string = ''
+}
+
 export class Book {
-    constructor(epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
+    constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
         this.epub = epub
+
+        let rec = new BookRecord()
 
         let last = this.epub.spine.last().index
         for (let i = 0; i <= last; i++) {
             let section = this.epub.spine.get(i)
             let navItem = nav.get('#' + section.idref) || nav.get(section.href)
             let label = navItem ? navItem.label : 'undefined'
-            this.toc.push([label, section.href])
+            rec.toc.push([label, section.href])
         }
-        this.chapterCount = this.toc.length
+        rec.chapterCount = rec.toc.length
 
-        this.author = metadata.creator
-        this.title = metadata.title
-        this.description = metadata.creator
-        this.date = metadata.pubdate
-        this.id = metadata.identifier
-        this.lang = metadata.language
+        rec.filename = filename
+        rec.author = metadata.creator
+        rec.title = metadata.title
+        rec.description = metadata.creator
+        rec.date = metadata.pubdate
+        rec.id = metadata.identifier
+        rec.lang = metadata.language
+
+        this.record = rec
     }
 
     epub: EPub
-    toc: [string, string][] = []
-    chapterCount: number
-
-    author: string
-    title: string
-    description: string
-    date: string
-    id: string
-    lang: string
+    record: BookRecord
 
     async getChapter(n: number): Promise<Chapter> {
-        let href = this.toc[n][1]
+        let href = this.record.toc[n][1]
         let doc = await this.epub.load(href) as XMLDocument
 
         return new Chapter(this, n, doc)
@@ -224,7 +240,7 @@ export class Chapter {
     }
     next(): Promise<Chapter> | undefined {
         let book = this.book.deref()
-        return (book && this.index < book.chapterCount - 1) ? book.getChapter(this.index + 1) : undefined
+        return (book && this.index < book.record.chapterCount - 1) ? book.getChapter(this.index + 1) : undefined
     }
     prev(): Promise<Chapter> | undefined {
         let book = this.book.deref()

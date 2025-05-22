@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useLibraryStore } from '@/stores/library'
+import { useSessionStore } from '@/stores/library'
 
-const { book, chapter } = storeToRefs(useLibraryStore())
+const { book, chapter } = storeToRefs(useSessionStore())
 
 let showTOC = ref(false)
 
@@ -21,7 +21,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
                     opacity: showTOC ? '100' : '0',
                     pointerEvents: showTOC ? 'auto' : 'none'
                 }">
-                <ul v-for="(arr, index) in book?.toc" @click="toChapter(index)">
+                <ul v-for="(arr, index) in book?.record.toc" @click="toChapter(index)">
                     {{ arr[0] }}
                 </ul>
             </div>

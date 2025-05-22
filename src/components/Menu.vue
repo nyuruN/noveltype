@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useLibraryStore } from '@/stores/library'
+import { useLibraryStore, useSessionStore } from '@/stores/library'
 
 import Nav from './Nav.vue'
 
-const { library, book, chapter } = storeToRefs(useLibraryStore())
+const { library } = storeToRefs(useLibraryStore())
+const { book, chapter } = storeToRefs(useSessionStore())
 
 async function loadEpub(e: Event) {
     var input = e.target as HTMLInputElement
