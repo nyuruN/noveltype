@@ -1,33 +1,44 @@
 <script setup lang="ts">
+import { usePromptStore } from '@/stores/prompt'
+import { storeToRefs } from 'pinia'
 
-export interface UserPrompt {
-    resolveFn: (val: boolean) => void
-    title: string
-    text: string
-    /**
-     * Swaps button color
-     */
-    invert?: boolean
+const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
+</script>
+
+<script lang="ts">
+export async function openPrompt(_title: string, _description: string, _invert?: boolean) {
+    const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
+
+    let { promise, resolve } = Promise.withResolvers<boolean>()
+    
+    resolveFn.value = resolve
+    title.value = _title
+    description.value = _description
+    invert.value = (_invert) ? _invert : false
+    
+    let confirm = await promise;
+
+    // Reset when resolved
+    resolveFn.value = undefined
+
+    return confirm
 }
-
-const props = defineProps<{ prompt: UserPrompt }>()
-
 </script>
 
 <template>
-    <div class="prompt-bg">
+    <div class="prompt-bg" v-if="resolveFn">
         <div class="prompt">
             <div style="padding: 0.3rem;">
-                <div style="margin: 0; font-weight: bold; font-size: x-large;">{{ props.prompt.title }}</div>
-                <div style="margin: 0.5rem 0 0.5rem 0.2rem;">{{ props.prompt.text }}</div>
+                <div style="margin: 0; font-weight: bold; font-size: x-large;">{{ title }}</div>
+                <div style="margin: 0.5rem 0 0.5rem 0.2rem;">{{ description }}</div>
             </div>
-            <div class="prompt-buttons" v-if="props.prompt.invert">
-                <div class="prompt-button n" @click="props.prompt.resolveFn(true)">Ok</div>
-                <div class="prompt-button y" @click="props.prompt.resolveFn(false)">Cancel</div>
+            <div class="prompt-buttons" v-if="invert">
+                <div class="prompt-button n" @click="resolveFn(true)">Ok</div>
+                <div class="prompt-button y" @click="resolveFn(false)">Cancel</div>
             </div>
             <div class="prompt-buttons" v-else>
-                <div class="prompt-button y" @click="props.prompt.resolveFn(true)">Ok</div>
-                <div class="prompt-button n" @click="props.prompt.resolveFn(false)">Cancel</div>
+                <div class="prompt-button y" @click="resolveFn(true)">Ok</div>
+                <div class="prompt-button n" @click="resolveFn(false)">Cancel</div>
             </div>
         </div>
     </div>

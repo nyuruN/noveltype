@@ -1,26 +1,10 @@
 <script setup lang="ts">
-import type { UserPrompt } from '@/components/Prompt.vue';
-import Prompt from '@/components/Prompt.vue';
+import Prompt, { openPrompt } from '@/components/Prompt.vue';
 import { deleteDB } from '@/db';
 import { useLocalStore, useTempStore } from '@/stores/library';
-import { ref, type Ref } from 'vue';
 
-let prompt: Ref<UserPrompt | undefined> = ref(undefined)
-
-function showPrompt(title: string, text: string, invert?: boolean): Promise<boolean> {
-    let { promise, resolve } = Promise.withResolvers<boolean>()
-    prompt.value = {
-        resolveFn: resolve,
-        title: title,
-        text: text,
-        invert: invert,
-    }
-    return promise
-}
 async function deleteProgramData() {
-    let confirm = await showPrompt('Confirm Action', 'This will erase all program data!', true)
-
-    prompt.value = undefined;
+    let confirm = await openPrompt('Confirm Action', 'This will erase all program data!', true)
     
     if (confirm) {
         deleteDB()
@@ -38,8 +22,7 @@ async function deleteProgramData() {
         <div style="display: inline; margin-left: 0.5rem">Delete all program data</div>
     </div>
 
-    <Prompt v-if="prompt" :prompt></Prompt>
-
+    <Prompt></Prompt>
 </template>
 
 <style>
