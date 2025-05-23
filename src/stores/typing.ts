@@ -4,7 +4,10 @@ import { Book, Chapter } from '../lib/book'
 interface TypingObj {
     book: Book | undefined,
     chapter: Chapter | undefined,
-    isTyping: boolean
+    isTyping: boolean,
+    typingSettings: {
+        stopOnError: boolean,
+    },
 }
 
 export const useTypingStore = defineStore('typing', {
@@ -12,5 +15,8 @@ export const useTypingStore = defineStore('typing', {
         book: undefined,
         chapter: undefined,
         isTyping: false,
+        typingSettings: {
+            stopOnError: false,
+        }
     })
 })

@@ -3,8 +3,7 @@ import type Navigation from 'epubjs/types/navigation';
 import type { PackagingMetadataObject } from 'epubjs/types/packaging';
 import type { BookRecord } from '../stores/library';
 import { removeFancyTypography, scrollToNextCaretPos, type Offset } from './utils';
-
-const StopOnError = false
+import { useTypingStore } from '@/stores/typing';
 
 export class Book {
     constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
@@ -278,7 +277,7 @@ export class Word {
         let letter = this.letters[idx] ? this.letters[idx] : ' '
 
         // Stop behaviour
-        if (StopOnError) {
+        if (useTypingStore().typingSettings.stopOnError) {
             let isCorrect = key === letter
             this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false // Keep error state
             return isCorrect ? 1 : 0
@@ -307,7 +306,7 @@ export class Word {
      * Revert any errors caused by overflow bahaviour
      */
     backspace(idx: number): number {
-        if (StopOnError) {
+        if (useTypingStore().typingSettings.stopOnError) {
             return 0
         } else {
             this.error = (this.error) ? !(this.cLetters[idx - 2] || true) : false
