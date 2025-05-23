@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useSessionStore } from '@/stores/library';
+import { useTempStore } from '@/stores/library';
 import TypingView from './TypingView.vue';
 import { storeToRefs } from 'pinia';
 
-const { isTyping } = storeToRefs(useSessionStore())
+const { isTyping } = storeToRefs(useTempStore())
 </script>
 
 <template>

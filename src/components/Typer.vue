@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useSessionStore } from '@/stores/library'
+import { useTempStore } from '@/stores/library'
 
-const { chapter } = storeToRefs(useSessionStore())
+const { chapter } = storeToRefs(useTempStore())
 
 document.addEventListener('keydown', async (event: Event) => {
     let keyevent = event as KeyboardEvent
@@ -110,7 +110,7 @@ document.addEventListener('keydown', async (event: Event) => {
     width: 0.08em;
     border-radius: 0.1em;
     background-color: white;
-    transition: top 0.1s ease, left 0.1s ease;
+    transition: top 0.05s ease, left 0.1s ease;
     z-index: 1;
 }
 

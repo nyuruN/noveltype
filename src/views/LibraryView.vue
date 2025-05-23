@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { saveEpubFile, loadEpubFile } from '@/db'
 import type { BookRecord } from '@/library'
-import { useLibraryStore, useSessionStore } from '@/stores/library'
+import { useLocalStore, useTempStore } from '@/stores/library'
 import { storeToRefs } from 'pinia'
 
-const { library } = storeToRefs(useLibraryStore())
-const { book, chapter, isTyping } = storeToRefs(useSessionStore())
+const { library } = storeToRefs(useLocalStore())
+const { book, chapter, isTyping } = storeToRefs(useTempStore())
 
 async function loadEpub(e: Event) {
     var input = e.target as HTMLInputElement
