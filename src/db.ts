@@ -15,24 +15,24 @@ export function createDB(): Dexie {
 export async function saveEpubFile(file: File) {
     let db = createDB();
 
-    console.log('Saving to DB')
-
     await db.table('epub').add({
         name: file.name,
         type: file.type,
         data: file,
         lastModified: file.lastModified,
     })
+
+    db.close()
 }
 export async function loadEpubFile(filename: string) {
     let db = createDB();
-
-    console.log('Loading from DB')
 
     let fileRecord = await db.table('epub').get(filename)
     let file = new File([fileRecord.data], fileRecord.name, { type: fileRecord.type, lastModified: fileRecord.lastModified })
 
     console.log(file)
+
+    db.close()
 
     return file
 }
