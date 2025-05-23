@@ -2,8 +2,8 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "ES2022",
-    "lib": ["ES2023", "ESNext.WeakRef", "DOM", "DOM.Iterable"],
+    "target": "ES2024",
+    "lib": ["ES2024", "ESNext.WeakRef", "DOM", "DOM.Iterable"],
 
     /* Linting */
     "strict": true,

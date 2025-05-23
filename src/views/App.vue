@@ -61,6 +61,7 @@ const { isTyping } = storeToRefs(useTempStore())
   padding: 2rem;
   background-color: #525252;
   overflow-y: scroll;
+  position: relative;
 }
 
 .center-container {

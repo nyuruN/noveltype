@@ -1,7 +1,10 @@
 import Dexie from "dexie";
 
+export async function deleteDB() {
+    await Dexie.delete('noveltypeDB')
+}
 export function createDB(): Dexie {
-    let db = new Dexie('booktyprDB')
+    let db = new Dexie('noveltypeDB')
 
     db.version(1).stores({
         epub: 'name, type, data, lastModified'
