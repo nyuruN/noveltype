@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Prompt, { openPrompt } from '@/components/Prompt.vue';
+import ToggleSwitch from '@/components/ToggleSwitch.vue';
 import { deleteDB } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { useTypingStore } from '@/stores/typing';
@@ -27,9 +28,7 @@ async function deleteProgramData() {
                 <div style="margin-left: 0.5rem; font-weight: bold;">Stop on error</div>
                 <div style="margin-left: 0.5rem">You cannot proceed util you have input the correct key</div>
             </div>
-            <div class="toggle-switch" :class="{ enabled: typingSettings.stopOnError }"
-                @click="typingSettings.stopOnError = !typingSettings.stopOnError">
-            </div>
+            <ToggleSwitch v-model="typingSettings.stopOnError"></ToggleSwitch>
         </div>
 
         <div class="danger-container">
@@ -43,47 +42,7 @@ async function deleteProgramData() {
     <Prompt />
 </template>
 
-<style scoped lang="scss">
-$toggleScale: 0.4;
-$toggleWidth: 200px * $toggleScale;
-$toggleHeight: 100px * $toggleScale;
-$togglePadding: 5px * $toggleScale;
-
-.toggle-switch {
-    cursor: pointer;
-    width: $toggleWidth;
-    height: $toggleHeight;
-    background: grey;
-    display: block;
-    border-radius: $toggleHeight;
-    position: relative;
-
-    &:after {
-        content: '';
-        position: absolute;
-        top: $togglePadding;
-        left: $togglePadding;
-        width: $toggleHeight - $togglePadding * 2;
-        height: $toggleHeight - $togglePadding * 2;
-        background: #fff;
-        border-radius: $toggleHeight - $togglePadding * 2;
-        transition: 0.3s;
-    }
-
-    &:active:after {
-        width: $toggleHeight * 1.3;
-    }
-}
-
-.enabled.toggle-switch {
-    background: #bada55;
-
-    &:after {
-        left: calc(100% - $togglePadding);
-        transform: translateX(-100%);
-    }
-}
-
+<style scoped lang="css">
 .option-text {
     flex-grow: 1;
 }
