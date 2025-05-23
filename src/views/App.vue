@@ -11,11 +11,11 @@ const { isTyping } = storeToRefs(useTempStore())
     <div class="center-container" v-show="!isTyping">
       <nav class="nav">
         <div class="nav-items">
-          <div class="nav-item">
+          <div class="nav-item" @click="$router.push('/')">
             <font-awesome-icon :icon="['fas', 'book-open']" fixed-width />
             <span style="margin-left: 0.5rem;">Library</span>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" @click="$router.push('/settings')">
             <font-awesome-icon :icon="['fas', 'gear']" fixed-width />
             <span style="margin-left: 0.5rem;">Settings</span>
           </div>

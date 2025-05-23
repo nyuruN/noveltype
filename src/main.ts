@@ -9,6 +9,7 @@ import { faBars, faBook, faBookmark, faBookOpen, faCaretLeft, faCaretRight, faEl
 
 import App from './views/App.vue'
 import HomeView from './views/LibraryView.vue'
+import SettingsView from './views/SettingsView.vue'
 
 // Font-Awesome Icon definitions
 library.add(
@@ -29,7 +30,8 @@ library.add(
 )
 
 const routes = [
-    { path: '/', component: HomeView }
+    { path: '/', component: HomeView },
+    { path: '/settings', component: SettingsView },
 ]
 
 const router = createRouter({
