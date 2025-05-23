@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useTempStore } from '@/stores/library'
+import { useTypingStore } from '@/stores/typing';
 
-const { book, chapter } = storeToRefs(useTempStore())
+const { book, chapter } = storeToRefs(useTypingStore())
 
 let showTOC = ref(false)
 

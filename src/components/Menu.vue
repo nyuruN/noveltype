@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useTempStore } from '@/stores/library'
+import { useTypingStore } from '@/stores/typing';
 
 import Nav from './Nav.vue'
 
-const { chapter, isTyping } = storeToRefs(useTempStore())
+const { chapter, isTyping } = storeToRefs(useTypingStore())
 
 async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p; await nextTick(); chapter.value.resetCaret() } }
 async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p; await nextTick(); chapter.value.resetCaret() } }

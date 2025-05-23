@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { saveEpubFile, loadEpubFile } from '@/db'
-import type { BookRecord } from '@/library'
-import { useLocalStore, useTempStore } from '@/stores/library'
+import { saveEpubFile, loadEpubFile } from '@/lib/db'
+import { useLibraryStore, type BookRecord } from '@/stores/library'
+import { useTypingStore } from '@/stores/typing'
 import { storeToRefs } from 'pinia'
 
-const { library } = storeToRefs(useLocalStore())
-const { book, chapter, isTyping } = storeToRefs(useTempStore())
+const library = useLibraryStore()
+const { book, chapter, isTyping } = storeToRefs(useTypingStore())
 
 async function loadEpub(e: Event) {
     var input = e.target as HTMLInputElement
@@ -15,8 +15,8 @@ async function loadEpub(e: Event) {
     }
 
     // Load book
-    if (!library.value.exists(input.files[0].name)) {
-        let epub = await library.value.loadBook(input.files[0])
+    if (!library.exists(input.files[0].name)) {
+        let epub = await library.loadBook(input.files[0])
 
         book.value = epub
         chapter.value = await epub.getChapter(0)
@@ -31,7 +31,7 @@ async function openBook(filename: string, _: number) {
     }
 
     let file = await loadEpubFile(filename)
-    let epub = await library.value.loadBook(file)
+    let epub = await library.loadBook(file)
 
     book.value = epub
     chapter.value = await epub.getChapter(0)

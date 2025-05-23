@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import Prompt, { openPrompt } from '@/components/Prompt.vue';
-import { deleteDB } from '@/db';
-import { useLocalStore, useTempStore } from '@/stores/library';
+import { deleteDB } from '@/lib/db';
+import { useLibraryStore } from '@/stores/library';
+import { useTypingStore } from '@/stores/typing';
 
 async function deleteProgramData() {
     let confirm = await openPrompt('Confirm Action', 'This will erase all program data!', true)
-    
+
     if (confirm) {
         deleteDB()
-        useLocalStore().$reset()
-        useTempStore().$reset()
+        useLibraryStore().$reset()
+        useTypingStore().$reset()
     }
 }
 </script>
@@ -17,15 +18,19 @@ async function deleteProgramData() {
 <template>
     <h1>Settings</h1>
 
-    <div class="important-button" @click="deleteProgramData">
-        <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
-        <div style="display: inline; margin-left: 0.5rem">Delete all program data</div>
+    <div class="container">
+
+        <div class="important-button" @click="deleteProgramData">
+            <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
+            <div style="display: inline; margin-left: 0.5rem">Delete all program data</div>
+        </div>
+
     </div>
 
-    <Prompt></Prompt>
+    <Prompt />
 </template>
 
-<style>
+<style scoped>
 .important-button {
     user-select: none;
     padding: 1rem;

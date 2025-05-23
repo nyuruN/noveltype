@@ -1,99 +1,37 @@
-import ePub, { Book as EPub } from 'epubjs'
+import { Book as EPub } from 'epubjs'
 import type Navigation from 'epubjs/types/navigation';
 import type { PackagingMetadataObject } from 'epubjs/types/packaging';
-
-// Sourced from https://github.com/ProfXwing/copytype
-function removeFancyTypography(textToClean: string) {
-    const specials = {
-        "“": '"', // &ldquo;	&#8220;
-        "”": '"', // &rdquo;	&#8221;
-        "’": "'", // &lsquo;	&#8216;
-        "‘": "'", // &rsquo;	&#8217;
-        ",": ",", // &sbquo;	&#8218;
-        "—": "-", // &mdash;    &#8212;
-        "…": "...", // &hellip; &#8230;
-        "«": "<<",
-        "»": ">>",
-        "–": "-",
-    };
-    return textToClean.replace(/[“”’‘—,…«»–]/g, (char) => {
-        return specials[char as keyof object] || "";
-    });
-}
+import type { BookRecord } from '../stores/library';
+import { removeFancyTypography, scrollToNextCaretPos, type Offset } from './utils';
 
 const StopOnError = false
-
-interface Offset {
-    top: number,
-    left: number
-}
-
-export class Library {
-    constructor() { }
-
-    books: BookRecord[] = [];
-
-    exists(filename: string): boolean {
-        for (let i = 0; i < this.books.length; i++) {
-            if (this.books[i].filename == filename) {
-                return true
-            }
-        }
-        return false;
-    }
-    async loadBook(file: File): Promise<Book> {
-        let epub = ePub(await file.arrayBuffer())
-        await epub.ready
-        let metadata = await epub.loaded.metadata
-        let nav = await epub.loaded.navigation
-        let book = new Book(file.name, epub, nav, metadata)
-
-        // Load epub file from book records
-        if (!this.exists(file.name)) {
-            this.books.push(book.record)
-        }
-
-        return book
-    }
-}
-
-export class BookRecord {
-    toc: [string, string][] = []
-    chapterCount: number = 0
-
-    filename: string = ''
-    author: string = ''
-    title: string = ''
-    description: string = ''
-    date: string = ''
-    id: string = ''
-    lang: string = ''
-}
 
 export class Book {
     constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
         this.epub = epub
 
-        let rec = new BookRecord()
+        let toc: [string, string][] = []
 
         let last = this.epub.spine.last().index
         for (let i = 0; i <= last; i++) {
             let section = this.epub.spine.get(i)
             let navItem = nav.get('#' + section.idref) || nav.get(section.href)
             let label = navItem ? navItem.label : 'undefined'
-            rec.toc.push([label, section.href])
+            toc.push([label, section.href])
         }
-        rec.chapterCount = rec.toc.length
 
-        rec.filename = filename
-        rec.author = metadata.creator
-        rec.title = metadata.title
-        rec.description = metadata.creator
-        rec.date = metadata.pubdate
-        rec.id = metadata.identifier
-        rec.lang = metadata.language
+        this.record = {
+            toc: toc,
+            chapterCount: toc.length,
 
-        this.record = rec
+            filename: filename,
+            author: metadata.creator,
+            title: metadata.title,
+            description: metadata.creator,
+            date: metadata.pubdate,
+            id: metadata.identifier,
+            lang: metadata.language,
+        }
     }
 
     epub: EPub
@@ -181,7 +119,7 @@ export class Chapter {
             caret.style['top'] = offset.top + 'px'
             caret.style['left'] = offset.left + 'px'
 
-            this.scrollToCaret(offset.top - caret.offsetTop)
+            scrollToNextCaretPos(offset.top - caret.offsetTop)
             paragraph.finish()
             this.paragraphs[this.caret.p].render()
         }
@@ -202,43 +140,11 @@ export class Chapter {
         // Caret line changed (Scroll update)
         if (caret.offsetTop != offset.top) {
             console.log('line changed')
-            this.scrollToCaret(offset.top - caret.offsetTop)
+            scrollToNextCaretPos(offset.top - caret.offsetTop)
         }
 
         caret.style['top'] = offset.top + 'px'
         caret.style['left'] = offset.left + 'px'
-    }
-    scrollToCaret(offset: number) {
-        let container = document.querySelector('#typer-container') as HTMLElement
-        let caret = document.getElementById('caret') as HTMLElement
-
-        let containerR = container.getBoundingClientRect()
-        let caretR = caret.getBoundingClientRect()
-        // Calculate next 'top' position relative to viewport
-        let caretTop = caretR.top + offset
-        // Usually 'top' would be negative to account for current scroll
-        let scrollY = caretTop - Math.max(containerR.top, 0)
-        // Adjust for current scroll, needed since 'overflow: hidden' clips negative 'top' positions ()
-        scrollY += container.scrollTop
-        // Adjust center of caret to center of scroll
-        scrollY += (caretR.height / 2)
-
-        // Get viewport size
-        // TODO: Why 'null' here?
-        let max = window.visualViewport?.height || Infinity
-
-        // Caret is inside upper 30% (of viewport)
-        let scroll = (caretTop < max * 0.30)
-            // Caret is inside lower 40% (of viewport)
-            || (caretTop > max - max * 0.40);
-
-        if (scroll) {
-            // Scroll caret to roughly 32% (of viewport)
-            container.scrollTo({
-                top: scrollY - (max * 0.32),
-                behavior: 'smooth'
-            })
-        }
     }
     /**
      * Call when the chapter content has finished loading
