@@ -5,26 +5,6 @@ import { storeToRefs } from 'pinia'
 const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
 </script>
 
-<script lang="ts">
-export async function openPrompt(_title: string, _description: string, _invert?: boolean) {
-    const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
-
-    let { promise, resolve } = Promise.withResolvers<boolean>()
-    
-    resolveFn.value = resolve
-    title.value = _title
-    description.value = _description
-    invert.value = (_invert) ? _invert : false
-    
-    let confirm = await promise;
-
-    // Reset when resolved
-    resolveFn.value = undefined
-
-    return confirm
-}
-</script>
-
 <template>
     <div class="prompt-bg" v-if="resolveFn">
         <div class="prompt">

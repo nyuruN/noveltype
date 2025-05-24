@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import Prompt, { openPrompt } from '@/components/Prompt.vue';
+import Prompt from '@/components/Prompt.vue';
 import ToggleSwitch from '@/components/ToggleSwitch.vue';
 import { deleteDB } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
+import { usePromptStore } from '@/stores/prompt';
 import { useTypingStore } from '@/stores/typing';
 import { storeToRefs } from 'pinia';
 
 let { typingSettings } = storeToRefs(useTypingStore())
 
 async function deleteProgramData() {
-    let confirm = await openPrompt('Confirm Action', 'This will erase all program data!', true)
+    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will erase all program data!', true)
 
     if (confirm) {
         deleteDB()
