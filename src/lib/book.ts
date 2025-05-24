@@ -307,6 +307,7 @@ export class Word {
             this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false // Keep error state
 
             if (isCorrect) statsStore.typeLetter()
+            if (isCorrect && idx == this.letters.length) statsStore.typeWord(this.letters.length)
 
             return isCorrect ? 1 : 0
         }
