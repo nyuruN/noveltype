@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import Prompt from '@/components/Prompt.vue';
 import ToggleSwitch from '@/components/ToggleSwitch.vue';
+import ButtonGroup from '@/components/ButtonGroup.vue';
 import { deleteDB } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
-import { useSettingsStore } from '@/stores/settings';
+import { statDisplayOptions, useSettingsStore } from '@/stores/settings';
 import { useTypingStore } from '@/stores/typing';
 import { storeToRefs } from 'pinia';
 
@@ -41,6 +42,15 @@ async function deleteProgramData() {
             <ToggleSwitch v-model="typing.allowWordSkipping"></ToggleSwitch>
         </div>
 
+        <div class="option-container" style="margin-bottom: 0.5rem;">
+            <div class="option-text">
+                <div style="margin-left: 0.5rem; font-weight: bold;">Do something</div>
+                <div style="margin-left: 0.5rem">Fancy description ooouh~</div>
+            </div>
+            <ButtonGroup v-model="typing.statDisplay" :options="statDisplayOptions">
+            </ButtonGroup>
+        </div>
+
         <div class="danger-container">
             <div class="danger-button" @click="deleteProgramData">
                 <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
@@ -52,7 +62,7 @@ async function deleteProgramData() {
     <Prompt />
 </template>
 
-<style scoped lang="css">
+<style scoped>
 .option-text {
     flex-grow: 1;
 }
