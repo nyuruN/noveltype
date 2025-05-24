@@ -49,33 +49,33 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
 
 <template>
     <h1>Your Library</h1>
-    <div class="book-container" style="margin-top: 2rem;">
-        <div v-for="(book, index) in library.books" class="card" @click="openBook(book.filename, index)">
+    <div class="book-container flex" style="margin-top: 2rem;">
+        <div class="card relative" @click="openBook(book.filename, index)" v-for="(book, index) in library.books">
             <div class="card-more" @click="event => inspectBook(event, book, index)">
                 <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
             </div>
-            <div class="card-image">
-                <font-awesome-icon :icon="['fas', 'book']" fixed-width />
+            <div class="card-image relative">
+                <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center"/>
             </div>
             <div class="card-text">{{ book.title }}</div>
         </div>
         <div class="card" @click="triggerInput">
             <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
-            <div class="card-image">
-                <font-awesome-icon :icon="['fas', 'plus']" fixed-width />
+            <div class="card-image relative">
+                <font-awesome-icon :icon="['fas', 'plus']" fixed-width class="absolute-center"/>
             </div>
             <div class="card-text">Upload from device</div>
         </div>
     </div>
 </template>
 
-<style>
+<style scoped>
 .card-more {
     position: absolute;
     top: 0;
     right: 0;
     padding: 0.4rem 0.5rem;
-    font-size: 1.3em;
+    font-size: 1.3rem;
     border-radius: 8px;
     z-index: 1;
     opacity: 0;
@@ -95,7 +95,7 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
     background-color: #7e7e7e;
     height: 75%;
     border-radius: 8px;
-    font-size: 9.5rem;
+    font-size: 8rem;
 }
 
 .card-text {
@@ -105,7 +105,6 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
 }
 
 .card {
-    position: relative;
     height: 20rem;
     width: 14rem;
     padding: 1rem;
@@ -119,7 +118,6 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
 }
 
 .book-container {
-    display: flex;
     flex-wrap: wrap;
     gap: 1rem;
 }
