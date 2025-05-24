@@ -3,7 +3,8 @@ import type Navigation from 'epubjs/types/navigation';
 import type { PackagingMetadataObject } from 'epubjs/types/packaging';
 import type { BookRecord } from '../stores/library';
 import { removeFancyTypography, scrollToNextCaretPos, type Offset } from './utils';
-import { useStatsStore, useTypingStore, } from '@/stores/typing';
+import { useStatsStore, } from '@/stores/typing';
+import { useSettingsStore } from '@/stores/settings';
 
 export class Book {
     constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
@@ -301,31 +302,31 @@ export class Word {
      * Behaviour 2: Writes into overflow buffer, appears as extra letters
      */
     input(key: string, idx: number): number {
-        let statsStore = useStatsStore()
-        let typingStore = useTypingStore()
+        let stats = useStatsStore()
+        let settings = useSettingsStore()
         let letter = this.letters[idx] ? this.letters[idx] : ' '
 
         // Skip behaviour ->On space pressed
-        if (typingStore.typingSettings.allowWordSkipping && key == ' ') {
+        if (settings.typing.allowWordSkipping && key == ' ') {
             this.typed = true
             // Error if incomplete, otherwise keep error state
             this.error = (idx != this.letters.length) ? true : this.error
             // Count as typed if the word is filled:
             //   Should the user be punished for this?
             //   Consistent with overflow behaviour
-            if (idx == this.letters.length) statsStore.typeWord(this.letters.length)
+            if (idx == this.letters.length) stats.typeWord(this.letters.length)
 
             // Skip word
             return (this.letters.length - idx) + 1;
         }
 
         // Stop behaviour
-        if (typingStore.typingSettings.stopOnError) {
+        if (settings.typing.stopOnError) {
             let isCorrect = key === letter
             this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false // Keep error state
 
-            if (isCorrect) statsStore.typeLetter()
-            if (isCorrect && idx == this.letters.length) statsStore.typeWord(this.letters.length)
+            if (isCorrect) stats.typeLetter()
+            if (isCorrect && idx == this.letters.length) stats.typeWord(this.letters.length)
 
             return isCorrect ? 1 : 0
         }
@@ -337,12 +338,12 @@ export class Word {
                 if (!isCorrect) {
                     this.overflow.push(key)
                     // Just errored
-                    if (!this.error) statsStore.typeError()
+                    if (!this.error) stats.typeError()
                     this.error = true;
                 } else {
                     // Complete word
                     this.typed = true
-                    statsStore.typeWord(this.letters.length)
+                    stats.typeWord(this.letters.length)
                 }
                 return isCorrect ? 1 : 0
             }
@@ -352,9 +353,9 @@ export class Word {
             this.error = (justErrored) ? true : this.error
 
             if (justErrored)
-                statsStore.typeError()
+                stats.typeError()
             else if (!this.error)
-                statsStore.typeLetter()
+                stats.typeLetter()
 
             return 1
         }
@@ -363,7 +364,7 @@ export class Word {
      * Revert any errors caused by overflow bahaviour
      */
     backspace(idx: number): number {
-        if (useTypingStore().typingSettings.stopOnError) {
+        if (useSettingsStore().typing.stopOnError) {
             return 0
         } else {
             this.error = (this.error) ? !(this.cLetters[idx - 2] || true) : false

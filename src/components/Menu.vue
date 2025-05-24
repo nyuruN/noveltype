@@ -2,22 +2,22 @@
 import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTypingStore } from '@/stores/typing';
+import { useSettingsStore } from '@/stores/settings';
 
 import Nav from './Nav.vue'
 
 const { chapter, isTyping } = storeToRefs(useTypingStore())
+const { typing } = storeToRefs(useSettingsStore())
 
 async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p; await nextTick(); chapter.value.resetCaret() } }
 async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p; await nextTick(); chapter.value.resetCaret() } }
 async function larger() {
-    let num: number = Number(getComputedStyle(document.documentElement).getPropertyValue('--typing-font-scale'))
-    document.documentElement.style.setProperty('--typing-font-scale', String(num + 0.2));
-    document.documentElement.style.setProperty('--typing-line-scale', String(num + 0.2));
+    typing.value.typingFontScale = typing.value.typingFontScale + 0.1
+    typing.value.typingLineScale = typing.value.typingLineScale + 0.1
 }
 async function smaller() {
-    let num: number = Number(getComputedStyle(document.documentElement).getPropertyValue('--typing-font-scale'))
-    document.documentElement.style.setProperty('--typing-font-scale', String(num - 0.1));
-    document.documentElement.style.setProperty('--typing-line-scale', String(num - 0.1));
+    typing.value.typingFontScale = typing.value.typingFontScale - 0.1
+    typing.value.typingLineScale = typing.value.typingLineScale - 0.1
 }
 </script>
 

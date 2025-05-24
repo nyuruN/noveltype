@@ -4,10 +4,11 @@ import ToggleSwitch from '@/components/ToggleSwitch.vue';
 import { deleteDB } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
+import { useSettingsStore } from '@/stores/settings';
 import { useTypingStore } from '@/stores/typing';
 import { storeToRefs } from 'pinia';
 
-let { typingSettings } = storeToRefs(useTypingStore())
+let { typing } = storeToRefs(useSettingsStore())
 
 async function deleteProgramData() {
     let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will erase all program data!', true)
@@ -29,14 +30,15 @@ async function deleteProgramData() {
                 <div style="margin-left: 0.5rem; font-weight: bold;">Stop on error</div>
                 <div style="margin-left: 0.5rem">You cannot proceed util you have input the correct key</div>
             </div>
-            <ToggleSwitch v-model="typingSettings.stopOnError"></ToggleSwitch>
+            <ToggleSwitch v-model="typing.stopOnError"></ToggleSwitch>
         </div>
         <div class="option-container" style="margin-bottom: 0.5rem;">
             <div class="option-text">
                 <div style="margin-left: 0.5rem; font-weight: bold;">Allow word skipping</div>
-                <div style="margin-left: 0.5rem">Words can be skipped by pressing space (incomplete words do not count towards WPM)</div>
+                <div style="margin-left: 0.5rem">Words can be skipped by pressing space (incomplete words do not count
+                    towards WPM)</div>
             </div>
-            <ToggleSwitch v-model="typingSettings.allowWordSkipping"></ToggleSwitch>
+            <ToggleSwitch v-model="typing.allowWordSkipping"></ToggleSwitch>
         </div>
 
         <div class="danger-container">
