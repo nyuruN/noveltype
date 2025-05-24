@@ -64,9 +64,9 @@ export class Chapter {
             }
         });
 
-        if (this.paragraphs[0]) {
-            this.paragraphs[0].render();
-        }
+        // Buffer one rendered paragraph
+        if (this.paragraphs[0]) this.paragraphs[0].render();
+        if (this.paragraphs[1]) this.paragraphs[1].render();
     }
 
     book: WeakRef<Book>
@@ -130,7 +130,8 @@ export class Chapter {
             caret.style['left'] = offset.left + 'px'
 
             scrollToNextCaretPos(offset.top - caret.offsetTop)
-            this.paragraphs[this.caret.p].render()
+            // Buffer one rendered paragraph
+            if (this.paragraphs[this.caret.p + 1]) this.paragraphs[this.caret.p + 1].render();
         }
     }
     moveCaret(movement: number) {
@@ -299,10 +300,11 @@ export class Word {
      */
     input(key: string, idx: number): number {
         let statsStore = useStatsStore()
+        let typingStore = useTypingStore()
         let letter = this.letters[idx] ? this.letters[idx] : ' '
 
         // Stop behaviour
-        if (useTypingStore().typingSettings.stopOnError) {
+        if (typingStore.typingSettings.stopOnError) {
             let isCorrect = key === letter
             this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false // Keep error state
 
