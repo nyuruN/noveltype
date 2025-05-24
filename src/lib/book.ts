@@ -3,7 +3,7 @@ import type Navigation from 'epubjs/types/navigation';
 import type { PackagingMetadataObject } from 'epubjs/types/packaging';
 import type { BookRecord } from '../stores/library';
 import { removeFancyTypography, scrollToNextCaretPos, type Offset } from './utils';
-import { useTypingStore } from '@/stores/typing';
+import { useStatsStore, useTypingStore,  } from '@/stores/typing';
 
 export class Book {
     constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
@@ -79,8 +79,14 @@ export class Chapter {
         p: 0,
         l: 0
     }
+    started = false
 
     input(key: string) {
+        if (!this.started) {
+            this.started = true;
+            useStatsStore().beginChapter()
+        }
+
         let movement = this.paragraphs[this.caret.p].input(key, this.caret.l)
         this.moveCaret(movement)
     }
@@ -97,15 +103,20 @@ export class Chapter {
     enter() {
         let paragraph = this.paragraphs[this.caret.p]
 
+        // There is no chapter to begin with (blank page)
         if (!paragraph) {
             this.finished = true
             return
         }
         // If the end of paragraph was reached
         if (this.caret.l >= paragraph.source.length) {
+            // Cleanup
+            paragraph.finish()
+
             // The entire chapter was typed
             if (this.caret.p + 1 > this.paragraphs.length - 1) {
                 this.finished = true
+                useStatsStore().endChapter()
                 return
             }
             this.caret.p++
@@ -119,7 +130,6 @@ export class Chapter {
             caret.style['left'] = offset.left + 'px'
 
             scrollToNextCaretPos(offset.top - caret.offsetTop)
-            paragraph.finish()
             this.paragraphs[this.caret.p].render()
         }
     }
@@ -183,6 +193,7 @@ export class Paragraph {
      * Indicates whether each word should render as indivudual letters
      */
     isRendered: boolean = false
+    started = false
 
     /**
      * @param idx Caret position in this.source
@@ -190,9 +201,16 @@ export class Paragraph {
      */
     input(key: string, idx: number): number {
         // Don't let Word.input() complete but allow overflows
+        // Should be handled by Chapter.enter()
         if (idx == this.source.length && key == ' ') {
             return 0;
         }
+        if (!this.started) {
+            this.started = true;
+            useStatsStore().beginParagraph()
+        }
+
+
         let [wid, lid] = this.getWordLetterIdx(idx)
         return this.words[wid].input(key, lid)
     }
@@ -209,7 +227,13 @@ export class Paragraph {
      * @param idx Caret position on this.source
      */
     finish() {
+        let store = useStatsStore()
+
+        // Confirm last typed word paragraphs is typed
+        store.typeWord(this.words[this.words.length - 1].letters.length)
         this.words[this.words.length - 1].typed = true
+
+        store.endParagraph()
     }
     /**
      * Renders the each word as individual letters (expensive!)
@@ -274,30 +298,44 @@ export class Word {
      * Behaviour 2: Writes into overflow buffer, appears as extra letters
      */
     input(key: string, idx: number): number {
+        let statsStore = useStatsStore()
         let letter = this.letters[idx] ? this.letters[idx] : ' '
 
         // Stop behaviour
         if (useTypingStore().typingSettings.stopOnError) {
             let isCorrect = key === letter
             this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false // Keep error state
+
+            if (isCorrect) statsStore.typeLetter()
+
             return isCorrect ? 1 : 0
         }
         // Overflow behaviour
         else {
             let isCorrect = key === letter
             if (idx == this.letters.length) {
+                // Wrong input on last char
                 if (!isCorrect) {
                     this.overflow.push(key)
+                    // Just errored
+                    if (!this.error) statsStore.typeError()
                     this.error = true;
                 } else {
+                    // Complete word
                     this.typed = true
+                    statsStore.typeWord(this.letters.length)
                 }
                 return isCorrect ? 1 : 0
             }
 
-            let justErroed = !this.error && !isCorrect
+            let justErrored = !this.error && !isCorrect
             this.cLetters[idx] = (this.error) ? false : isCorrect
-            this.error = (justErroed) ? true : this.error
+            this.error = (justErrored) ? true : this.error
+
+            if (justErrored)
+                statsStore.typeError()
+            else if (!this.error)
+                statsStore.typeLetter()
 
             return 1
         }

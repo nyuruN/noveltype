@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useTypingStore } from '@/stores/typing'
+import { useStatsStore, useTypingStore } from '@/stores/typing'
 
 const { chapter } = storeToRefs(useTypingStore())
+const { paragraphWPMs } = storeToRefs(useStatsStore())
 
 document.addEventListener('keydown', async (event: Event) => {
     let keyevent = event as KeyboardEvent
@@ -12,19 +13,19 @@ document.addEventListener('keydown', async (event: Event) => {
     if (chapter.value) {
         // Check if it's a single character (letter, number, symbol)
         if (key.length === 1 || /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;"'<>,.?/~`\-=\\| ]$/.test(key)) {
+            keyevent.preventDefault()
             chapter.value.input(key)
-            keyevent.preventDefault()
         } else if (key === 'Enter') {
-            chapter.value?.enter()
             keyevent.preventDefault()
+            chapter.value?.enter()
 
             // Next Chapter if completed
             if (chapter.value.finished) {
                 chapter.value = await chapter.value.next(); await nextTick(); chapter.value?.resetCaret();
             }
         } else if (key === 'Backspace') {
-            chapter.value.backspace()
             keyevent.preventDefault()
+            chapter.value.backspace()
         }
     }
 })
@@ -33,7 +34,7 @@ document.addEventListener('keydown', async (event: Event) => {
 <template>
     <div id="typing-area" v-if="chapter">
         <div id="caret" style="top: 0px; left: 0px;"></div>
-        <div class="paragraph" v-for="p in chapter?.paragraphs">
+        <div class="paragraph" v-for="(p, index) in chapter?.paragraphs">
             <template v-if="p.isRendered">
                 <div class="word" v-for="w in p.words" :class="{ typed: w.typed, error: w.error }">
                     <div class="letter" v-for="(l, index) in w.letters"
@@ -54,6 +55,7 @@ document.addEventListener('keydown', async (event: Event) => {
             <div class="newline">
                 <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
             </div>
+            <div class="wpm" v-if="paragraphWPMs[index]">wpm: {{ paragraphWPMs[index].toFixed(0) }}</div>
         </div>
         <div class="newline" v-if="!chapter?.paragraphs[0]" style="padding: .2em">
             <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
@@ -62,6 +64,16 @@ document.addEventListener('keydown', async (event: Event) => {
 </template>
 
 <style>
+.wpm {
+    padding: .1em 0.3em;
+    height: 1.6em;
+    font-size: 0.7em;
+    background-color: #4d4d4d;
+    color: #9e9e9e;
+    transform: translate(0.8em, 0.4em);
+    border-radius: 6px;
+}
+
 .newline {
     color: #4d4d4d;
 }
