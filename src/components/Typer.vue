@@ -62,13 +62,13 @@ document.addEventListener('keydown', async (event: Event) => {
             <div class="newline relative">
                 <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
                 <template v-if="paragraphWPMs[index]">
-                    <div class="stat" v-if="typing.statDisplay == 'RAW'">
+                    <div class="stat" v-if="typing.statsDisplay == 'RAW'">
                         raw: {{ paragraphWPMs[index].raw.toFixed(0) }}
                     </div>
-                    <div class="stat" v-else-if="typing.statDisplay == 'WPM'">
+                    <div class="stat" v-else-if="typing.statsDisplay == 'WPM'">
                         wpm: {{ paragraphWPMs[index].wpm.toFixed(0) }}
                     </div>
-                    <div class="stat" v-else="typing.statDisplay == 'ACC'">
+                    <div class="stat" v-else-if="typing.statsDisplay == 'ACC'">
                         acc: {{ (paragraphWPMs[index].acc * 100).toFixed(0) }}%
                     </div>
                 </template>
