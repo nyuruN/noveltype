@@ -1,0 +1,27 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: normal;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  /* background-color: #292929; */
+  background-image: url(https://images.unsplash.com/photo-1745669754254-c30c98e5f8b1?w=2070&auto=format&fit=crop);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: #757575 #ffffff00;
+}
+
+* {
+  box-sizing: border-box;
+}

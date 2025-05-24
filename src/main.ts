@@ -11,6 +11,8 @@ import App from './views/App.vue'
 import HomeView from './views/LibraryView.vue'
 import SettingsView from './views/SettingsView.vue'
 
+import '@/style.css'
+
 // Font-Awesome Icon definitions
 library.add(
     faBars,
