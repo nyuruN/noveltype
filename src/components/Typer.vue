@@ -2,9 +2,11 @@
 import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useStatsStore, useTypingStore } from '@/stores/typing'
+import { useSettingsStore } from '@/stores/settings'
 
 const { chapter } = storeToRefs(useTypingStore())
 const { paragraphWPMs } = storeToRefs(useStatsStore())
+const { typing } = storeToRefs(useSettingsStore())
 
 document.addEventListener('keydown', async (event: Event) => {
     let keyevent = event as KeyboardEvent
@@ -59,7 +61,17 @@ document.addEventListener('keydown', async (event: Event) => {
 
             <div class="newline relative">
                 <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
-                <div class="wpm" v-if="paragraphWPMs[index]">wpm: {{ paragraphWPMs[index].toFixed(0) }}</div>
+                <template v-if="paragraphWPMs[index]">
+                    <div class="stat" v-if="typing.statDisplay == 'RAW'">
+                        raw: {{ paragraphWPMs[index].raw.toFixed(0) }}
+                    </div>
+                    <div class="stat" v-else-if="typing.statDisplay == 'WPM'">
+                        wpm: {{ paragraphWPMs[index].wpm.toFixed(0) }}
+                    </div>
+                    <div class="stat" v-else="typing.statDisplay == 'ACC'">
+                        acc: {{ (paragraphWPMs[index].acc * 100).toFixed(0) }}%
+                    </div>
+                </template>
             </div>
         </div>
         <div class="newline" v-if="!chapter?.paragraphs[0]" style="padding: .2em">
@@ -69,7 +81,7 @@ document.addEventListener('keydown', async (event: Event) => {
 </template>
 
 <style>
-.wpm {
+.stat {
     position: absolute;
     top: 0.4em;
     left: 1.9em;

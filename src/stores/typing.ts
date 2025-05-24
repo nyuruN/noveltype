@@ -1,7 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia'
-import { Book, Chapter } from '../lib/book'
+import { Book, Chapter, Word } from '../lib/book'
 import { ref, watch } from 'vue'
-
 
 export const useTypingStore = defineStore('typing', {
     state: () => ({
@@ -14,34 +13,47 @@ export const useTypingStore = defineStore('typing', {
 /**
  * Raw WPM counter
  */
-class GrossWPMCounter {
+class WPMCounter {
     beg: number = 0
     end: number | undefined = undefined
-    letters: number = 0
+    typedLetters: number = 0
+    errorLetters: number = 0
+    totalLetters: number = 0
 
     beginTyping() {
         this.beg = Date.now()
         this.end = undefined
-        this.letters = 0
+        this.typedLetters = 0
+        this.errorLetters = 0
+        this.totalLetters = 0
     }
-    typeWord(length: number) {
-        this.letters += length + 1
+    typeWord(word: Word) {
+        this.typedLetters += word.cLetters.length
+        word.cLetters.forEach(correct => this.errorLetters += correct ? 0 : 1)
+        this.totalLetters += word.letters.length
     }
     endTyping() {
         this.end = Date.now()
     }
-    getWPM(): number {
-        let time = (this.end ? this.end : Date.now()) - this.beg
-        return (this.letters / 5) / (time / 60000)
+    get() {
+        let time = ((this.end ? this.end : Date.now()) - this.beg) / 60000
+        let raw = (this.typedLetters / 5) / time
+        let wpm = raw - (this.errorLetters / 5) / time
+        let acc = (this.typedLetters - this.errorLetters) / this.totalLetters;
+        return { raw, wpm, acc }
     }
 }
 
 export const useStatsStore = defineStore('stats', () => {
-    let wpmCounter = ref(new GrossWPMCounter)
-    let paragraphWPMs = ref([] as number[])
+    let wpmCounter = ref(new WPMCounter)
+    let paragraphWPMs = ref([] as {
+        raw: number,
+        wpm: number,
+        acc: number,
+    }[])
 
     function $reset() {
-        wpmCounter.value = new GrossWPMCounter
+        wpmCounter.value = new WPMCounter
         paragraphWPMs.value = []
     }
 
@@ -60,13 +72,13 @@ export const useStatsStore = defineStore('stats', () => {
     }
     function endParagraph() {
         wpmCounter.value.endTyping()
-        paragraphWPMs.value.push(wpmCounter.value.getWPM())
+        paragraphWPMs.value.push(wpmCounter.value.get())
     }
     /**
      * @param length length of the typed word
      */
-    function typeWord(length: number) {
-        wpmCounter.value.typeWord(length)
+    function typeWord(word: Word) {
+        wpmCounter.value.typeWord(word)
     }
     function typeLetter() {
     }

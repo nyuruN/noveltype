@@ -234,7 +234,7 @@ export class Paragraph {
         // Confirm last typed word paragraphs is typed
         let lastWord = this.words[this.words.length - 1];
 
-        if (!lastWord.error) store.typeWord(lastWord.letters.length)
+        store.typeWord(lastWord)
         lastWord.typed = true
 
         store.endParagraph()
@@ -306,15 +306,12 @@ export class Word {
         let settings = useSettingsStore()
         let letter = this.letters[idx] ? this.letters[idx] : ' '
 
-        // Skip behaviour ->On space pressed
+        // Skip behaviour -> On space pressed
         if (settings.typing.allowWordSkipping && key == ' ') {
             this.typed = true
             // Error if incomplete, otherwise keep error state
             this.error = (idx != this.letters.length) ? true : this.error
-            // Count as typed if the word is filled:
-            //   Should the user be punished for this?
-            //   Consistent with overflow behaviour
-            if (idx == this.letters.length) stats.typeWord(this.letters.length)
+            stats.typeWord(this)
 
             // Skip word
             return (this.letters.length - idx) + 1;
@@ -326,7 +323,7 @@ export class Word {
             this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false // Keep error state
 
             if (isCorrect) stats.typeLetter()
-            if (isCorrect && idx == this.letters.length) stats.typeWord(this.letters.length)
+            if (isCorrect && idx == this.letters.length) stats.typeWord(this)
 
             return isCorrect ? 1 : 0
         }
@@ -343,7 +340,7 @@ export class Word {
                 } else {
                     // Complete word
                     this.typed = true
-                    stats.typeWord(this.letters.length)
+                    stats.typeWord(this)
                 }
                 return isCorrect ? 1 : 0
             }

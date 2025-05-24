@@ -5,7 +5,7 @@ import ButtonGroup from '@/components/ButtonGroup.vue';
 import { deleteDB } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
-import { statDisplayOptions, useSettingsStore } from '@/stores/settings';
+import { statsDisplayOptions, useSettingsStore } from '@/stores/settings';
 import { useTypingStore } from '@/stores/typing';
 import { storeToRefs } from 'pinia';
 
@@ -44,17 +44,17 @@ async function deleteProgramData() {
 
         <div class="option-container" style="margin-bottom: 0.5rem;">
             <div class="option-text">
-                <div style="margin-left: 0.5rem; font-weight: bold;">Do something</div>
-                <div style="margin-left: 0.5rem">Fancy description ooouh~</div>
+                <div style="margin-left: 0.5rem; font-weight: bold;">Per paragraph statistic display</div>
+                <div style="margin-left: 0.5rem">The selected statistic will be shown at the end of a typed paragraph</div>
             </div>
-            <ButtonGroup v-model="typing.statDisplay" :options="statDisplayOptions">
+            <ButtonGroup v-model="typing.statDisplay" :options="statsDisplayOptions">
             </ButtonGroup>
         </div>
 
         <div class="danger-container">
             <div class="danger-button" @click="deleteProgramData">
                 <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
-                <div style="display: inline; margin-left: 0.5rem">Delete all program data</div>
+                <div style="display: inline; margin-left: 0.5rem">Delete all site data</div>
             </div>
         </div>
     </div>

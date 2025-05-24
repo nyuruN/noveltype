@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 
-export const statDisplayOptions = ['RAW', 'WPM', 'ACC'] as const;
-export type statDisplayType = typeof statDisplayOptions[number]; // 'RAW' | 'WPM' | 'ACC'
+export const statsDisplayOptions = ['RAW', 'WPM', 'ACC'] as const;
+export type statsDisplayType = typeof statsDisplayOptions[number]; // 'RAW' | 'WPM' | 'ACC'
 
 export const useSettingsStore = defineStore('settings', () => {
   let typing = ref({
@@ -10,7 +10,7 @@ export const useSettingsStore = defineStore('settings', () => {
     allowWordSkipping: true,
     typingFontScale: 1,
     typingLineScale: 1,
-    statDisplay: 'RAW' as (statDisplayType | undefined)
+    statDisplay: 'RAW' as (statsDisplayType | undefined)
   })
 
   function $reset() {
