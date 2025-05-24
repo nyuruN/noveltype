@@ -18,6 +18,7 @@ $togglePadding: 5px * $toggleScale;
     cursor: pointer;
     width: $toggleWidth;
     height: $toggleHeight;
+    min-width: $toggleWidth * 0.6;
     background: grey;
     display: block;
     border-radius: $toggleHeight;

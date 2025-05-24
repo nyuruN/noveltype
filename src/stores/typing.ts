@@ -10,6 +10,7 @@ export const useTypingStore = defineStore('typing', {
         isTyping: false,
         typingSettings: {
             stopOnError: false,
+            allowWordSkipping: true,
         },
     }),
 })

@@ -3,7 +3,7 @@ import type Navigation from 'epubjs/types/navigation';
 import type { PackagingMetadataObject } from 'epubjs/types/packaging';
 import type { BookRecord } from '../stores/library';
 import { removeFancyTypography, scrollToNextCaretPos, type Offset } from './utils';
-import { useStatsStore, useTypingStore,  } from '@/stores/typing';
+import { useStatsStore, useTypingStore, } from '@/stores/typing';
 
 export class Book {
     constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
@@ -231,8 +231,10 @@ export class Paragraph {
         let store = useStatsStore()
 
         // Confirm last typed word paragraphs is typed
-        store.typeWord(this.words[this.words.length - 1].letters.length)
-        this.words[this.words.length - 1].typed = true
+        let lastWord = this.words[this.words.length - 1];
+
+        if (!lastWord.error) store.typeWord(lastWord.letters.length)
+        lastWord.typed = true
 
         store.endParagraph()
     }
@@ -302,6 +304,20 @@ export class Word {
         let statsStore = useStatsStore()
         let typingStore = useTypingStore()
         let letter = this.letters[idx] ? this.letters[idx] : ' '
+
+        // Skip behaviour ->On space pressed
+        if (typingStore.typingSettings.allowWordSkipping && key == ' ') {
+            this.typed = true
+            // Error if incomplete, otherwise keep error state
+            this.error = (idx != this.letters.length) ? true : this.error
+            // Count as typed if the word is filled:
+            //   Should the user be punished for this?
+            //   Consistent with overflow behaviour
+            if (idx == this.letters.length) statsStore.typeWord(this.letters.length)
+
+            // Skip word
+            return (this.letters.length - idx) + 1;
+        }
 
         // Stop behaviour
         if (typingStore.typingSettings.stopOnError) {

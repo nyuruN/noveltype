@@ -31,6 +31,13 @@ async function deleteProgramData() {
             </div>
             <ToggleSwitch v-model="typingSettings.stopOnError"></ToggleSwitch>
         </div>
+        <div class="option-container" style="margin-bottom: 0.5rem;">
+            <div class="option-text">
+                <div style="margin-left: 0.5rem; font-weight: bold;">Allow word skipping</div>
+                <div style="margin-left: 0.5rem">Words can be skipped by pressing space (incomplete words do not count towards WPM)</div>
+            </div>
+            <ToggleSwitch v-model="typingSettings.allowWordSkipping"></ToggleSwitch>
+        </div>
 
         <div class="danger-container">
             <div class="danger-button" @click="deleteProgramData">
