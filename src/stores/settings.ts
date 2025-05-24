@@ -10,7 +10,7 @@ export const useSettingsStore = defineStore('settings', () => {
     allowWordSkipping: true,
     typingFontScale: 1,
     typingLineScale: 1,
-    statDisplay: 'RAW' as (statsDisplayType | undefined)
+    statsDisplay: 'RAW' as (statsDisplayType | undefined)
   })
 
   function $reset() {
@@ -19,7 +19,7 @@ export const useSettingsStore = defineStore('settings', () => {
       allowWordSkipping: true,
       typingFontScale: 1,
       typingLineScale: 1,
-      statDisplay: 'RAW',
+      statsDisplay: 'RAW',
     }
   }
 

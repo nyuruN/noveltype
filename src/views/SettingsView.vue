@@ -47,7 +47,7 @@ async function deleteProgramData() {
                 <div style="margin-left: 0.5rem; font-weight: bold;">Per paragraph statistic display</div>
                 <div style="margin-left: 0.5rem">The selected statistic will be shown at the end of a typed paragraph</div>
             </div>
-            <ButtonGroup v-model="typing.statDisplay" :options="statsDisplayOptions">
+            <ButtonGroup v-model="typing.statsDisplay" :options="statsDisplayOptions">
             </ButtonGroup>
         </div>
 

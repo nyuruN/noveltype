@@ -320,12 +320,22 @@ export class Word {
         // Stop behaviour
         if (settings.typing.stopOnError) {
             let isCorrect = key === letter
-            this.cLetters[idx] = (this.cLetters[idx] !== false) ? isCorrect : false // Keep error state
 
-            if (isCorrect) stats.typeLetter()
-            if (isCorrect && idx == this.letters.length) stats.typeWord(this)
+            if (idx == this.letters.length) {
+                if (isCorrect) {
+                    stats.typeWord(this)
+                }
+                else if (!this.overflow.length) {
+                    // incorrect and no overflow
+                    this.overflow.push(key)
+                    this.error = true
+                }
+            } else {
+                this.cLetters[idx] = isCorrect
+            }
 
-            return isCorrect ? 1 : 0
+            // Stop if overflow
+            return (isCorrect && !this.overflow.length) ? 1 : 0
         }
         // Overflow behaviour
         else {
@@ -351,8 +361,6 @@ export class Word {
 
             if (justErrored)
                 stats.typeError()
-            else if (!this.error)
-                stats.typeLetter()
 
             return 1
         }
@@ -361,14 +369,21 @@ export class Word {
      * Revert any errors caused by overflow bahaviour
      */
     backspace(idx: number): number {
-        if (useSettingsStore().typing.stopOnError) {
+        // Remove error state if letter before is correct
+        this.error = (this.error) ? !(this.cLetters[idx - 2] || true) : false
+
+        // Delete overflowing letters
+        if (this.overflow.pop() !== undefined)
             return 0
-        } else {
-            this.error = (this.error) ? !(this.cLetters[idx - 2] || true) : false
-            let hasOverflow = this.overflow.pop() !== undefined
-            let letterPopped = (hasOverflow) ? true : this.cLetters.pop() == undefined
-            return (letterPopped) ? 0 : -1
+
+        // Delete letters until backspaced caret position is reached
+        let letterPopped = false
+        while (this.cLetters.length && this.cLetters.length >= idx) {
+            // Only if the letter at caret position is popped
+            letterPopped = this.cLetters.pop() !== undefined && idx > this.cLetters.length
         }
+
+        return letterPopped ? -1 : 0;
     }
     render() {
         this.letters = this.word.split('')

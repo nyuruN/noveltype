@@ -80,8 +80,6 @@ export const useStatsStore = defineStore('stats', () => {
     function typeWord(word: Word) {
         wpmCounter.value.typeWord(word)
     }
-    function typeLetter() {
-    }
     function typeError() {
     }
 
@@ -96,7 +94,6 @@ export const useStatsStore = defineStore('stats', () => {
         beginParagraph,
         endParagraph,
         typeWord,
-        typeLetter,
         typeError,
     }
 })
