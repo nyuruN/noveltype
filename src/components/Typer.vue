@@ -57,10 +57,10 @@ document.addEventListener('keydown', async (event: Event) => {
                 </div>
             </template>
 
-            <div class="newline">
+            <div class="newline relative">
                 <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
+                <div class="wpm" v-if="paragraphWPMs[index]">wpm: {{ paragraphWPMs[index].toFixed(0) }}</div>
             </div>
-            <div class="wpm" v-if="paragraphWPMs[index]">wpm: {{ paragraphWPMs[index].toFixed(0) }}</div>
         </div>
         <div class="newline" v-if="!chapter?.paragraphs[0]" style="padding: .2em">
             <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
@@ -70,12 +70,16 @@ document.addEventListener('keydown', async (event: Event) => {
 
 <style>
 .wpm {
+    position: absolute;
+    top: 0.4em;
+    left: 1.9em;
     padding: .1em 0.3em;
     height: 1.6em;
     font-size: 0.7em;
+    text-wrap: nowrap;
     background-color: #4d4d4d;
     color: #9e9e9e;
-    transform: translate(0.8em, 0.4em);
+    /* transform: translate(0.8em, 0.4em); */
     border-radius: 6px;
 }
 
