@@ -9,6 +9,16 @@ const { chapter, isTyping } = storeToRefs(useTypingStore())
 
 async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p; await nextTick(); chapter.value.resetCaret() } }
 async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p; await nextTick(); chapter.value.resetCaret() } }
+async function larger() {
+    let num: number = Number(getComputedStyle(document.documentElement).getPropertyValue('--typing-font-scale'))
+    document.documentElement.style.setProperty('--typing-font-scale', String(num + 0.2));
+    document.documentElement.style.setProperty('--typing-line-scale', String(num + 0.2));
+}
+async function smaller() {
+    let num: number = Number(getComputedStyle(document.documentElement).getPropertyValue('--typing-font-scale'))
+    document.documentElement.style.setProperty('--typing-font-scale', String(num - 0.1));
+    document.documentElement.style.setProperty('--typing-line-scale', String(num - 0.1));
+}
 </script>
 
 <template>
@@ -21,24 +31,27 @@ async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = 
             <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
         </Nav>
 
-        <span v-if="chapter" class="title">{{
-            chapter.title }}</span>
-        <span v-else style="flex-grow: 1;">Select a book from Library to get started</span>
-
-        <!-- <Nav style="flex-grow: 1;">
+        <Nav style="flex-grow: 1;">
             <span v-if="chapter" class="title">{{
                 chapter.title }}</span>
             <span v-else>Select a book from Library to get started</span>
-        </Nav> -->
+        </Nav>
 
-        <template v-if="chapter">
-            <button @click="prev" class="menu-button">
+        <div v-if="chapter" style="margin: 0 .3rem">
+            <button @click="larger" class="menu-button" style="padding: .4rem .3rem;">
+                <font-awesome-icon :icon="['fas', 'magnifying-glass-plus']" fixed-width />
+            </button>
+            <button @click="smaller" class="menu-button" style="padding: .4rem .3rem;">
+                <font-awesome-icon :icon="['fas', 'magnifying-glass-minus']" fixed-width />
+            </button>
+            <button @click="prev" class="menu-button" style="padding: .4rem .3rem;">
                 <font-awesome-icon :icon="['fas', 'caret-left']" fixed-width />
             </button>
-            <button @click="next" class="menu-button">
+            <button @click="next" class="menu-button" style="padding: .4rem .3rem;">
                 <font-awesome-icon :icon="['fas', 'caret-right']" fixed-width />
             </button>
-        </template>
+        </div>
+
     </div>
 </template>
 
@@ -60,6 +73,11 @@ async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = 
     text-overflow: ellipsis;
     text-wrap: nowrap;
     overflow: hidden;
+    color: #9b9b9b;
+}
+
+.title:hover {
+    color: #d6d6d6;
 }
 
 .menu-button {

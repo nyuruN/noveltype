@@ -83,7 +83,7 @@ document.addEventListener('keydown', async (event: Event) => {
     display: flex;
     flex-wrap: wrap;
     height: fit-content;
-    margin-bottom: 1.5em;
+    margin-bottom: 2em;
 }
 
 .word {
@@ -129,8 +129,8 @@ document.addEventListener('keydown', async (event: Event) => {
 #typing-area {
     display: block;
     position: relative;
-    font-size: 1.5rem;
-    line-height: 1.5rem;
+    font-size: calc(2.0rem * var(--typing-font-scale));
+    line-height: calc(2.4rem * var(--typing-line-scale));
     margin-bottom: 6rem;
 }
 </style>

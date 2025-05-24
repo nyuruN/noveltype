@@ -5,7 +5,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faFolderOpen, faGear, faHouse, faImage, faKeyboard, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faFolderOpen, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
 
 import App from './views/App.vue'
 import HomeView from './views/LibraryView.vue'
@@ -15,9 +15,13 @@ import '@/style.css'
 
 // Font-Awesome Icon definitions
 library.add(
+    // Menu navigation
     faBars,
     faCaretLeft,
     faCaretRight,
+    faMagnifyingGlassPlus,
+    faMagnifyingGlassMinus,
+
     faBook,
     faBookmark,
     faBookOpen,
