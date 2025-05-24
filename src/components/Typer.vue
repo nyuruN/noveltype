@@ -22,6 +22,11 @@ document.addEventListener('keydown', async (event: Event) => {
             // Next Chapter if completed
             if (chapter.value.finished) {
                 chapter.value = await chapter.value.next(); await nextTick(); chapter.value?.resetCaret();
+                let container = (document.getElementById('typer-container') as HTMLElement)
+                container.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                })
             }
         } else if (key === 'Backspace') {
             keyevent.preventDefault()
