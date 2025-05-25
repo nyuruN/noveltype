@@ -53,7 +53,7 @@ const { isTyping } = storeToRefs(useTypingStore())
 }
 
 .nav-item:hover {
-  background-color: var(--primary);
+  background-color: var(--primary-light);
 }
 
 .nav {
@@ -61,6 +61,7 @@ const { isTyping } = storeToRefs(useTypingStore())
   padding: 2rem 0.5rem;
   display: flex;
   flex-direction: column;
+  background-color: var(--primary-dark);
 }
 
 .view-container {
@@ -81,8 +82,9 @@ const { isTyping } = storeToRefs(useTypingStore())
 .app-container {
   width: 100%;
   height: 100%;
-  background-color: var(--primary-dark);
   border-radius: 16px;
+
+  backdrop-filter: blur(var(--blur-amount));
 
   overflow-x: hidden;
 }
@@ -90,6 +92,6 @@ const { isTyping } = storeToRefs(useTypingStore())
 #app {
   width: 100%;
   height: 100%;
-  padding: 2rem;
+  padding: var(--app-padding);
 }
 </style>

@@ -5,7 +5,7 @@ import Menu from '@/components/Menu.vue'
 
 <template>
   <div id="typer-container">
-    <Menu style="margin-top: 2rem;" />
+    <Menu style="margin-top: 3rem; margin-bottom: 3rem;" />
     <Typer />
     <div style="min-height: 6rem"></div>
   </div>
@@ -22,10 +22,11 @@ import Menu from '@/components/Menu.vue'
 
   overflow-y: scroll;
   scrollbar-width: thin;
+  background-color: var(--typing-bg);
 }
 
 #typer-container>* {
   width: 80rem;
-  max-width: 85vw;
+  max-width: 90%;
 }
 </style>

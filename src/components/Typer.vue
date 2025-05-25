@@ -89,14 +89,14 @@ document.addEventListener('keydown', async (event: Event) => {
     height: 1.6em;
     font-size: 0.7em;
     text-wrap: nowrap;
-    background-color: #4d4d4d;
-    color: #9e9e9e;
+    background-color: var(--typing-trailer);
+    color: var(--typing-trailer-color);
     /* transform: translate(0.8em, 0.4em); */
     border-radius: 6px;
 }
 
 .newline {
-    color: #4d4d4d;
+    color: var(--typing-trailer);
 }
 
 .paragraph {
@@ -110,7 +110,7 @@ document.addEventListener('keydown', async (event: Event) => {
 .word {
     display: inline;
     margin: .2em;
-    color: #9C9C9C;
+    color: var(--typing-text-dimmed);
     border-bottom: 0.09em solid transparent;
 }
 
@@ -120,20 +120,20 @@ document.addEventListener('keydown', async (event: Event) => {
 
 .letter {
     display: inline;
-    color: #9C9C9C;
+    color: var(--typing-text-dimmed);
     transition: color 0.1s;
 }
 
 .letter.correct {
-    color: #f3f3f3
+    color: var(--typing-text)
 }
 
 .letter.error {
-    color: #f37575
+    color: var(--typing-text-error)
 }
 
 .letter.overflow {
-    color: #944949
+    color: var(--typing-text-error-dimmed)
 }
 
 #caret {
@@ -141,7 +141,7 @@ document.addEventListener('keydown', async (event: Event) => {
     height: 1.2em;
     width: 0.08em;
     border-radius: 0.1em;
-    background-color: white;
+    background-color: var(--typing-caret-color);
     transition: top 0.05s ease, left 0.1s ease;
     z-index: 1;
 }

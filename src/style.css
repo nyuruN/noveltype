@@ -1,15 +1,12 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 
+  background-color: hsl(0 0 40%);
   background-image: url(https://images.unsplash.com/photo-1745669754254-c30c98e5f8b1?w=2070&auto=format&fit=crop);
 
-  /* TYPING */
-  --typing-font-scale: 1;
-  --typing-line-scale: 1;
-
   /* UI */
-  --primary: hsl(0 0% 30%);
-  --primary-light: color-mix(in hsl, var(--primary), white 5%);
+  --primary: hsl(0 0% 30% / var(--opacity));
+  --primary-light: color-mix(in hsl, var(--primary), white 10%);
   --primary-lighter: color-mix(in hsl, var(--primary), white 20%);
   --primary-dark: color-mix(in hsl, var(--primary), black 10%);
   --primary-darker: color-mix(in hsl, var(--primary), black 25%);
@@ -18,8 +15,27 @@
   --yes-light: color-mix(in hsl, var(--yes), white 20%);
   --no-light: color-mix(in hsl, var(--no), white 10%);
   --text: hsl(0 0% 85%);
-  /* --text: hsl(0 0% 15%); */
   --text-dimmed: hsl(0 0% 50%);
+
+  --app-padding: 3rem 3rem;
+  /* --app-padding: 6rem 18rem; */
+  --blur-amount: 16px;
+  --opacity: 0.9;
+
+  /* TYPING */
+  --typing-font-scale: 1;
+  --typing-line-scale: 1;
+  --typing-bg: var(--primary);
+  --typing-menu-bg: var(--primary-darker);
+  --typing-menu-color: var(--primary-light);
+  --typing-menu-color-lighter: var(--primary-lighter);
+  --typing-trailer: var(--primary-dark);
+  --typing-trailer-color: var(--primary-lighter);
+  --typing-text: hsl(0, 0%, 90%);
+  --typing-text-dimmed: hsl(0, 0%, 60%);
+  --typing-text-error: hsl(0, 85%, 70%);
+  --typing-text-error-dimmed: hsl(0, 35%, 45%);
+  --typing-caret-color: white;
 
   color: var(--text);
 }

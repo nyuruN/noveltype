@@ -66,9 +66,9 @@ async function smaller() {
     align-items: center;
     gap: .3rem;
     padding: .3rem;
-    background-color: var(--primary-darker);
+    background-color: var(--typing-menu-bg);
     border-radius: 10px;
-    margin-bottom: 1rem;
+    width: 60rem;
 }
 
 .title {
@@ -77,11 +77,11 @@ async function smaller() {
     text-overflow: ellipsis;
     text-wrap: nowrap;
     overflow: hidden;
-    color: color-mix(in hsl, var(--text-dimmed), white 10%);
+    color: color-mix(in hsl, var(--typing-menu-color), white 10%);
 }
 
-.title:hover {
-    color: #d6d6d6;
+*:hover > .title {
+    color: color-mix(in hsl, var(--typing-menu-color-lighter), white 10%);
 }
 
 .menu-button {
@@ -91,13 +91,13 @@ async function smaller() {
     font-size: 1.1rem;
     line-height: normal;
     background-color: transparent;
-    color: var(--text-dimmed);
+    color: var(--typing-menu-color);
     cursor: pointer;
 
     transition: color 0.25s;
 }
 
 .menu-button:hover {
-    color: var(--text);
+    color: var(--typing-menu-color-lighter);
 }
 </style>
