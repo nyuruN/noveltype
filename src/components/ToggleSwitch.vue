@@ -32,7 +32,7 @@ $togglePadding: 5px * $toggleScale;
     width: $toggleWidth;
     height: $toggleHeight;
     min-width: $toggleWidth * 0.6;
-    background: grey;
+    background: var(--text-dimmed);
     display: block;
     border-radius: $toggleHeight;
     position: relative;
@@ -55,7 +55,7 @@ $togglePadding: 5px * $toggleScale;
 }
 
 .enabled.toggle-switch {
-    background: #bada55;
+    background: var(--yes-light);
 
     &:after {
         left: calc(100% - $togglePadding);

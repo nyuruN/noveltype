@@ -26,19 +26,19 @@ const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
 
 <style scoped>
 .y {
-    background-color: #62b85f;
+    background-color: var(--yes);
 }
 
 .y:hover {
-    background-color: #69c066;
+    background-color: var(--yes-light);
 }
 
 .n {
-    background-color: #b95e4d;
+    background-color: var(--no);
 }
 
 .n:hover {
-    background-color: #d66c59;
+    background-color: var(--no-light);
 }
 
 .prompt-button {
@@ -60,7 +60,7 @@ const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
     padding: 0.3rem;
     min-height: 10%;
     min-width: 40%;
-    background-color: #3b3b3b;
+    background-color: var(--primary-darker);
     border-radius: 8px;
 }
 

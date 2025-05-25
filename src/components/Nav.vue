@@ -20,9 +20,11 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
                 opacity: showTOC ? '100' : '0',
                 pointerEvents: showTOC ? 'auto' : 'none'
             }">
-                <ul v-for="(arr, index) in book?.record.toc" @click="toChapter(index)">
-                    {{ arr[0] }}
-                </ul>
+                <template v-for="(arr, index) in book?.record.toc">
+                    <ul @click="toChapter(index)" :class="{ selected: index == chapter?.index}">
+                        {{ arr[0] }}
+                    </ul>
+                </template>
             </div>
             <div v-if="showTOC" id="toc-screenquad"></div>
         </div>
@@ -46,19 +48,17 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     flex-direction: column;
     align-items: stretch;
     z-index: 2;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     max-width: 40vw;
     min-width: 20rem;
     height: 100%;
 
-    background-color: #252525de;
-    backdrop-filter: blur(4px);
-    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.5);
+    background-color: var(--primary-darker);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
 
     scrollbar-width: thin;
-    scrollbar-color: #757575 #ffffff00;
     overscroll-behavior: contain;
     overflow: scroll;
     overflow-x: hidden;
@@ -76,11 +76,17 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     margin-block-start: 0;
     margin-block-end: 0;
     user-select: none;
+    color: var(--text-dimmed);
 
-    transition: background-color 0.3s ease;
+    transition: background-color 0.25s ease;
+}
+
+#toc-content>ul.selected {
+    color: var(--text);
+    background-color: var(--primary);
 }
 
 #toc-content>ul:hover {
-    background-color: #474747;
+    background-color: var(--primary-dark);
 }
 </style>

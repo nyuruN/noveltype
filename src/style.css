@@ -1,19 +1,27 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-weight: normal;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  /* background-color: #292929; */
   background-image: url(https://images.unsplash.com/photo-1745669754254-c30c98e5f8b1?w=2070&auto=format&fit=crop);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
+  /* TYPING */
   --typing-font-scale: 1;
   --typing-line-scale: 1;
+
+  /* UI */
+  --primary: hsl(0 0% 30%);
+  --primary-light: color-mix(in hsl, var(--primary), white 5%);
+  --primary-lighter: color-mix(in hsl, var(--primary), white 20%);
+  --primary-dark: color-mix(in hsl, var(--primary), black 10%);
+  --primary-darker: color-mix(in hsl, var(--primary), black 25%);
+  --yes: hsl(80 65% 45%);
+  --no: hsl(10 60% 55%);
+  --yes-light: color-mix(in hsl, var(--yes), white 20%);
+  --no-light: color-mix(in hsl, var(--no), white 10%);
+  --text: hsl(0 0% 85%);
+  /* --text: hsl(0 0% 15%); */
+  --text-dimmed: hsl(0 0% 50%);
+
+  color: var(--text);
 }
 
 html,
@@ -22,7 +30,7 @@ body {
   margin: 0;
   scrollbar-width: thin;
   scroll-behavior: smooth;
-  scrollbar-color: #757575 #ffffff00;
+  scrollbar-color: var(--text-dimmed) transparent;
 }
 
 * {

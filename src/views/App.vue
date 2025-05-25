@@ -7,7 +7,7 @@ const { isTyping } = storeToRefs(useTypingStore())
 </script>
 
 <template>
-  <div class="app-container">
+  <div class="app-container relative">
     <div class="center-container" v-show="!isTyping">
       <nav class="nav">
         <div class="nav-items">
@@ -53,7 +53,7 @@ const { isTyping } = storeToRefs(useTypingStore())
 }
 
 .nav-item:hover {
-  background-color: #525252;
+  background-color: var(--primary);
 }
 
 .nav {
@@ -66,7 +66,7 @@ const { isTyping } = storeToRefs(useTypingStore())
 .view-container {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #525252;
+  background-color: var(--primary);
   overflow-y: scroll;
   position: relative;
 }
@@ -81,7 +81,7 @@ const { isTyping } = storeToRefs(useTypingStore())
 .app-container {
   width: 100%;
   height: 100%;
-  background-color: #444444;
+  background-color: var(--primary-dark);
   border-radius: 16px;
 
   overflow-x: hidden;

@@ -116,7 +116,7 @@ async function acceptPersistantToggle(persistant: boolean) {
 
 .option {
     padding: 1rem;
-    background-color: #474747;
+    background-color: var(--primary-dark);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -125,7 +125,7 @@ async function acceptPersistantToggle(persistant: boolean) {
 
 .option.danger {
     border-radius: 8px;
-    border-color: #ff6161;
+    border-color: var(--no);
     border-width: 2px;
     border-style: solid;
 }
@@ -134,19 +134,19 @@ async function acceptPersistantToggle(persistant: boolean) {
     user-select: none;
     padding: 0.6rem 0.7rem;
     border-radius: 8px;
-    background-color: #3b3b3b;
+    background-color: var(--primary-darker);
 }
 
 .button:hover {
     cursor: pointer;
-    background-color: #5a5a5a;
+    background-color: var(--primary-light);
 }
 
 .button.danger {
-    background-color: #d66060;
+    background-color: var(--no);
 }
 
 .button.danger:hover {
-    background-color: #f06969;
+    background-color: var(--no-light);
 }
 </style>

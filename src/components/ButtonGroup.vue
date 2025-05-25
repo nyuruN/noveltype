@@ -25,7 +25,7 @@ let model = defineModel()
 <style scoped>
 .button-group {
     display: flex;
-    background-color: #3b3b3b;
+    background-color: var(--primary-darker);
     border-radius: 8px;
     overflow: clip;
     user-select: none;
@@ -44,16 +44,16 @@ let model = defineModel()
 }
 
 .group-button:hover {
-    background-color: #555555;
+    background-color: var(--primary);
     cursor: pointer;
 }
 
 .group-button.active {
-    background-color: #98c058;
+    background-color: var(--yes);
 }
 
 .group-button.active:hover {
-    background-color: #a8d461;
+    background-color: var(--yes-light);
 }
 
 .group-button:not(:last-child) {

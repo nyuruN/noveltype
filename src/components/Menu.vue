@@ -31,11 +31,15 @@ async function smaller() {
             <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
         </Nav>
 
-        <Nav style="flex-grow: 1;">
+        <div class="grow"></div>
+
+        <Nav>
             <span v-if="chapter" class="title">{{
                 chapter.title }}</span>
             <span v-else>Select a book from Library to get started</span>
         </Nav>
+
+        <div class="grow"></div>
 
         <div v-if="chapter" style="margin: 0 .3rem; display: flex;">
             <button @click="larger" class="menu-button" style="padding: .4rem .3rem;">
@@ -62,7 +66,7 @@ async function smaller() {
     align-items: center;
     gap: .3rem;
     padding: .3rem;
-    background-color: #363636;
+    background-color: var(--primary-darker);
     border-radius: 10px;
     margin-bottom: 1rem;
 }
@@ -73,7 +77,7 @@ async function smaller() {
     text-overflow: ellipsis;
     text-wrap: nowrap;
     overflow: hidden;
-    color: #9b9b9b;
+    color: color-mix(in hsl, var(--text-dimmed), white 10%);
 }
 
 .title:hover {
@@ -87,13 +91,13 @@ async function smaller() {
     font-size: 1.1rem;
     line-height: normal;
     background-color: transparent;
-    color: #808080;
+    color: var(--text-dimmed);
     cursor: pointer;
 
     transition: color 0.25s;
 }
 
 .menu-button:hover {
-    color: #c4c4c4;
+    color: var(--text);
 }
 </style>
