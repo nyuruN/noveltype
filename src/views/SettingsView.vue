@@ -5,7 +5,7 @@ import ButtonGroup from '@/components/ButtonGroup.vue';
 import { deleteDB } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
-import { statsDisplayOptions, useSettingsStore } from '@/stores/settings';
+import { statsDisplayOptions, stopOnErrorOptions, useSettingsStore } from '@/stores/settings';
 import { useTypingStore } from '@/stores/typing';
 import { storeToRefs } from 'pinia';
 
@@ -31,13 +31,14 @@ async function deleteProgramData() {
                 <div style="margin-left: 0.5rem; font-weight: bold;">Stop on error</div>
                 <div style="margin-left: 0.5rem">You cannot proceed util you have input the correct key</div>
             </div>
-            <ToggleSwitch v-model="typing.stopOnError"></ToggleSwitch>
+            <!-- <ToggleSwitch v-model="typing.stopOnError"></ToggleSwitch> -->
+            <ButtonGroup v-model="typing.stopOnError" :options="stopOnErrorOptions">
+            </ButtonGroup>
         </div>
         <div class="option-container" style="margin-bottom: 0.5rem;">
             <div class="option-text">
                 <div style="margin-left: 0.5rem; font-weight: bold;">Allow word skipping</div>
-                <div style="margin-left: 0.5rem">Words can be skipped by pressing space (incomplete words do not count
-                    towards WPM)</div>
+                <div style="margin-left: 0.5rem">Words can be skipped by pressing space</div>
             </div>
             <ToggleSwitch v-model="typing.allowWordSkipping"></ToggleSwitch>
         </div>

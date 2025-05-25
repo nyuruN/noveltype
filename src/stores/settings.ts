@@ -4,9 +4,13 @@ import { ref, watch } from 'vue'
 export const statsDisplayOptions = ['RAW', 'WPM', 'ACC'] as const;
 export type statsDisplayType = typeof statsDisplayOptions[number]; // 'RAW' | 'WPM' | 'ACC'
 
+export const stopOnErrorOptions = ['Word', 'Letter'] as const;
+export type stopOnErrorType = typeof stopOnErrorOptions[number];
+
+
 export const useSettingsStore = defineStore('settings', () => {
   let typing = ref({
-    stopOnError: false,
+    stopOnError: undefined as (stopOnErrorType | undefined),
     allowWordSkipping: true,
     typingFontScale: 1,
     typingLineScale: 1,
@@ -15,7 +19,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   function $reset() {
     typing.value = {
-      stopOnError: false,
+      stopOnError: undefined,
       allowWordSkipping: true,
       typingFontScale: 1,
       typingLineScale: 1,

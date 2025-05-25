@@ -22,12 +22,12 @@ let model = defineModel()
     display: flex;
     background-color: #3b3b3b;
     border-radius: 8px;
-    min-width: 10rem;
     overflow: clip;
     user-select: none;
 }
 
 .group-button {
+    min-width: 3rem;
     padding: 0.7rem;
     font-weight: bold;
     font-size: 0.9rem;

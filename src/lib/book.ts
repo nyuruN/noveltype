@@ -103,6 +103,8 @@ export class Chapter {
      */
     enter() {
         let paragraph = this.paragraphs[this.caret.p]
+        let stopOnError = useSettingsStore().typing.stopOnError !== undefined;
+        let isError = paragraph.words[paragraph.words.length - 1].error;
 
         // There is no chapter to begin with (blank page)
         if (!paragraph) {
@@ -110,7 +112,7 @@ export class Chapter {
             return
         }
         // If the end of paragraph was reached
-        if (this.caret.l >= paragraph.source.length) {
+        if (this.caret.l >= paragraph.source.length && !(stopOnError && isError)) {
             // Cleanup
             paragraph.finish()
 
@@ -212,9 +214,11 @@ export class Paragraph {
             useStatsStore().beginParagraph()
         }
 
-
         let [wid, lid] = this.getWordLetterIdx(idx)
-        return this.words[wid].input(key, lid)
+        let move = this.words[wid].input(key, lid)
+        // Limit move within bounds of this.source
+        // Required for backspacing incomplete words (last word)
+        return Math.min(move, this.source.length - idx)
     }
     /**
      * @param idx Caret position on this.source
@@ -318,7 +322,7 @@ export class Word {
         }
 
         // Stop behaviour
-        if (settings.typing.stopOnError) {
+        if (settings.typing.stopOnError === 'Letter') {
             let isCorrect = key === letter
 
             if (idx == this.letters.length) {
@@ -337,33 +341,32 @@ export class Word {
             // Stop if overflow
             return (isCorrect && !this.overflow.length) ? 1 : 0
         }
-        // Overflow behaviour
-        else {
-            let isCorrect = key === letter
-            if (idx == this.letters.length) {
-                // Wrong input on last char
-                if (!isCorrect) {
-                    this.overflow.push(key)
-                    // Just errored
-                    if (!this.error) stats.typeError()
-                    this.error = true;
-                } else {
-                    // Complete word
-                    this.typed = true
-                    stats.typeWord(this)
-                }
-                return isCorrect ? 1 : 0
+
+        // Overflow behaviour (default)
+        let isCorrect = key === letter
+        if (idx == this.letters.length) {
+            // Wrong input on last char
+            if (!isCorrect) {
+                this.overflow.push(key)
+                // Just errored
+                if (!this.error) stats.typeError()
+                this.error = true;
+            } else {
+                // Complete word
+                this.typed = true
+                stats.typeWord(this)
             }
-
-            let justErrored = !this.error && !isCorrect
-            this.cLetters[idx] = (this.error) ? false : isCorrect
-            this.error = (justErrored) ? true : this.error
-
-            if (justErrored)
-                stats.typeError()
-
-            return 1
+            return isCorrect ? 1 : 0
         }
+
+        let justErrored = !this.error && !isCorrect
+        this.cLetters[idx] = (this.error) ? false : isCorrect
+        this.error = (justErrored) ? true : this.error
+
+        if (justErrored)
+            stats.typeError()
+
+        return 1
     }
     /**
      * Revert any errors caused by overflow bahaviour
@@ -376,11 +379,25 @@ export class Word {
         if (this.overflow.pop() !== undefined)
             return 0
 
+        // Go to last completed letter if incomplete
+        let isIncomplete = idx > this.cLetters.length;
+        if (isIncomplete) {
+            // Go to last correct letter if stop on error
+            if (useSettingsStore().typing.stopOnError === 'Letter') {
+                let lastCorrectIdx = this.cLetters.findLastIndex(value => value)
+                // Go to first letter if no correct letters
+                return (lastCorrectIdx != -1) ? -(idx - lastCorrectIdx) + 1 : -idx
+            }
+
+            return -(idx - this.cLetters.length)
+        }
+
         // Delete letters until backspaced caret position is reached
         let letterPopped = false
-        while (this.cLetters.length && this.cLetters.length >= idx) {
+        let toIdx = idx - 1;
+        while (this.cLetters.length && this.cLetters.length - 1 >= toIdx) {
             // Only if the letter at caret position is popped
-            letterPopped = this.cLetters.pop() !== undefined && idx > this.cLetters.length
+            letterPopped = this.cLetters.pop() !== undefined && toIdx >= this.cLetters.length
         }
 
         return letterPopped ? -1 : 0;
