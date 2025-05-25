@@ -36,12 +36,20 @@ const { isTyping } = storeToRefs(useTypingStore())
 </template>
 
 <style>
+@media screen and (max-width: 950px) {
+  .nav-item span {
+    display: none;
+  }
+}
+
 .nav-item {
   padding: 1rem 1rem;
   font-size: 1.2rem;
   border-radius: 8px;
   user-select: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .nav-item:hover {
@@ -49,8 +57,7 @@ const { isTyping } = storeToRefs(useTypingStore())
 }
 
 .nav {
-  min-width: 15%;
-  max-width: 25%;
+  width: fit-content;
   padding: 2rem 0.5rem;
   display: flex;
   flex-direction: column;

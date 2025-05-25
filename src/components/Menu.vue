@@ -37,7 +37,7 @@ async function smaller() {
             <span v-else>Select a book from Library to get started</span>
         </Nav>
 
-        <div v-if="chapter" style="margin: 0 .3rem">
+        <div v-if="chapter" style="margin: 0 .3rem; display: flex;">
             <button @click="larger" class="menu-button" style="padding: .4rem .3rem;">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass-plus']" fixed-width />
             </button>
