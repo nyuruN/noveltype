@@ -1,5 +1,14 @@
 import Dexie from "dexie";
 
+export async function persist(): Promise<boolean> {
+    return navigator.storage && navigator.storage.persist &&
+        (await navigator.storage.persist());
+}
+export async function isStoragePersistant(): Promise<boolean> {
+    return navigator.storage && navigator.storage.persisted &&
+        (await navigator.storage.persisted());
+}
+
 export async function deleteDB() {
     await Dexie.delete('noveltypeDB')
 }

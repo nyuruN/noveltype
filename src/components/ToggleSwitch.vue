@@ -1,10 +1,23 @@
 <script setup lang="ts">
+const props = defineProps<{
+    accept?: ((newValue: boolean) => boolean) | ((newValue: boolean) => Promise<boolean>),
+}>()
+
 const model = defineModel()
+
+async function toggle() {
+    if (props.accept) {
+        let acceptValue = await props.accept(!model.value)
+        model.value = (acceptValue) ? !model.value : model.value
+    } else {
+        model.value = !model.value
+    }
+}
 </script>
 
 <template>
     <div class="toggle-switch" :class="{ enabled: model }"
-        @click="model = !model">
+        @click="toggle">
     </div>
 </template>
 
