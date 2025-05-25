@@ -233,7 +233,10 @@ export class Paragraph {
             if (lastword && (lastword.error || useSettingsStore().typing.freedomMode)) {
                 useStatsStore().untypeWord(lastword)
                 lastword.typed = false
-                return -1;
+
+                // Go immediately to last letter position if any
+                let lastLetterIdx = lastword.letters.length - lastword.cLetters.length
+                return -1 - lastLetterIdx
             }
         }
 
