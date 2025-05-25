@@ -22,7 +22,7 @@ async function toggle() {
 </template>
 
 <style lang="scss">
-$toggleScale: 0.4;
+$toggleScale: 0.35;
 $toggleWidth: 200px * $toggleScale;
 $toggleHeight: 100px * $toggleScale;
 $togglePadding: 5px * $toggleScale;

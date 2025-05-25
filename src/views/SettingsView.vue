@@ -39,6 +39,15 @@ async function acceptPersistantToggle(persistant: boolean) {
     <div class="settings-container">
         <div class="option">
             <div class="option-texts">
+                <div>Freedom mode</div>
+                <div v-if="typing.freedomMode">You may edit all previous words in a paragraph</div>
+                <div v-else>You may only edit incorrect previous words</div>
+            </div>
+            <ToggleSwitch v-model="typing.freedomMode"></ToggleSwitch>
+        </div>
+
+        <div class="option">
+            <div class="option-texts">
                 <div>Stop on error</div>
                 <div v-if="typing.stopOnError === 'Letter'">You cannot proceed util you have
                     input the correct key</div>

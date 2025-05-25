@@ -32,6 +32,11 @@ class WPMCounter {
         word.cLetters.forEach(correct => this.errorLetters += correct ? 0 : 1)
         this.totalLetters += word.letters.length
     }
+    untypeWord(word: Word) {
+        this.typedLetters -= word.cLetters.length
+        word.cLetters.forEach(correct => this.errorLetters -= correct ? 0 : 1)
+        this.totalLetters -= word.letters.length
+    }
     endTyping() {
         this.end = Date.now()
     }
@@ -80,6 +85,9 @@ export const useStatsStore = defineStore('stats', () => {
     function typeWord(word: Word) {
         wpmCounter.value.typeWord(word)
     }
+    function untypeWord(word: Word) {
+        wpmCounter.value.untypeWord(word)
+    }
     function typeError() {
     }
 
@@ -94,6 +102,7 @@ export const useStatsStore = defineStore('stats', () => {
         beginParagraph,
         endParagraph,
         typeWord,
+        untypeWord,
         typeError,
     }
 })

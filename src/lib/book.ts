@@ -226,6 +226,17 @@ export class Paragraph {
      */
     backspace(idx: number): number {
         let [wid, lid] = this.getWordLetterIdx(idx)
+
+        // Allow going back to previous words in freedom mode or on error
+        if (lid == 0) {
+            let lastword = this.words[wid - 1]
+            if (lastword && (lastword.error || useSettingsStore().typing.freedomMode)) {
+                useStatsStore().untypeWord(lastword)
+                lastword.typed = false
+                return -1;
+            }
+        }
+
         return this.words[wid].backspace(lid)
     }
     /**
