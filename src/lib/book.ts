@@ -233,6 +233,8 @@ export class Paragraph {
             if (lastword && (lastword.error || useSettingsStore().typing.freedomMode)) {
                 useStatsStore().untypeWord(lastword)
                 lastword.typed = false
+                // Reset error states caused by skipping
+                lastword.error = !lastword.cLetters.every(value => value)
 
                 // Go immediately to last letter position if any
                 let lastLetterIdx = lastword.letters.length - lastword.cLetters.length
