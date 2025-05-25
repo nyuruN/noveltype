@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Prompt from '@/components/Prompt.vue';
-import ToggleSwitch from '@/components/ToggleSwitch.vue';
 import ButtonGroup from '@/components/ButtonGroup.vue';
 import { deleteDB } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
@@ -29,24 +28,21 @@ async function deleteProgramData() {
         <div class="option-container" style="margin-bottom: 0.5rem;">
             <div class="option-text">
                 <div style="margin-left: 0.5rem; font-weight: bold;">Stop on error</div>
-                <div style="margin-left: 0.5rem">You cannot proceed util you have input the correct key</div>
+                <div style="margin-left: 0.5rem" v-if="typing.stopOnError === 'Letter'">You cannot proceed util you have input the correct key</div>
+                <div style="margin-left: 0.5rem" v-else-if="typing.stopOnError === 'Word'">You cannot proceed util the correct word is typed</div>
+                <div style="margin-left: 0.5rem" v-else>Words can be skipped by pressing space</div>
             </div>
-            <!-- <ToggleSwitch v-model="typing.stopOnError"></ToggleSwitch> -->
             <ButtonGroup v-model="typing.stopOnError" :options="stopOnErrorOptions">
             </ButtonGroup>
-        </div>
-        <div class="option-container" style="margin-bottom: 0.5rem;">
-            <div class="option-text">
-                <div style="margin-left: 0.5rem; font-weight: bold;">Allow word skipping</div>
-                <div style="margin-left: 0.5rem">Words can be skipped by pressing space</div>
-            </div>
-            <ToggleSwitch v-model="typing.allowWordSkipping"></ToggleSwitch>
         </div>
 
         <div class="option-container" style="margin-bottom: 0.5rem;">
             <div class="option-text">
-                <div style="margin-left: 0.5rem; font-weight: bold;">Per paragraph statistic display</div>
-                <div style="margin-left: 0.5rem">The selected statistic will be shown at the end of a typed paragraph</div>
+                <div style="margin-left: 0.5rem; font-weight: bold;">Paragraph statistic display</div>
+                <div style="margin-left: 0.5rem" v-if="typing.statsDisplay === 'RAW'">Your raw WPM will be shown at the end of a typed paragraph</div>
+                <div style="margin-left: 0.5rem" v-else-if="typing.statsDisplay === 'WPM'">Your net WPM will be shown at the end of a typed paragraph</div>
+                <div style="margin-left: 0.5rem" v-else-if="typing.statsDisplay === 'ACC'">Your accuracy will be shown at the end of a typed paragraph</div>
+                <div style="margin-left: 0.5rem" v-else>Statistic display will be hidden</div>
             </div>
             <ButtonGroup v-model="typing.statsDisplay" :options="statsDisplayOptions">
             </ButtonGroup>

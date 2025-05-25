@@ -39,7 +39,11 @@ let model = defineModel()
 }
 
 .group-button.active {
-    background-color: rgb(152, 192, 88);
+    background-color: #98c058;
+}
+
+.group-button.active:hover {
+    background-color: #a8d461;
 }
 
 .group-button:not(:last-child) {

@@ -311,7 +311,7 @@ export class Word {
         let letter = this.letters[idx] ? this.letters[idx] : ' '
 
         // Skip behaviour -> On space pressed
-        if (settings.typing.allowWordSkipping && key == ' ') {
+        if (settings.typing.stopOnError === undefined && key == ' ') {
             this.typed = true
             // Error if incomplete, otherwise keep error state
             this.error = (idx != this.letters.length) ? true : this.error
@@ -321,7 +321,7 @@ export class Word {
             return (this.letters.length - idx) + 1;
         }
 
-        // Stop behaviour
+        // Stop on letter behaviour
         if (settings.typing.stopOnError === 'Letter') {
             let isCorrect = key === letter
 
@@ -344,6 +344,7 @@ export class Word {
 
         // Overflow behaviour (default)
         let isCorrect = key === letter
+
         if (idx == this.letters.length) {
             // Wrong input on last char
             if (!isCorrect) {
@@ -351,12 +352,15 @@ export class Word {
                 // Just errored
                 if (!this.error) stats.typeError()
                 this.error = true;
-            } else {
-                // Complete word
+                return 0
+            }
+            // Prevent skipping word in stop on word mode
+            else if (!(settings.typing.stopOnError === 'Word' && this.error)) {
                 this.typed = true
                 stats.typeWord(this)
+                return 1
             }
-            return isCorrect ? 1 : 0
+            return 0
         }
 
         let justErrored = !this.error && !isCorrect
@@ -382,7 +386,7 @@ export class Word {
         // Go to last completed letter if incomplete
         let isIncomplete = idx > this.cLetters.length;
         if (isIncomplete) {
-            // Go to last correct letter if stop on error
+            // Go to last correct letter if stop on letter
             if (useSettingsStore().typing.stopOnError === 'Letter') {
                 let lastCorrectIdx = this.cLetters.findLastIndex(value => value)
                 // Go to first letter if no correct letters
