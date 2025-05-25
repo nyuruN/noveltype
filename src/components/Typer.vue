@@ -111,12 +111,11 @@ document.addEventListener('keydown', async (event: Event) => {
     display: inline;
     margin: .2em;
     color: #9C9C9C;
+    border-bottom: 0.09em solid transparent;
 }
 
 .word.typed.error {
-    border-bottom-style: solid;
     border-bottom-color: #f37575;
-    border-bottom-width: .09em;
 }
 
 .letter {
