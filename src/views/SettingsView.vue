@@ -55,7 +55,7 @@ async function acceptPersistantToggle(persistant: boolean) {
                     correct word is typed</div>
                 <div v-else>Words can be skipped by pressing space</div>
             </div>
-            <ButtonGroup v-model="typing.stopOnError" :options="stopOnErrorOptions">
+            <ButtonGroup v-model="typing.stopOnError" :options="stopOnErrorOptions" use-default="">
             </ButtonGroup>
         </div>
 
@@ -70,7 +70,7 @@ async function acceptPersistantToggle(persistant: boolean) {
                     at the end of a typed paragraph</div>
                 <div v-else>Statistic display will be hidden</div>
             </div>
-            <ButtonGroup v-model="typing.statsDisplay" :options="statsDisplayOptions">
+            <ButtonGroup v-model="typing.statsDisplay" :options="statsDisplayOptions" use-default="">
             </ButtonGroup>
         </div>
 

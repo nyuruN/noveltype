@@ -1,6 +1,7 @@
 <script setup lang="ts">
 let props = defineProps<{
-    options: readonly string[]
+    options: readonly string[],
+    useDefault?: string,
 }>()
 
 let model = defineModel()
@@ -9,11 +10,15 @@ let model = defineModel()
 <template>
     <div class="button-group">
         <template v-for="option in props.options">
-            <div class="group-button" @click="model = (model == option) ? undefined : option"
-                :class="{ active: model == option }">
+            <div class="group-button" @click="model = (model === option) ? undefined : option"
+                :class="{ active: model === option }">
                 {{ option }}
             </div>
         </template>
+        <div class="group-button" @click="model = undefined" v-if="props.useDefault !== undefined"
+            :class="{ active: model === undefined, none: props.useDefault === '' }">
+            {{ props.useDefault }}
+        </div>
     </div>
 </template>
 
@@ -31,6 +36,11 @@ let model = defineModel()
     padding: 0.7rem;
     font-weight: bold;
     font-size: 0.9rem;
+}
+
+.group-button.none {
+    min-width: 0;
+    width: 0;
 }
 
 .group-button:hover {
