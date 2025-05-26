@@ -49,7 +49,7 @@
   --typing-text-error: hsl(0, 85%, 70%);
   --typing-text-error-dimmed: hsl(0, 35%, 45%);
   --typing-caret-color: var(--accent);
-  --typing-caret-width: 3px;
+  --typing-caret-width: calc(2px * var(--typing-font-scale));
 
   color: var(--text-dimmed);
 }

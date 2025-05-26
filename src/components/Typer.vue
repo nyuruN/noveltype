@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick } from 'vue'
+import { nextTick, onUpdated } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useStatsStore, useTypingStore } from '@/stores/typing'
 import { useSettingsStore } from '@/stores/settings'
@@ -36,6 +36,14 @@ document.addEventListener('keydown', async (event: Event) => {
         }
     }
 })
+
+// Refresh caret position after layout has changed
+let timeout = setTimeout(() => { })
+const resizeObserver = new ResizeObserver(_ => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => { chapter.value?.refreshCaret(); }, 100)
+})
+onUpdated(() => resizeObserver.observe(document.getElementById('typing-area') as Element))
 </script>
 
 <template>
