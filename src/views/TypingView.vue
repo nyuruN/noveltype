@@ -7,6 +7,9 @@ import { useTypingStore } from '@/stores/typing';
 const { isFocused } = storeToRefs(useTypingStore())
 
 let mouseSampleTimeout = setTimeout(() => { })
+// i don't know why but the ts compiler keeps thinking this is unused
+// i know this is a last resort but i just can't be bothered
+mouseSampleTimeout;
 let mouseLastX = 0;
 let mouseLastY = 0;
 let mouseThrottle = false;
@@ -50,7 +53,7 @@ document.addEventListener('mousemove', async (event: Event) => {
 
 	overflow-y: scroll;
 	overflow-x: clip;
-	/* scrollbar-width: thin; */
+	scrollbar-width: thin;
 	background-color: var(--typing-bg);
 }
 
