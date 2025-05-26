@@ -103,14 +103,17 @@ export class Chapter {
      */
     enter() {
         let paragraph = this.paragraphs[this.caret.p]
-        let stopOnError = useSettingsStore().typing.stopOnError !== undefined;
-        let isError = paragraph.words[paragraph.words.length - 1].error;
 
         // There is no chapter to begin with (blank page)
         if (!paragraph) {
             this.finished = true
             return
         }
+
+        let stopOnError = useSettingsStore().typing.stopOnError !== undefined;
+        let lastWord = paragraph.words[paragraph.words.length - 1]
+        let isError = lastWord ? lastWord.error : false
+
         // If the end of paragraph was reached
         if (this.caret.l >= paragraph.source.length && !(stopOnError && isError)) {
             // Cleanup
