@@ -9,15 +9,18 @@ import Nav from './Nav.vue'
 const { chapter, isTyping } = storeToRefs(useTypingStore())
 const { typing } = storeToRefs(useSettingsStore())
 
-async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p; await nextTick(); chapter.value.resetCaret() } }
-async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p; await nextTick(); chapter.value.resetCaret() } }
+async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p; nextTick().then(() => chapter.value?.refreshCaret()) } }
+async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p; nextTick().then(() => chapter.value?.refreshCaret()) } }
 async function larger() {
     typing.value.typingFontScale = typing.value.typingFontScale + 0.1
     typing.value.typingLineScale = typing.value.typingLineScale + 0.1
+    nextTick().then(() => chapter.value?.refreshCaret())
 }
 async function smaller() {
     typing.value.typingFontScale = typing.value.typingFontScale - 0.1
     typing.value.typingLineScale = typing.value.typingLineScale - 0.1
+    nextTick().then(() => chapter.value?.refreshCaret())
+
 }
 </script>
 
@@ -80,7 +83,7 @@ async function smaller() {
     color: color-mix(in hsl, var(--typing-menu-color), white 10%);
 }
 
-*:hover > .title {
+*:hover>.title {
     color: color-mix(in hsl, var(--typing-menu-color-lighter), white 10%);
 }
 

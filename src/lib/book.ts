@@ -160,17 +160,16 @@ export class Chapter {
         caret.style['left'] = offset.left + 'px'
     }
     /**
-     * Call when the chapter content has finished loading
+     * Call when chapter layout has changed
      */
-    resetCaret() {
+    refreshCaret() {
         let caret = document.getElementById('caret') as HTMLElement
-        let letter = document.getElementsByClassName('letter')[0]
+        let letter = document.getElementsByClassName('letter')[this.caret.l]
 
         if (letter) {
             let l = letter as HTMLElement
             caret.style['top'] = l.offsetTop + 'px'
             caret.style['left'] = l.offsetLeft + 'px'
-            caret.style['height'] = l.getBoundingClientRect().height + 'px'
         }
     }
     next(): Promise<Chapter> | undefined {

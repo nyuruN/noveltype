@@ -23,7 +23,7 @@ document.addEventListener('keydown', async (event: Event) => {
 
             // Next Chapter if completed
             if (chapter.value.finished) {
-                chapter.value = await chapter.value.next(); await nextTick(); chapter.value?.resetCaret();
+                chapter.value = await chapter.value.next(); nextTick().then(() => chapter.value?.refreshCaret());
                 let container = (document.getElementById('typer-container') as HTMLElement)
                 container.scrollTo({
                     top: 0,
