@@ -84,6 +84,7 @@ const { isTyping } = storeToRefs(useTypingStore())
   height: 100%;
   border-radius: 16px;
 
+  -webkit-backdrop-filter: blur(var(--blur-amount));
   backdrop-filter: blur(var(--blur-amount));
 
   overflow-x: hidden;
