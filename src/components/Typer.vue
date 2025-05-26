@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { onUpdated } from 'vue'
+import { onMounted, onUpdated, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useStatsStore, useTypingStore } from '@/stores/typing'
 import { useSettingsStore } from '@/stores/settings'
+import { scrollToNextCaretPos } from '@/lib/utils'
 
-const { chapter } = storeToRefs(useTypingStore())
+const { chapter, isFocused } = storeToRefs(useTypingStore())
 const { paragraphWPMs } = storeToRefs(useStatsStore())
 const { typing } = storeToRefs(useSettingsStore())
 
@@ -16,9 +17,12 @@ document.addEventListener('keydown', async (event: Event) => {
         // Check if it's a single character (letter, number, symbol)
         if (key.length === 1 || /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;"'<>,.?/~`\-=\\| ]$/.test(key)) {
             keyevent.preventDefault()
+            isFocused.value = true
             chapter.value.input(key)
+
         } else if (key === 'Enter') {
             keyevent.preventDefault()
+            isFocused.value = true
             chapter.value?.enter()
 
             // Next Chapter if completed
@@ -32,22 +36,32 @@ document.addEventListener('keydown', async (event: Event) => {
             }
         } else if (key === 'Backspace') {
             keyevent.preventDefault()
+            isFocused.value = true
             chapter.value.backspace()
         }
     }
 })
 
 // Refresh caret position after layout has changed
-let timeout = setTimeout(() => { })
+let caretRefreshTimeout = setTimeout(() => { })
 const resizeObserver = new ResizeObserver(_ => {
-    clearTimeout(timeout)
-    timeout = setTimeout(() => { chapter.value?.refreshCaret(); }, 80)
+    clearTimeout(caretRefreshTimeout)
+    caretRefreshTimeout = setTimeout(() => { chapter.value?.refreshCaret(); }, 80)
 })
 onUpdated(() => resizeObserver.observe(document.getElementById('typing-area') as Element))
+
+// Scroll to caret when entering focused state
+onMounted(() => {
+    watch(isFocused, (focused) => {
+        if (focused) {
+            scrollToNextCaretPos(0)
+        }
+    })
+})
 </script>
 
 <template>
-    <div id="typing-area" v-if="chapter">
+    <div id="typing-area" v-if="chapter" style="scrollbar-width: none;">
         <div id="caret" style="top: 0px; left: 0px;"></div>
         <div class="paragraph" v-for="(p, index) in chapter?.paragraphs">
             <template v-if="p.isRendered">
