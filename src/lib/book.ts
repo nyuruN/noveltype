@@ -167,12 +167,12 @@ export class Chapter {
      */
     refreshCaret() {
         let caret = document.getElementById('caret') as HTMLElement
-        let letter = document.getElementsByClassName('letter')[this.caret.l]
+        let paragraph = document.getElementsByClassName('paragraph')[this.caret.p] as HTMLElement
 
-        if (letter) {
-            let l = letter as HTMLElement
-            caret.style['top'] = l.offsetTop + 'px'
-            caret.style['left'] = l.offsetLeft + 'px'
+        if (paragraph) {
+            let offset = this.paragraphs[this.caret.p].getLetterOffset(paragraph, this.caret.l)
+            caret.style['top'] = offset.top + 'px'
+            caret.style['left'] = offset.left + 'px'
         }
     }
     next(): Promise<Chapter> | undefined {
