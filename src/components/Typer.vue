@@ -139,7 +139,7 @@ document.addEventListener('keydown', async (event: Event) => {
 #caret {
     position: absolute;
     height: 1.2em;
-    width: 0.08em;
+    width: var(--typing-caret-width);
     border-radius: 0.1em;
     background-color: var(--typing-caret-color);
     transition: top 0.05s ease, left 0.1s ease;

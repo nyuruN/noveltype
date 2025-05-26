@@ -83,7 +83,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 
 #toc-content>ul.selected {
     color: var(--text);
-    background-color: var(--primary);
+    background-color: var(--primary-dark);
 }
 
 #toc-content>ul:hover {

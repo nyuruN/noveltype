@@ -32,7 +32,7 @@ $togglePadding: 5px * $toggleScale;
     width: $toggleWidth;
     height: $toggleHeight;
     min-width: $toggleWidth * 0.6;
-    background: var(--text-dimmed);
+    background: hsl(0, 0, 60%);
     display: block;
     border-radius: $toggleHeight;
     position: relative;
@@ -44,7 +44,7 @@ $togglePadding: 5px * $toggleScale;
         left: $togglePadding;
         width: $toggleHeight - $togglePadding * 2;
         height: $toggleHeight - $togglePadding * 2;
-        background: #fff;
+        background: white;
         border-radius: $toggleHeight - $togglePadding * 2;
         transition: 0.3s;
     }
@@ -55,8 +55,11 @@ $togglePadding: 5px * $toggleScale;
 }
 
 .enabled.toggle-switch {
-    background: var(--yes-light);
-
+    background-color: var(--yes);
+    
+    &:hover {
+        background-color: var(--yes-light);
+    }
     &:after {
         left: calc(100% - $togglePadding);
         transform: translateX(-100%);

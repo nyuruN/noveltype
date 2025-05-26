@@ -92,7 +92,10 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
 
 
 .card-image {
-    background-color: var(--text-dimmed);
+    /* background-color: var(--text-dimmed);
+    color: var(--text); */
+    background-color: var(--primary-dark);
+    color: var(--primary-light);
     height: 75%;
     border-radius: 8px;
     font-size: 8rem;

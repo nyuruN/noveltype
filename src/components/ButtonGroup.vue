@@ -50,6 +50,7 @@ let model = defineModel()
 
 .group-button.active {
     background-color: var(--yes);
+    color: var(--primary-dark);
 }
 
 .group-button.active:hover {
@@ -57,6 +58,6 @@ let model = defineModel()
 }
 
 .group-button:not(:last-child) {
-    border-right: 2px solid #4b4b4b;
+    border-right: 2px solid var(--primary-dark);
 }
 </style>

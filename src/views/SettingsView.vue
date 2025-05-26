@@ -114,6 +114,10 @@ async function acceptPersistantToggle(persistant: boolean) {
     font-weight: bold;
 }
 
+.option-texts>*:not(:first-child) {
+    color: var(--text);
+}
+
 .option {
     padding: 1rem;
     background-color: var(--primary-dark);
