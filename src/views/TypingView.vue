@@ -31,8 +31,9 @@ document.addEventListener('mousemove', async (event: Event) => {
 </script>
 
 <template>
-	<div id="typer-container">
-		<Menu style="margin-top: 3rem; margin-bottom: 2rem;" />
+	<div id="typer-container"
+		:style="{ scrollbarWidth: isFocused ? 'none' : 'thin', paddingRight: isFocused ? '10px' : '0' }">
+		<Menu style="margin-top: 3rem; margin-bottom: 2rem;" :style="{ opacity: isFocused ? '0%' : '100%' }" />
 		<Typer />
 		<div style="min-height: 6rem"></div>
 	</div>
@@ -49,7 +50,7 @@ document.addEventListener('mousemove', async (event: Event) => {
 
 	overflow-y: scroll;
 	overflow-x: clip;
-	scrollbar-width: thin;
+	/* scrollbar-width: thin; */
 	background-color: var(--typing-bg);
 }
 
