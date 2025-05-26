@@ -3,7 +3,6 @@ import { saveEpubFile, loadEpubFile } from '@/lib/db'
 import { useLibraryStore, type BookRecord } from '@/stores/library'
 import { useTypingStore } from '@/stores/typing'
 import { storeToRefs } from 'pinia'
-import { nextTick } from 'vue'
 
 const library = useLibraryStore()
 const { book, chapter, isTyping } = storeToRefs(useTypingStore())
@@ -37,8 +36,6 @@ async function openBook(filename: string, _: number) {
     book.value = epub
     chapter.value = await epub.getChapter(0)
     isTyping.value = true
-
-    nextTick().then(() => chapter.value?.refreshCaret())
 }
 async function triggerInput() {
     document.getElementById('file-input')?.click();

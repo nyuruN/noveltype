@@ -32,7 +32,7 @@ $togglePadding: 5px * $toggleScale;
     width: $toggleWidth;
     height: $toggleHeight;
     min-width: $toggleWidth * 0.6;
-    background: hsl(0, 0, 60%);
+    background: hsl(0, 0%, 60%);
     display: block;
     border-radius: $toggleHeight;
     position: relative;

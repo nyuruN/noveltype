@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onUpdated } from 'vue'
+import { onUpdated } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useStatsStore, useTypingStore } from '@/stores/typing'
 import { useSettingsStore } from '@/stores/settings'
@@ -23,7 +23,7 @@ document.addEventListener('keydown', async (event: Event) => {
 
             // Next Chapter if completed
             if (chapter.value.finished) {
-                chapter.value = await chapter.value.next(); nextTick().then(() => chapter.value?.refreshCaret());
+                chapter.value = await chapter.value.next();
                 let container = (document.getElementById('typer-container') as HTMLElement)
                 container.scrollTo({
                     top: 0,
@@ -41,7 +41,7 @@ document.addEventListener('keydown', async (event: Event) => {
 let timeout = setTimeout(() => { })
 const resizeObserver = new ResizeObserver(_ => {
     clearTimeout(timeout)
-    timeout = setTimeout(() => { chapter.value?.refreshCaret(); }, 100)
+    timeout = setTimeout(() => { chapter.value?.refreshCaret(); }, 80)
 })
 onUpdated(() => resizeObserver.observe(document.getElementById('typing-area') as Element))
 </script>

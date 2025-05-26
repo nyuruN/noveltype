@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref } from 'vue'
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTypingStore } from '@/stores/typing';
 
@@ -7,7 +7,7 @@ const { book, chapter } = storeToRefs(useTypingStore())
 
 let showTOC = ref(false)
 
-async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) { chapter.value = await c; await nextTick(); chapter.value.resetCaret() } }
+async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) { chapter.value = await c } }
 
 </script>
 

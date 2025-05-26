@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTypingStore } from '@/stores/typing';
 import { useSettingsStore } from '@/stores/settings';
@@ -9,18 +8,15 @@ import Nav from './Nav.vue'
 const { chapter, isTyping } = storeToRefs(useTypingStore())
 const { typing } = storeToRefs(useSettingsStore())
 
-async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p; nextTick().then(() => chapter.value?.refreshCaret()) } }
-async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p; nextTick().then(() => chapter.value?.refreshCaret()) } }
+async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p } }
+async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p } }
 async function larger() {
     typing.value.typingFontScale = typing.value.typingFontScale + 0.1
     typing.value.typingLineScale = typing.value.typingLineScale + 0.1
-    nextTick().then(() => chapter.value?.refreshCaret())
 }
 async function smaller() {
     typing.value.typingFontScale = typing.value.typingFontScale - 0.1
     typing.value.typingLineScale = typing.value.typingLineScale - 0.1
-    nextTick().then(() => chapter.value?.refreshCaret())
-
 }
 </script>
 
