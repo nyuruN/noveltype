@@ -28,12 +28,12 @@
   --no-light: color-mix(in hsl, var(--no), white 15%);
 
   --app-padding: 3rem 3rem;
-  /* --app-padding: 6rem 18rem; */
   --blur-amount: 16px;
-  --opacity: 0.9;
+  --opacity: 0.8;
 
-  /* --opacity: 1.0; */
-  --blur-amount: 16px;
+  /* --app-padding: 6rem 18rem;
+  --opacity: 0.5;
+  --blur-amount: 8px; */
 
   /* TYPING */
   --typing-font-scale: 1;

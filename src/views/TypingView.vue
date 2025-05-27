@@ -3,6 +3,7 @@ import Typer from '@/components/Typer.vue'
 import Menu from '@/components/Menu.vue'
 import { storeToRefs } from 'pinia';
 import { useTypingStore } from '@/stores/typing';
+import { computed, type CSSProperties } from 'vue';
 
 const { isFocused } = storeToRefs(useTypingStore())
 
@@ -31,34 +32,67 @@ document.addEventListener('mousemove', async (event: Event) => {
 		mouseLastY = e.clientY
 	}
 })
+
+// CSSProperties needed to infer scrollbarWidth as string literals
+const maskStyle = computed<CSSProperties>(() => ({
+	maskImage: isFocused.value
+		? `linear-gradient(transparent 0%,
+			black 20%,
+			black 80%,
+			transparent 100%)`
+		: 'none',
+	WebkitMaskImage: isFocused.value // Vendor prefix for Safari
+		? `linear-gradient(transparent 0%,
+			black 20%,
+			black 80%,
+			transparent 100%)`
+		: 'none',
+	scrollbarWidth: isFocused.value ? 'none' : 'thin', 
+	// TODO: Find a better way to compensate for missing scrollbar width
+	paddingRight: isFocused.value ? '10px' : '0'
+}));
 </script>
 
 <template>
-	<div id="typer-container"
-		:style="{ scrollbarWidth: isFocused ? 'none' : 'thin', paddingRight: isFocused ? '10px' : '0' }">
-		<Menu style="margin-top: 3rem; margin-bottom: 2rem;" :style="{ opacity: isFocused ? '0%' : '100%' }" />
-		<Typer />
-		<div style="min-height: 6rem"></div>
+	<div id="typer-root">
+		<div id="typer-wrapper" :style="maskStyle">
+			<div id="typer-container">
+				<Menu style="margin-top: 3rem; margin-bottom: 2rem;" :style="{ opacity: isFocused ? '0%' : '100%' }" />
+				<Typer />
+				<div style="min-height: 6rem"></div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <style>
 #typer-container {
 	display: flex;
-	height: 100%;
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
 	gap: 1.5rem;
-
-	overflow-y: scroll;
-	overflow-x: clip;
-	scrollbar-width: thin;
-	background-color: var(--typing-bg);
 }
 
 #typer-container>* {
 	width: 80rem;
 	max-width: 90%;
+}
+
+#typer-wrapper {
+	height: 100%;
+	overflow-y: scroll;
+	overflow-x: clip;
+	scrollbar-width: thin;
+
+	/* mask-image: linear-gradient(transparent 0%,
+			black 20%,
+			black 80%,
+			transparent 100%); */
+}
+
+#typer-root {
+	height: 100%;
+	background-color: var(--typing-bg);
 }
 </style>

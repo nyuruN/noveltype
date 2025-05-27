@@ -28,7 +28,7 @@ document.addEventListener('keydown', async (event: Event) => {
             // Next Chapter if completed
             if (chapter.value.finished) {
                 chapter.value = await chapter.value.next();
-                let container = (document.getElementById('typer-container') as HTMLElement)
+                let container = (document.getElementById('typer-wrapper') as HTMLElement)
                 container.scrollTo({
                     top: 0,
                     behavior: 'smooth'
