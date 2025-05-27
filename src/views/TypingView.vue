@@ -34,32 +34,20 @@ document.addEventListener('mousemove', async (event: Event) => {
 })
 
 // CSSProperties needed to infer scrollbarWidth as string literals
-const maskStyle = computed<CSSProperties>(() => ({
-	maskImage: isFocused.value
-		? `linear-gradient(transparent 0%,
-			black 20%,
-			black 80%,
-			transparent 100%)`
-		: 'none',
-	WebkitMaskImage: isFocused.value // Vendor prefix for Safari
-		? `linear-gradient(transparent 0%,
-			black 20%,
-			black 80%,
-			transparent 100%)`
-		: 'none',
-	scrollbarWidth: isFocused.value ? 'none' : 'thin', 
+const hideScrollbarStyle = computed<CSSProperties>(() => ({
+	scrollbarWidth: isFocused.value ? 'none' : 'thin',
 	// TODO: Find a better way to compensate for missing scrollbar width
 	paddingRight: isFocused.value ? '10px' : '0'
 }));
 </script>
 
 <template>
-	<div id="typer-root">
-		<div id="typer-wrapper" :style="maskStyle">
+	<div id="typer-root" class="relative">
+		<Menu style="position: absolute; top: 3rem; left: 50%; transform: translate(-50%);"
+			:style="{ opacity: isFocused ? '0%' : '100%' }" />
+		<div id="typer-wrapper" :style="hideScrollbarStyle">
 			<div id="typer-container">
-				<Menu style="margin-top: 3rem; margin-bottom: 2rem;" :style="{ opacity: isFocused ? '0%' : '100%' }" />
-				<Typer />
-				<div style="min-height: 6rem"></div>
+				<Typer style="margin: 12rem 0;" />
 			</div>
 		</div>
 	</div>
@@ -85,14 +73,19 @@ const maskStyle = computed<CSSProperties>(() => ({
 	overflow-x: clip;
 	scrollbar-width: thin;
 
-	/* mask-image: linear-gradient(transparent 0%,
+	mask-image: linear-gradient(transparent 0%,
 			black 20%,
 			black 80%,
-			transparent 100%); */
+			transparent 100%);
+	-webkit-mask-image: linear-gradient(transparent 0%,
+			black 20%,
+			black 80%,
+			transparent 100%);
 }
 
 #typer-root {
 	height: 100%;
+	overflow: hidden;
 	background-color: var(--typing-bg);
 }
 </style>

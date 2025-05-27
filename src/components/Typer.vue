@@ -173,6 +173,5 @@ onMounted(() => {
     position: relative;
     font-size: calc(2.0rem * var(--typing-font-scale));
     line-height: calc(2.4rem * var(--typing-line-scale));
-    margin-bottom: 6rem;
 }
 </style>

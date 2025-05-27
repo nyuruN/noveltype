@@ -60,6 +60,8 @@ async function smaller() {
 
 <style scoped>
 #menu-items {
+    z-index: 1;
+
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -68,6 +70,8 @@ async function smaller() {
     background-color: var(--typing-menu-bg);
     border-radius: 10px;
     width: 60rem;
+
+    box-shadow: 0px 0px 32px 0px var(--typing-menu-bg);
 }
 
 .title {

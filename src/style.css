@@ -39,7 +39,7 @@
   --typing-font-scale: 1;
   --typing-line-scale: 1;
   --typing-bg: var(--primary);
-  --typing-menu-bg: var(--primary-darker);
+  --typing-menu-bg: hsl(from var(--primary-darker) h s l / 100%);
   --typing-menu-color: var(--text-dimmed);
   --typing-menu-color-lighter: var(--text);
   --typing-trailer: var(--primary-dark);
