@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Prompt from '@/components/Prompt.vue';
 import ButtonGroup from '@/components/ButtonGroup.vue';
-import { deleteDB, isStoragePersistant, persist,  } from '@/lib/db';
+import { deleteDB, isStoragePersistant, persist } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
 import { statsDisplayOptions, stopOnErrorOptions, useSettingsStore } from '@/stores/settings';
@@ -19,7 +19,7 @@ onMounted(async () => {
 })
 
 async function deleteProgramData() {
-    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will erase all program data!', true)
+    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will erase all site data!', true)
 
     if (confirm) {
         deleteDB()
@@ -40,8 +40,7 @@ async function acceptPersistantToggle(persistant: boolean) {
         <div class="option">
             <div class="option-texts">
                 <div>Freedom mode</div>
-                <div v-if="typing.freedomMode">You may edit all previous words in a paragraph</div>
-                <div v-else>You may only edit incorrect previous words</div>
+                <span>Allows you to edit all previously typed words</span>
             </div>
             <ToggleSwitch v-model="typing.freedomMode"></ToggleSwitch>
         </div>
@@ -49,11 +48,7 @@ async function acceptPersistantToggle(persistant: boolean) {
         <div class="option">
             <div class="option-texts">
                 <div>Stop on error</div>
-                <div v-if="typing.stopOnError === 'Letter'">You cannot proceed util you have
-                    input the correct key</div>
-                <div v-else-if="typing.stopOnError === 'Word'">You cannot proceed util the
-                    correct word is typed</div>
-                <div v-else>Words can be skipped by pressing space</div>
+                <span>Prevents you from skipping incorrect elements</span>
             </div>
             <ButtonGroup v-model="typing.stopOnError" :options="stopOnErrorOptions" use-default="">
             </ButtonGroup>
@@ -62,13 +57,7 @@ async function acceptPersistantToggle(persistant: boolean) {
         <div class="option">
             <div class="option-texts">
                 <div>Paragraph statistic display</div>
-                <div v-if="typing.statsDisplay === 'RAW'">Your raw WPM will be shown at the
-                    end of a typed paragraph</div>
-                <div v-else-if="typing.statsDisplay === 'WPM'">Your net WPM will be shown at
-                    the end of a typed paragraph</div>
-                <div v-else-if="typing.statsDisplay === 'ACC'">Your accuracy will be shown
-                    at the end of a typed paragraph</div>
-                <div v-else>Statistic display will be hidden</div>
+                <span>Displays a trailing statistic indicator at the end of a typed paragraph</span>
             </div>
             <ButtonGroup v-model="typing.statsDisplay" :options="statsDisplayOptions" use-default="">
             </ButtonGroup>
@@ -80,8 +69,7 @@ async function acceptPersistantToggle(persistant: boolean) {
                     <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
                     Persistant storage
                 </div>
-                <div v-if="isPersistant">Data will be persisted under storage pressure</div>
-                <div v-else>Data won't be persisted under storage pressure (check browser implementation)</div>
+                <span>Makes data persistant under storage pressure (check browser implementation for details)</span>
             </div>
             <ToggleSwitch v-model="isPersistant" :accept="acceptPersistantToggle"></ToggleSwitch>
         </div>
@@ -91,9 +79,7 @@ async function acceptPersistantToggle(persistant: boolean) {
                     <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
                     Delete all site data
                 </div>
-                <div>
-                    Deletes your store book files and settings
-                </div>
+                <span>Deletes your stored books and settings</span>
             </div>
             <div class="button danger" @click="deleteProgramData">
                 <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
@@ -148,6 +134,7 @@ async function acceptPersistantToggle(persistant: boolean) {
 
 .button.danger {
     background-color: var(--no);
+    color: var(--primary-dark)
 }
 
 .button.danger:hover {

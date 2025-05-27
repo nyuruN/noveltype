@@ -47,6 +47,7 @@ const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
     border-radius: 6px;
     cursor: pointer;
     text-align: center;
+    color: var(--primary-darker)
 }
 
 .prompt-buttons {
