@@ -6,9 +6,9 @@ export const useTypingStore = defineStore('typing', {
     state: () => ({
         book: undefined as Book | undefined,
         chapter: undefined as Chapter | undefined,
-        isTyping: false,
-        isFocused: false,
+        showTyper: false,
         showNav: false,
+        isFocused: false,
     }),
 })
 

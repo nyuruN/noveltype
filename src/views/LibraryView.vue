@@ -5,7 +5,7 @@ import { useTypingStore } from '@/stores/typing'
 import { storeToRefs } from 'pinia'
 
 const library = useLibraryStore()
-const { book, chapter, isTyping } = storeToRefs(useTypingStore())
+const { book, chapter, showTyper } = storeToRefs(useTypingStore())
 
 async function loadEpub(e: Event) {
     var input = e.target as HTMLInputElement
@@ -26,7 +26,7 @@ async function loadEpub(e: Event) {
 }
 async function openBook(filename: string, _: number) {
     if (book.value?.record.filename == filename) {
-        isTyping.value = true;
+        showTyper.value = true;
         return;
     }
 
@@ -35,7 +35,7 @@ async function openBook(filename: string, _: number) {
 
     book.value = epub
     chapter.value = await epub.getChapter(0)
-    isTyping.value = true
+    showTyper.value = true
 }
 async function triggerInput() {
     document.getElementById('file-input')?.click();

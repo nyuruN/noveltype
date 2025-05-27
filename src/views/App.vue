@@ -3,12 +3,12 @@ import { useTypingStore } from '@/stores/typing';
 import TypingView from './TypingView.vue';
 import { storeToRefs } from 'pinia';
 
-const { isTyping } = storeToRefs(useTypingStore())
+const { showTyper } = storeToRefs(useTypingStore())
 </script>
 
 <template>
   <div class="app-container relative">
-    <div class="center-container" v-show="!isTyping">
+    <div class="center-container" v-show="!showTyper">
       <nav class="nav">
         <div class="nav-items">
           <div class="nav-item" @click="$router.push('/')">
@@ -21,7 +21,7 @@ const { isTyping } = storeToRefs(useTypingStore())
           </div>
         </div>
         <div style="flex-grow: 1;"></div>
-        <div class="nav-item" style="font-size: 1.1rem" @click="isTyping = true">
+        <div class="nav-item" style="font-size: 1.1rem" @click="showTyper = true">
           <font-awesome-icon :icon="['fas', 'keyboard']" fixed-width />
           <span style="margin-left: 0.5rem;">Resume</span>
         </div>
@@ -31,7 +31,7 @@ const { isTyping } = storeToRefs(useTypingStore())
       </div>
     </div>
 
-    <TypingView v-show="isTyping"></TypingView>
+    <TypingView v-show="showTyper"></TypingView>
   </div>
 </template>
 
@@ -68,7 +68,7 @@ const { isTyping } = storeToRefs(useTypingStore())
   flex-grow: 1;
   padding: 2rem;
   background-color: var(--primary);
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
 }
 
