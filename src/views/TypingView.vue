@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Typer from '@/components/Typer.vue'
 import Menu from '@/components/Menu.vue'
+import Nav from '@/components/Nav.vue';
 import { storeToRefs } from 'pinia';
 import { useTypingStore } from '@/stores/typing';
 import { computed, type CSSProperties } from 'vue';
@@ -45,6 +46,7 @@ const hideScrollbarStyle = computed<CSSProperties>(() => ({
 	<div id="typer-root" class="relative">
 		<Menu style="position: absolute; top: 3rem; left: 50%; transform: translate(-50%);"
 			:style="{ opacity: isFocused ? '0%' : '100%' }" />
+		<Nav />
 		<div id="typer-wrapper" :style="hideScrollbarStyle">
 			<div id="typer-container">
 				<Typer style="margin: 12rem 0;" />

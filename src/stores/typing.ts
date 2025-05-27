@@ -8,6 +8,7 @@ export const useTypingStore = defineStore('typing', {
         chapter: undefined as Chapter | undefined,
         isTyping: false,
         isFocused: false,
+        showNav: false,
     }),
 })
 

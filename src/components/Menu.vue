@@ -3,9 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useTypingStore } from '@/stores/typing';
 import { useSettingsStore } from '@/stores/settings';
 
-import Nav from './Nav.vue'
-
-const { chapter, isTyping } = storeToRefs(useTypingStore())
+const { book, chapter, isTyping, showNav } = storeToRefs(useTypingStore())
 const { typing } = storeToRefs(useSettingsStore())
 
 async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p } }
@@ -26,17 +24,17 @@ async function smaller() {
             <font-awesome-icon :icon="['fas', 'home']" fixed-width />
         </button>
 
-        <Nav>
+        <button id="toc" class="menu-button" v-if="book" @click="showNav = true">
             <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
-        </Nav>
+        </button>
 
         <div class="grow"></div>
 
-        <Nav>
+        <button id="toc" class="menu-button" v-if="book" @click="showNav = true">
             <span v-if="chapter" class="title">{{
                 chapter.title }}</span>
             <span v-else>Select a book from Library to get started</span>
-        </Nav>
+        </button>
 
         <div class="grow"></div>
 

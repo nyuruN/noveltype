@@ -1,34 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTypingStore } from '@/stores/typing';
 
-const { book, chapter } = storeToRefs(useTypingStore())
+const { book, chapter, showNav } = storeToRefs(useTypingStore())
 
-let showTOC = ref(false)
-
-async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) { chapter.value = await c } }
+async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) { chapter.value = await c; showNav.value = false; } }
 
 </script>
 
 <template>
-    <button id="toc" class="menu-button" v-if="book" @click="showTOC = !showTOC">
-        <slot></slot>
-        <div id="toc-container">
-            <div id="toc-content" class="thin-scrollbar" :style="{
-                left: showTOC ? '0vw' : '-60vw',
-                opacity: showTOC ? '100' : '0',
-                pointerEvents: showTOC ? 'auto' : 'none'
-            }">
-                <template v-for="(arr, index) in book?.record.toc">
-                    <ul @click="toChapter(index)" :class="{ selected: index == chapter?.index}">
-                        {{ arr[0] }}
-                    </ul>
-                </template>
-            </div>
-            <div v-if="showTOC" id="toc-screenquad"></div>
+    <div id="toc-container">
+        <div id="toc-content" class="thin-scrollbar" :style="{
+            left: showNav ? '0vw' : '-60vw',
+            opacity: showNav ? '100' : '0',
+            pointerEvents: showNav ? 'auto' : 'none'
+        }">
+            <h2 style="padding-left: 1.5rem;">{{ book?.record.title }}</h2>
+            <template v-for="(arr, index) in book?.record.toc">
+                <ul @click="toChapter(index)" :class="{ selected: index == chapter?.index }">
+                    {{ arr[0] }}
+                </ul>
+            </template>
         </div>
-    </button>
+        <div id="toc-screenquad" @click="showNav = false" v-if="showNav"></div>
+    </div>
 </template>
 
 <style>
@@ -54,6 +49,8 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     max-width: 40vw;
     min-width: 20rem;
     height: 100%;
+    padding-top: 2rem;
+    padding-bottom: 6rem;
 
     background-color: var(--primary-darker);
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
@@ -71,11 +68,13 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 #toc-content>ul {
     text-wrap: wrap;
     text-align: left;
-    padding-block-start: 1rem;
-    padding-block-end: 1rem;
+    font-size: 1.15em;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
     margin-block-start: 0;
     margin-block-end: 0;
     user-select: none;
+    cursor: pointer;
     color: var(--text-dimmed);
 
     transition: background-color 0.25s ease;
