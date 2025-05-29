@@ -2,8 +2,12 @@
 import { useTypingStore } from '@/stores/typing';
 import TypingView from './TypingView.vue';
 import { storeToRefs } from 'pinia';
+import { useThemeStore } from '@/stores/theme';
 
 const { showTyper } = storeToRefs(useTypingStore())
+
+// Init theme
+useThemeStore()
 </script>
 
 <template>

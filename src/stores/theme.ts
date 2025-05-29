@@ -1,6 +1,6 @@
 import { hsl, hslString, type Color } from "@/lib/color";
 import { defineStore } from "pinia";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 export interface Theme {
     name: string,
@@ -27,6 +27,9 @@ export const Themes: Theme[] = [
     },
 ] as const;
 
+/**
+ * Has to be called at least once for initial theme to load
+ */
 export const useThemeStore = defineStore('theme', () => {
     let theme = ref(structuredClone(Themes[0]))
     let opacity = ref(0.8)
@@ -37,13 +40,16 @@ export const useThemeStore = defineStore('theme', () => {
         opacity.value = 0.8
         blur.value = 16
     }
+    function applyColors(t: Theme) {
+        document.documentElement.style.setProperty('--primary', hslString(t.primaryColor));
+        document.documentElement.style.setProperty('--accent', hslString(t.accentColor));
+        document.documentElement.style.setProperty('--text', hslString(t.textColor));
+        document.documentElement.style.setProperty('--text-dimmed', hslString(t.textDimmedColor));
+    }
 
     // Watchers
     watch(theme, (nt) => {
-        document.documentElement.style.setProperty('--primary', hslString(nt.primaryColor));
-        document.documentElement.style.setProperty('--accent', hslString(nt.accentColor));
-        document.documentElement.style.setProperty('--text', hslString(nt.textColor));
-        document.documentElement.style.setProperty('--text-dimmed', hslString(nt.textDimmedColor));
+        applyColors(nt)
     })
     watch(opacity, (no) => {
         document.documentElement.style.setProperty('--opacity', no + '%');
@@ -52,12 +58,9 @@ export const useThemeStore = defineStore('theme', () => {
         document.documentElement.style.setProperty('--blur-amount', nb + 'px');
     })
 
-    // onMounted(() => {
-    //     document.documentElement.style.setProperty('--primary', hslString(theme.value.primaryColor));
-    //     document.documentElement.style.setProperty('--accent', hslString(theme.value.accentColor));
-    //     document.documentElement.style.setProperty('--text', hslString(theme.value.textColor));
-    //     document.documentElement.style.setProperty('--text-dimmed', hslString(theme.value.textDimmedColor));
-    // })
+    onMounted(() => {
+        applyColors(theme.value)
+    })
 
     return {
         // States
