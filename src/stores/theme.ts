@@ -27,12 +27,12 @@ export const Themes: Theme[] = [
 ] as const;
 
 export const useThemeStore = defineStore('theme', () => {
-    let theme = ref(Themes[0])
+    let theme = ref(structuredClone(Themes[0]))
     let opacity = ref('')
     let blur = ref('')
 
     function $reset() {
-        theme.value = Themes[0]
+        theme.value = structuredClone(Themes[0])
         opacity.value = ''
         blur.value = ''
     }
