@@ -5,10 +5,11 @@ import { deleteDB, isStoragePersistant, persist } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
 import { statsDisplayOptions, stopOnErrorOptions, useSettingsStore } from '@/stores/settings';
-import { useTypingStore } from '@/stores/typing';
+import { useStatsStore, useTypingStore } from '@/stores/typing';
 import { storeToRefs } from 'pinia';
 import ToggleSwitch from '@/components/ToggleSwitch.vue';
 import { onMounted, ref } from 'vue';
+import { useThemeStore } from '@/stores/theme';
 
 let { typing } = storeToRefs(useSettingsStore())
 let isPersistant = ref(false)
@@ -26,6 +27,9 @@ async function deleteProgramData() {
         useLibraryStore().$reset()
         useSettingsStore().$reset()
         useTypingStore().$reset()
+        useThemeStore().$reset()
+        useStatsStore().$reset()
+        usePromptStore().$reset()
     }
 }
 async function acceptPersistantToggle(persistant: boolean) {
