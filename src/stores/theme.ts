@@ -19,7 +19,7 @@ export const Themes: Theme[] = [
         textColor: hsl(0, 0, 90),
         textDimmedColor: hsl(0, 0, 60),
     }, {
-        name: 'Red',
+        name: 'Light',
         primaryColor: hsl(50, 10, 90),
         accentColor: hsl(20, 90, 60),
         textColor: hsl(0, 0, 20),
@@ -52,10 +52,12 @@ export const useThemeStore = defineStore('theme', () => {
         document.documentElement.style.setProperty('--blur-amount', nb + 'px');
     })
 
-    // Functions
-    function changeTheme(newTheme: Theme) {
-        theme.value = newTheme
-    }
+    // onMounted(() => {
+    //     document.documentElement.style.setProperty('--primary', hslString(theme.value.primaryColor));
+    //     document.documentElement.style.setProperty('--accent', hslString(theme.value.accentColor));
+    //     document.documentElement.style.setProperty('--text', hslString(theme.value.textColor));
+    //     document.documentElement.style.setProperty('--text-dimmed', hslString(theme.value.textDimmedColor));
+    // })
 
     return {
         // States
@@ -64,7 +66,6 @@ export const useThemeStore = defineStore('theme', () => {
         blur,
         // Functions
         $reset,
-        changeTheme,
     }
 }, {
     persist: true

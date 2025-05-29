@@ -11,11 +11,6 @@
   --text: hsl(0 0% 90%);
   --text-dimmed: hsl(0 0% 60%);
 
-  /* --primary-normal hsl(50 10% 90% / var(--opacity));
-  --accent: hsl(20 90% 60%);
-  --text: hsl(0 0% 20%);
-  --text-dimmed: hsl(0 0% 45%); */
-
   /* UI */
   --primary-normal: hsl(from var(--primary) h s l / var(--opacity));
   --primary-light: color-mix(in hsl, var(--primary-normal), white 10%);

@@ -1,20 +1,27 @@
 <script setup lang="ts">
+import ThemePreview from '@/components/ThemePreview.vue';
 import { hslString } from '@/lib/color';
 import { useThemeStore, Themes } from '@/stores/theme';
+import { ref } from 'vue';
 
 const store = useThemeStore()
+
+let preview = ref({ ...store.theme })
 
 </script>
 
 <template>
     <h1>Themes</h1>
 
+    <h2>Preview</h2>
+    <ThemePreview v-model="preview" />
+
     <h2>Colors</h2>
     <div class="container flex" style="margin-top: 2rem;">
         <template v-for="(theme) in Themes">
             <button style="cursor: pointer;"
                 :style="{ backgroundColor: hslString(theme.primaryColor), color: hslString(theme.accentColor) }"
-                @click="store.changeTheme(theme)">
+                @click="preview = theme">
                 {{ theme.name }}
             </button>
         </template>
