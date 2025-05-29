@@ -394,15 +394,14 @@ export class Word {
      * Revert any errors caused by overflow bahaviour
      */
     backspace(idx: number): number {
+        // Remove error state if letter before is correct or itself is first letter
+        if (this.error) {
+            this.error = !((idx - 2) < 0 || this.cLetters.at(idx - 2))
+        }
+
         // Delete overflowing letters
         if (this.overflow.pop() !== undefined)
             return 0
-
-        // Remove error state if letter before is correct
-        if (this.error) {
-            let isLastLetterCorrect = this.cLetters.at(idx - 2)
-            this.error = !(isLastLetterCorrect === undefined || isLastLetterCorrect)
-        }
 
         // Go to last completed letter if incomplete
         let isIncomplete = idx > this.cLetters.length;
