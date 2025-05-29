@@ -48,7 +48,7 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
 </script>
 
 <template>
-    <h1>Your Library</h1>
+    <h1>Library</h1>
     <div class="book-container flex" style="margin-top: 2rem;">
         <div class="card relative" @click="openBook(book.filename, index)" v-for="(book, index) in library.books">
             <div class="card-more" @click="event => inspectBook(event, book, index)">

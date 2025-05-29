@@ -12,6 +12,7 @@ import HomeView from './views/LibraryView.vue'
 import SettingsView from './views/SettingsView.vue'
 
 import '@/style.css'
+import ThemesView from './views/ThemesView.vue'
 
 // Font-Awesome Icon definitions
 library.add(
@@ -54,6 +55,7 @@ library.add(
 
 const routes = [
     { path: '/', component: HomeView },
+    { path: '/themes', component: ThemesView },
     { path: '/settings', component: SettingsView },
 ]
 

@@ -15,6 +15,10 @@ const { showTyper } = storeToRefs(useTypingStore())
             <font-awesome-icon :icon="['fas', 'book-open']" fixed-width />
             <span style="margin-left: 0.5rem;">Library</span>
           </div>
+          <div class="nav-item" @click="$router.push('/themes')">
+            <font-awesome-icon :icon="['fas', 'palette']" fixed-width />
+            <span style="margin-left: 0.5rem;">Themes</span>
+          </div>
           <div class="nav-item" @click="$router.push('/settings')">
             <font-awesome-icon :icon="['fas', 'gear']" fixed-width />
             <span style="margin-left: 0.5rem;">Settings</span>
