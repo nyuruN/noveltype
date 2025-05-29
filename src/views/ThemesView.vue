@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import { hslString } from '@/lib/color';
 import { useThemeStore, Themes } from '@/stores/theme';
 
 const store = useThemeStore()
+
 </script>
 
 <template>
     <h1>Themes</h1>
+
+    <h2>Colors</h2>
     <div class="container flex" style="margin-top: 2rem;">
         <template v-for="(theme) in Themes">
-            <button style="cursor: pointer;" :style="{ backgroundColor: theme.primaryColor, color: theme.accentColor }"
+            <button style="cursor: pointer;"
+                :style="{ backgroundColor: hslString(theme.primaryColor), color: hslString(theme.accentColor) }"
                 @click="store.changeTheme(theme)">
                 {{ theme.name }}
             </button>

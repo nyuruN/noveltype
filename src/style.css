@@ -6,21 +6,22 @@
   background-size: cover;
 
   /* COLORS */
-  --primary: hsl(0 0% 30% / var(--opacity));
+  --primary: hsl(0 0% 30%);
   --accent: hsl(80 70% 55%);
   --text: hsl(0 0% 90%);
   --text-dimmed: hsl(0 0% 60%);
 
-  /* --primary: hsl(50 10% 90% / var(--opacity));
+  /* --primary-normal hsl(50 10% 90% / var(--opacity));
   --accent: hsl(20 90% 60%);
   --text: hsl(0 0% 20%);
   --text-dimmed: hsl(0 0% 45%); */
 
   /* UI */
-  --primary-light: color-mix(in hsl, var(--primary), white 10%);
-  --primary-lighter: color-mix(in hsl, var(--primary), white 20%);
-  --primary-dark: color-mix(in hsl, var(--primary), black 10%);
-  --primary-darker: color-mix(in hsl, var(--primary), black 20%);
+  --primary-normal: hsl(from var(--primary) h s l / var(--opacity));
+  --primary-light: color-mix(in hsl, var(--primary-normal), white 10%);
+  --primary-lighter: color-mix(in hsl, var(--primary-normal), white 20%);
+  --primary-dark: color-mix(in hsl, var(--primary-normal), black 10%);
+  --primary-darker: color-mix(in hsl, var(--primary-normal), black 20%);
 
   --yes: var(--accent);
   --yes-light: color-mix(in hsl, var(--yes), white 15%);
@@ -38,7 +39,7 @@
   /* TYPING */
   --typing-font-scale: 1;
   --typing-line-scale: 1;
-  --typing-bg: var(--primary);
+  --typing-bg: var(--primary-normal);
   --typing-menu-bg: hsl(from var(--primary-darker) h s l / 100%);
   --typing-menu-color: var(--text-dimmed);
   --typing-menu-color-lighter: var(--text);

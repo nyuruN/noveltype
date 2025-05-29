@@ -44,7 +44,7 @@ let model = defineModel()
 }
 
 .group-button:hover {
-    background-color: var(--primary);
+    background-color: var(--primary-normal);
     cursor: pointer;
 }
 

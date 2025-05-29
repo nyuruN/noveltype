@@ -71,7 +71,7 @@ const { showTyper } = storeToRefs(useTypingStore())
 .view-container {
   flex-grow: 1;
   padding: 2rem;
-  background-color: var(--primary);
+  background-color: var(--primary-normal);
   overflow-y: auto;
   position: relative;
 }
