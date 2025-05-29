@@ -86,6 +86,11 @@ body {
   display: flex;
 }
 
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
 .grow {
   flex-grow: 1;
 }

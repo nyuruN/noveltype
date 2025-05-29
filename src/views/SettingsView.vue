@@ -36,53 +36,57 @@ async function acceptPersistantToggle(persistant: boolean) {
 <template>
     <h1>Settings</h1>
 
-    <div class="settings-container">
-        <div class="option">
-            <div class="option-texts">
-                <div>Freedom mode</div>
-                <span>Allows you to edit all previously typed words</span>
-            </div>
-            <ToggleSwitch v-model="typing.freedomMode"></ToggleSwitch>
-        </div>
-
-        <div class="option">
-            <div class="option-texts">
-                <div>Stop on error</div>
-                <span>Prevents you from skipping incorrect elements</span>
-            </div>
-            <ButtonGroup v-model="typing.stopOnError" :options="stopOnErrorOptions" use-default="">
-            </ButtonGroup>
-        </div>
-
-        <div class="option">
-            <div class="option-texts">
-                <div>Paragraph statistic display</div>
-                <span>Displays a trailing statistic indicator at the end of a typed paragraph</span>
-            </div>
-            <ButtonGroup v-model="typing.statsDisplay" :options="statsDisplayOptions" use-default="">
-            </ButtonGroup>
-        </div>
-
-        <div class="option danger">
-            <div class="option-texts">
-                <div style="margin-left: -0.1rem;">
-                    <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
-                    Persistant storage
+    <div class="settings-container flex-col" style="gap: 1rem;">
+        <div class="option-container flex-col">
+            <h3 style="margin: 0;">Typing</h3>
+            <div class="option">
+                <div class="option-texts">
+                    <div>Freedom mode</div>
+                    <span>Allows you to edit all previously typed words</span>
                 </div>
-                <span>Makes data persistant under storage pressure (check browser implementation for details)</span>
+                <ToggleSwitch v-model="typing.freedomMode"></ToggleSwitch>
             </div>
-            <ToggleSwitch v-model="isPersistant" :accept="acceptPersistantToggle"></ToggleSwitch>
-        </div>
-        <div class="option danger">
-            <div class="option-texts">
-                <div style="margin-left: -0.1rem;">
-                    <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
-                    Delete all site data
+            <div class="option">
+                <div class="option-texts">
+                    <div>Stop on error</div>
+                    <span>Prevents you from skipping incorrect elements</span>
                 </div>
-                <span>Deletes your stored books and settings</span>
+                <ButtonGroup v-model="typing.stopOnError" :options="stopOnErrorOptions" use-default="">
+                </ButtonGroup>
             </div>
-            <div class="button danger" @click="deleteProgramData">
-                <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
+            <div class="option">
+                <div class="option-texts">
+                    <div>Paragraph statistic display</div>
+                    <span>Displays a trailing statistic indicator at the end of a typed paragraph</span>
+                </div>
+                <ButtonGroup v-model="typing.statsDisplay" :options="statsDisplayOptions" use-default="">
+                </ButtonGroup>
+            </div>
+        </div>
+
+        <div class="option-container flex-col danger">
+            <h3 style="margin: 0;">Important</h3>
+            <div class="option">
+                <div class="option-texts">
+                    <div style="margin-left: -0.1rem;">
+                        <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
+                        Persistant storage
+                    </div>
+                    <span>Makes data persistant under storage pressure (check browser implementation for details)</span>
+                </div>
+                <ToggleSwitch v-model="isPersistant" :accept="acceptPersistantToggle"></ToggleSwitch>
+            </div>
+            <div class="option">
+                <div class="option-texts">
+                    <div style="margin-left: -0.1rem;">
+                        <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
+                        Delete all site data
+                    </div>
+                    <span>Deletes your stored books and settings</span>
+                </div>
+                <div class="button danger" @click="deleteProgramData">
+                    <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
+                </div>
             </div>
         </div>
     </div>
@@ -93,7 +97,6 @@ async function acceptPersistantToggle(persistant: boolean) {
 <style scoped>
 .option-texts {
     flex-grow: 1;
-    margin-left: 0.5rem;
 }
 
 .option-texts>*:first-child {
@@ -105,19 +108,19 @@ async function acceptPersistantToggle(persistant: boolean) {
 }
 
 .option {
-    padding: 1rem;
-    background-color: var(--primary-dark);
-    border-radius: 8px;
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
 }
 
-.option.danger {
-    border-radius: 8px;
-    border-color: var(--no);
-    border-width: 2px;
-    border-style: solid;
+.option-container {
+    background-color: var(--primary-dark);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    gap: 1.2rem;
+}
+
+.option-container.danger {
+    border: 2px solid var(--no);
 }
 
 .button {
