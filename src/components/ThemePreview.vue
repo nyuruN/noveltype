@@ -8,9 +8,8 @@ let preview = defineModel<Theme>({ required: true })
 
 function applyTheme() {
     if (themeStore.theme.name != preview.value.name) {
-        console.log(preview.value.name)
+        themeStore.theme = preview.value
     }
-    themeStore.theme = preview.value
 }
 
 const text = computed(() => ({
@@ -23,7 +22,7 @@ const textDimmed = computed(() => ({
 
 <template>
     <div id="preview-container" class="flex">
-        <div id="preview" class="grow" :style="{ backgroundColor: hslString(preview.primaryColor) }">
+        <div id="preview" class="grow relative" :style="{ backgroundColor: hslString(preview.primaryColor) }">
             <div id="preview-menu" class="flex"
                 :style="{ backgroundColor: hslString(darken(preview.primaryColor, 0.2)), color: hslString(preview.textDimmedColor) }">
                 <font-awesome-icon :icon="['fas', 'home']" fixed-width />
@@ -81,6 +80,7 @@ const textDimmed = computed(() => ({
 
 #preview-container {
     gap: 1rem;
+    overflow: hidden;
 }
 
 #preview {
@@ -90,19 +90,20 @@ const textDimmed = computed(() => ({
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 #preview-menu {
-    border-radius: 4px;
+    position: absolute;
+    top: 10%;
+    border-radius: 8px;
     width: 60%;
-    margin-top: 1rem;
-    padding: 0.2rem;
+    padding: 0.3rem;
     align-items: center;
-    gap: 0.2rem;
+    gap: 0.3rem;
 }
 
 #preview-paragraph {
-    margin-top: 1rem;
     width: 80%;
     flex-wrap: wrap;
     font-size: 1.5rem;

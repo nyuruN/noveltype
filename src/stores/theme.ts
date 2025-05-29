@@ -52,7 +52,7 @@ export const useThemeStore = defineStore('theme', () => {
         applyColors(nt)
     })
     watch(opacity, (no) => {
-        document.documentElement.style.setProperty('--opacity', no + '%');
+        document.documentElement.style.setProperty('--opacity', no * 100 + '%');
     })
     watch(blur, (nb) => {
         document.documentElement.style.setProperty('--blur-amount', nb + 'px');
