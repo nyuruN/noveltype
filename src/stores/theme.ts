@@ -16,14 +16,14 @@ export const Themes: Theme[] = [
         name: 'Default',
         primaryColor: hsl(0, 0, 30),
         accentColor: hsl(80, 70, 55),
-        textColor: hsl(0, 0, 90),
-        textDimmedColor: hsl(0, 0, 60),
+        textColor: hsl(0, 0, 97),
+        textDimmedColor: hsl(0, 0, 72),
     }, {
         name: 'Light',
         primaryColor: hsl(50, 10, 90),
         accentColor: hsl(20, 90, 60),
-        textColor: hsl(0, 0, 20),
-        textDimmedColor: hsl(0, 0, 45),
+        textColor: hsl(0, 0, 10),
+        textDimmedColor: hsl(0, 0, 40),
     },
 ] as const;
 

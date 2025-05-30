@@ -8,8 +8,8 @@
   /* COLORS */
   --primary: hsl(0 0% 30%);
   --accent: hsl(80 70% 55%);
-  --text: hsl(0 0% 90%);
-  --text-dimmed: hsl(0 0% 60%);
+  --text: hsl(0 0% 97%);
+  --text-dimmed: hsl(0 0% 72%);
 
   /* UI */
   --primary-normal: hsl(from var(--primary) h s l / var(--opacity));
