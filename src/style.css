@@ -90,3 +90,11 @@ body {
 .grow {
   flex-grow: 1;
 }
+
+.shrink {
+  flex-shrink: 1;
+}
+
+.align-center {
+  align-items: center;
+}

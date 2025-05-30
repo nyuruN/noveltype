@@ -59,6 +59,8 @@ const primary = computed(() => ({
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    border: 1px solid var(--primary-light)
 }
 
 #preview-menu {
