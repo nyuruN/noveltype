@@ -20,7 +20,7 @@ export const Themes: Theme[] = [
         textDimmedColor: hsl(0, 0, 72),
     }, {
         name: 'Light',
-        primaryColor: hsl(50, 10, 90),
+        primaryColor: hsl(30, 15, 90),
         accentColor: hsl(20, 90, 60),
         textColor: hsl(0, 0, 10),
         textDimmedColor: hsl(0, 0, 40),
