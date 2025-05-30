@@ -38,7 +38,7 @@ function userInput() {
 <template>
     <div class="flex" style="align-items: stretch; gap: .5rem;">
         <input type="color" class="color-input" v-model="inputValue" @input="refresh" />
-        <input type="text" id="color-text" class="text-input button" :placeholder="inputValue" style="overflow: auto"
+        <input type="text" class="text-input button" :placeholder="inputValue" style="overflow: auto"
             v-model="inputText" @change="userInput" onfocus="this.select()" />
         <button class="button" style="width: auto; padding: 0.5rem;" @click="reset">
             <font-awesome-icon :icon="['fas', 'rotate-left']" fixed-width />
@@ -56,7 +56,7 @@ function userInput() {
     outline-style: solid;
     outline-width: 1px;
     outline-color: var(--accent);
-    outline-offset: -1px;
+    outline-offset: -2px;
     color: var(--text);
 }
 
@@ -64,15 +64,20 @@ function userInput() {
     outline-style: solid;
     outline-width: 1px;
     outline-color: var(--accent);
-    outline-offset: -1px;
+    outline-offset: -2px;
+}
+
+.color-input:hover {
+    background-color: var(--primary-light);
 }
 
 .color-input {
     background-color: var(--primary-dark);
+    aspect-ratio: 1 / 1;
+    height: 38px;
+    width: auto;
     border: none;
     border-radius: 4px;
-    min-width: 2.35rem;
-    height: auto;
     padding: 0.1rem;
     cursor: pointer;
 }
@@ -82,7 +87,7 @@ function userInput() {
     padding: 0.5rem 1rem;
     font-size: 1.2em;
     border-radius: 4px;
-    width: 16rem;
+    width: 12rem;
     cursor: pointer;
     background-color: var(--primary-dark);
     color: var(--text-dimmed);

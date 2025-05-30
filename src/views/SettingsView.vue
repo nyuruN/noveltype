@@ -141,7 +141,7 @@ async function acceptPersistantToggle(persistant: boolean) {
 
 .button.danger {
     background-color: var(--no);
-    color: var(--primary-dark)
+    color: color-mix(in hsl, var(--no), black 15%);
 }
 
 .button.danger:hover {
