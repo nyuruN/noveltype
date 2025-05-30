@@ -5,14 +5,15 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faFolderOpen, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faFolderOpen, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faRotateLeft, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
 
 import App from './views/App.vue'
-import HomeView from './views/LibraryView.vue'
+import LibraryView from './views/LibraryView.vue'
+import ThemesView from './views/ThemesView.vue'
 import SettingsView from './views/SettingsView.vue'
 
 import '@/style.css'
-import ThemesView from './views/ThemesView.vue'
+
 
 // Font-Awesome Icon definitions
 library.add(
@@ -41,6 +42,7 @@ library.add(
     // Edit
     faPen,
     faPenToSquare,
+    faRotateLeft,
     // Importance
     faCircleExclamation,
     faTriangleExclamation,
@@ -54,7 +56,7 @@ library.add(
 )
 
 const routes = [
-    { path: '/', component: HomeView },
+    { path: '/', component: LibraryView },
     { path: '/themes', component: ThemesView },
     { path: '/settings', component: SettingsView },
 ]

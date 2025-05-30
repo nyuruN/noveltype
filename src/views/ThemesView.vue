@@ -21,7 +21,7 @@ let preview = ref({ ...store.theme })
         <template v-for="(theme) in Themes">
             <button style="cursor: pointer;"
                 :style="{ backgroundColor: hslString(theme.primaryColor), color: hslString(theme.accentColor) }"
-                @click="preview = theme">
+                @click="preview = {...theme}">
                 {{ theme.name }}
             </button>
         </template>

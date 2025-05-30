@@ -2,14 +2,18 @@
 import { darken, hslString } from '@/lib/color';
 import { useThemeStore, type Theme } from '@/stores/theme';
 import { computed } from 'vue';
+import ColorPicker from '@/components/ColorPicker.vue';
+import { storeToRefs } from 'pinia';
 
-const themeStore = useThemeStore()
+const { theme } = storeToRefs(useThemeStore())
 let preview = defineModel<Theme>({ required: true })
 
 function applyTheme() {
-    if (themeStore.theme.name != preview.value.name) {
-        themeStore.theme = preview.value
+    let newTheme = {
+        ...preview.value
     }
+    newTheme.name = 'Custom'
+    theme.value = newTheme
 }
 
 const text = computed(() => ({
@@ -18,11 +22,14 @@ const text = computed(() => ({
 const textDimmed = computed(() => ({
     color: hslString(preview.value.textDimmedColor)
 }))
+const primary = computed(() => ({
+    backgroundColor: hslString(preview.value.primaryColor)
+}))
 </script>
 
 <template>
     <div id="preview-container" class="flex">
-        <div id="preview" class="grow relative" :style="{ backgroundColor: hslString(preview.primaryColor) }">
+        <div id="preview" class="grow relative" :style="primary">
             <div id="preview-menu" class="flex"
                 :style="{ backgroundColor: hslString(darken(preview.primaryColor, 0.2)), color: hslString(preview.textDimmedColor) }">
                 <font-awesome-icon :icon="['fas', 'home']" fixed-width />
@@ -54,7 +61,15 @@ const textDimmed = computed(() => ({
                 </div>
             </div>
         </div>
-        <div id="preview-options" class="grow">
+        <div id="preview-options" class="grow flex-col">
+            <ColorPicker v-model="preview.primaryColor" :reset-color="theme.primaryColor"
+                label="Primary Color"></ColorPicker>
+            <ColorPicker v-model="preview.accentColor" :reset-color="theme.accentColor" label="Accent Color">
+            </ColorPicker>
+            <ColorPicker v-model="preview.textColor" :reset-color="theme.textColor" label="Text Color">
+            </ColorPicker>
+            <ColorPicker v-model="preview.textDimmedColor" :reset-color="theme.textDimmedColor"
+                label="Text Dimmed Color"></ColorPicker>
             <button class="button" @click="applyTheme">
                 Apply
             </button>
@@ -63,11 +78,21 @@ const textDimmed = computed(() => ({
 </template>
 
 <style scoped>
+.color-input {
+    background-color: var(--primary-dark);
+    border: none;
+    border-radius: 4px;
+    width: 2.35rem;
+    height: auto;
+    padding: 0.1rem;
+    cursor: pointer;
+}
+
 .button {
     border: none;
     padding: 0.5rem 1rem;
     font-size: 1.2em;
-    border-radius: 8px;
+    border-radius: 4px;
     width: 16rem;
     cursor: pointer;
     background-color: var(--primary-dark);
@@ -76,6 +101,11 @@ const textDimmed = computed(() => ({
 
 .button:hover {
     background-color: var(--primary-light);
+}
+
+#preview-options {
+    gap: 0.5rem;
+    height: 100%;
 }
 
 #preview-container {
