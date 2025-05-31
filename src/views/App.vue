@@ -63,7 +63,7 @@ useThemeStore()
 }
 
 .nav {
-  width: 10rem;
+  min-width: 10rem;
   padding: 2rem 0.5rem;
   display: flex;
   flex-direction: column;
@@ -82,7 +82,7 @@ useThemeStore()
   }
 
   .nav {
-    width: fit-content;
+    min-width: fit-content;
   }
 }
 
