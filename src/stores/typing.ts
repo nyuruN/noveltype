@@ -7,7 +7,7 @@ export const useTypingStore = defineStore('typing', {
         book: undefined as Book | undefined,
         chapter: undefined as Chapter | undefined,
         showTyper: false,
-        showNav: false,
+        showToc: false,
         isFocused: false,
     }),
 })

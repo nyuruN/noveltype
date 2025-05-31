@@ -15,28 +15,28 @@ useThemeStore()
     <div class="center-container" v-show="!showTyper">
       <nav class="nav">
         <div class="nav-items">
-          <div class="nav-item" @click="$router.push('/')">
+          <button class="nav-item" @click="$router.push('/')">
             <font-awesome-icon :icon="['fas', 'book-open']" fixed-width />
             <span style="margin-left: 0.5rem;">Library</span>
-          </div>
-          <div class="nav-item" @click="$router.push('/themes')">
+          </button>
+          <button class="nav-item" @click="$router.push('/themes')">
             <font-awesome-icon :icon="['fas', 'palette']" fixed-width />
             <span style="margin-left: 0.5rem;">Themes</span>
-          </div>
-          <div class="nav-item" @click="$router.push('/settings')">
+          </button>
+          <button class="nav-item" @click="$router.push('/settings')">
             <font-awesome-icon :icon="['fas', 'gear']" fixed-width />
             <span style="margin-left: 0.5rem;">Settings</span>
-          </div>
+          </button>
         </div>
-        <div style="flex-grow: 1;"></div>
-        <div class="nav-item" style="font-size: 1.1rem" @click="showTyper = true">
+        <div class="grow"></div>
+        <button class="nav-item" style="font-size: 1.1rem" @click="showTyper = true">
           <font-awesome-icon :icon="['fas', 'keyboard']" fixed-width />
           <span style="margin-left: 0.5rem;">Resume</span>
-        </div>
+        </button>
       </nav>
-      <div class="view-container">
+      <main class="view-container">
         <RouterView />
-      </div>
+      </main>
     </div>
 
     <TypingView v-show="showTyper"></TypingView>
@@ -53,6 +53,9 @@ useThemeStore()
 .nav-item {
   padding: 1rem 1rem;
   font-size: 1.2rem;
+  background-color: transparent;
+  color: var(--text-dimmed);
+  border: none;
   border-radius: 8px;
   user-select: none;
   cursor: pointer;

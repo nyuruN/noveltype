@@ -37,7 +37,7 @@ export function lighten(color: Color, factor: number) {
 }
 
 export function hslString(col: Color) {
-    return `hsl(${col.h} ${col.s} ${col.l})`
+    return `hsl(${col.h} ${col.s}% ${col.l}%)`
 }
 
 export function hslToHex(hsl: { h: number; s: number; l: number }): string {

@@ -1,4 +1,4 @@
-import { hsl, hslString, type Color } from "@/lib/color";
+import { hsl, type Color } from "@/lib/color";
 import { defineStore } from "pinia";
 import { onMounted, ref, watch } from "vue";
 
@@ -41,10 +41,14 @@ export const useThemeStore = defineStore('theme', () => {
         blur.value = 16
     }
     function applyColors(t: Theme) {
-        document.documentElement.style.setProperty('--primary', hslString(t.primaryColor));
-        document.documentElement.style.setProperty('--accent', hslString(t.accentColor));
-        document.documentElement.style.setProperty('--text', hslString(t.textColor));
-        document.documentElement.style.setProperty('--text-dimmed', hslString(t.textDimmedColor));
+        let fmt = (col: Color) => {
+            return `${col.h} ${col.s}% ${col.l}%`
+        }
+
+        document.documentElement.style.setProperty('--primary-hsl', fmt(t.primaryColor));
+        document.documentElement.style.setProperty('--accent-hsl', fmt(t.accentColor));
+        document.documentElement.style.setProperty('--text-hsl', fmt(t.textColor));
+        document.documentElement.style.setProperty('--text-dimmed-hsl', fmt(t.textDimmedColor));
     }
 
     // Watchers

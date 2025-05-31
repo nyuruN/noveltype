@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useTypingStore } from '@/stores/typing';
 import { useSettingsStore } from '@/stores/settings';
 
-const { book, chapter, showTyper, showNav } = storeToRefs(useTypingStore())
+const { book, chapter, showTyper, showToc } = storeToRefs(useTypingStore())
 const { typing } = storeToRefs(useSettingsStore())
 
 async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p } }
@@ -19,18 +19,18 @@ async function smaller() {
 </script>
 
 <template>
-    <div id="menu-items">
+    <nav id="menu">
         <button @click="showTyper = false" class="menu-button">
             <font-awesome-icon :icon="['fas', 'home']" fixed-width />
         </button>
 
-        <button id="toc" class="menu-button" v-if="book" @click="showNav = true">
+        <button id="toc" class="menu-button" v-if="book" @click="showToc = true">
             <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
         </button>
 
         <div class="grow"></div>
 
-        <button id="toc" class="menu-button" v-if="book" @click="showNav = true">
+        <button id="toc" class="menu-button" v-if="book" @click="showToc = true">
             <span v-if="chapter" class="title">{{
                 chapter.title }}</span>
             <span v-else>Select a chapter to get started</span>
@@ -54,11 +54,11 @@ async function smaller() {
             </button>
         </div>
 
-    </div>
+    </nav>
 </template>
 
 <style scoped>
-#menu-items {
+#menu {
     z-index: 1;
 
     display: flex;

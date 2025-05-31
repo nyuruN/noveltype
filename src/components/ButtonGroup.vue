@@ -10,15 +10,15 @@ let model = defineModel()
 <template>
     <div class="button-group">
         <template v-for="option in props.options">
-            <div class="group-button" @click="model = (model === option) ? undefined : option"
+            <button class="group-button" @click="model = (model === option) ? undefined : option"
                 :class="{ active: model === option }">
                 {{ option }}
-            </div>
+            </button>
         </template>
-        <div class="group-button" @click="model = undefined" v-if="props.useDefault !== undefined"
+        <button class="group-button" @click="model = undefined" v-if="props.useDefault !== undefined"
             :class="{ active: model === undefined, none: props.useDefault === '' }">
             {{ props.useDefault }}
-        </div>
+        </button>
     </div>
 </template>
 
@@ -36,6 +36,9 @@ let model = defineModel()
     padding: 0.7rem;
     font-weight: bold;
     font-size: 0.9rem;
+    background-color: var(--primary-darker);
+    color: var(--text-dimmed);
+    border: none;
 }
 
 .group-button.none {

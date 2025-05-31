@@ -16,9 +16,8 @@ async function toggle() {
 </script>
 
 <template>
-    <div class="toggle-switch" :class="{ enabled: model }"
-        @click="toggle">
-    </div>
+    <button class="toggle-switch" :class="{ enabled: model }" @click="toggle">
+    </button>
 </template>
 
 <style lang="scss">
@@ -34,6 +33,7 @@ $togglePadding: 5px * $toggleScale;
     min-width: $toggleWidth * 0.6;
     background: hsl(0, 0%, 60%);
     display: block;
+    border: none;
     border-radius: $toggleHeight;
     position: relative;
 
@@ -56,10 +56,11 @@ $togglePadding: 5px * $toggleScale;
 
 .enabled.toggle-switch {
     background-color: var(--yes);
-    
+
     &:hover {
         background-color: var(--yes-light);
     }
+
     &:after {
         left: calc(100% - $togglePadding);
         transform: translateX(-100%);

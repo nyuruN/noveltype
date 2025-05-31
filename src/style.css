@@ -1,35 +1,29 @@
 :root {
-  font-family: sans-serif;
-
-  background-color: hsl(0 0 40%);
-  background-image: url(https://images.unsplash.com/photo-1745669754254-c30c98e5f8b1?w=2070&auto=format&fit=crop);
-  background-size: cover;
-
   /* COLORS */
-  --primary: hsl(0 0% 30%);
-  --accent: hsl(80 70% 55%);
-  --text: hsl(0 0% 97%);
-  --text-dimmed: hsl(0 0% 72%);
+  --primary-hsl: 0 0% 30%;
+  --accent-hsl: 80 70% 55%;
+  --text-hsl: 0 0% 97%;
+  --text-dimmed-hsl: 0 0% 72%;
+  --primary: hsl(var(--primary-hsl));
+  --accent: hsl(var(--accent-hsl));
+  --text: hsl(var(--text-hsl));
+  --text-dimmed: hsl(var(--text-dimmed-hsl));
 
-  /* UI */
-  --primary-normal: hsl(from var(--primary) h s l / var(--opacity));
-  --primary-light: color-mix(in hsl, var(--primary-normal), white 10%);
-  --primary-lighter: color-mix(in hsl, var(--primary-normal), white 20%);
-  --primary-dark: color-mix(in hsl, var(--primary-normal), black 10%);
-  --primary-darker: color-mix(in hsl, var(--primary-normal), black 20%);
-
-  --yes: var(--accent);
-  --yes-light: color-mix(in hsl, var(--yes), white 15%);
-  --no: hsl(0 75% 65%);
-  --no-light: color-mix(in hsl, var(--no), white 15%);
-
+  /* OTHER*/
   --app-padding: 3rem 3rem;
   --blur-amount: 16px;
   --opacity: 0.8;
 
-  /* --app-padding: 6rem 18rem;
-  --opacity: 0.5;
-  --blur-amount: 8px; */
+  /* UI */
+  --primary-normal: hsl(var(--primary-hsl) / var(--opacity));
+  --primary-light: color-mix(in hsl, var(--primary-normal), white 10%);
+  --primary-lighter: color-mix(in hsl, var(--primary-normal), white 20%);
+  --primary-dark: color-mix(in hsl, var(--primary-normal), black 10%);
+  --primary-darker: color-mix(in hsl, var(--primary-normal), black 20%);
+  --yes: var(--accent);
+  --yes-light: color-mix(in hsl, var(--yes), white 15%);
+  --no: hsl(0 75% 65%);
+  --no-light: color-mix(in hsl, var(--no), white 15%);
 
   /* TYPING */
   --typing-font-scale: 1;
@@ -47,6 +41,12 @@
   --typing-caret-color: var(--accent);
   --typing-caret-width: calc(2px * var(--typing-font-scale));
 
+  font-family: sans-serif;
+
+  background-color: var(--primary);
+  background-image: url(https://images.unsplash.com/photo-1745669754254-c30c98e5f8b1?w=2070&auto=format&fit=crop);
+  background-size: cover;
+
   color: var(--text-dimmed);
 }
 
@@ -55,7 +55,6 @@ body {
   height: 100%;
   margin: 0;
   scrollbar-width: thin;
-  scroll-behavior: smooth;
   scrollbar-color: var(--text-dimmed) transparent;
 }
 

@@ -2,18 +2,18 @@
 import { storeToRefs } from 'pinia'
 import { useTypingStore } from '@/stores/typing';
 
-const { book, chapter, showNav } = storeToRefs(useTypingStore())
+const { book, chapter, showToc } = storeToRefs(useTypingStore())
 
-async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) { chapter.value = await c; showNav.value = false; } }
+async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) { chapter.value = await c; showToc.value = false; } }
 
 </script>
 
 <template>
     <div id="toc-container">
         <div id="toc-content" class="thin-scrollbar" :style="{
-            left: showNav ? '0vw' : '-60vw',
-            opacity: showNav ? '100' : '0',
-            pointerEvents: showNav ? 'auto' : 'none'
+            left: showToc ? '0vw' : '-60vw',
+            opacity: showToc ? '100' : '0',
+            pointerEvents: showToc ? 'auto' : 'none'
         }">
             <h2 style="padding-left: 1.5rem;">{{ book?.record.title }}</h2>
             <template v-for="(arr, index) in book?.record.toc">
@@ -22,7 +22,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
                 </ul>
             </template>
         </div>
-        <div id="toc-screenquad" @click="showNav = false" v-if="showNav"></div>
+        <div id="toc-screenquad" @click="showToc = false" v-if="showToc"></div>
     </div>
 </template>
 

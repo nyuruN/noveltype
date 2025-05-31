@@ -74,7 +74,7 @@ async function acceptPersistantToggle(persistant: boolean) {
                 <div class="option-texts">
                     <div style="margin-left: -0.1rem;">
                         <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
-                        Persistant storage
+                        <span style="margin-left: 0.1rem;">Persistant storage</span>
                     </div>
                     <span>Makes data persistant under storage pressure (check browser implementation for details)</span>
                 </div>
@@ -84,13 +84,13 @@ async function acceptPersistantToggle(persistant: boolean) {
                 <div class="option-texts">
                     <div style="margin-left: -0.1rem;">
                         <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
-                        Delete all site data
+                        <span style="margin-left: 0.1rem;">Delete all site data</span>
                     </div>
                     <span>Deletes your stored books and settings</span>
                 </div>
-                <div class="button danger" @click="deleteProgramData">
+                <button class="button danger" @click="deleteProgramData">
                     <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
-                </div>
+                </button>
             </div>
         </div>
     </div>
@@ -117,10 +117,11 @@ async function acceptPersistantToggle(persistant: boolean) {
 }
 
 .option-container {
-    background-color: var(--primary-dark);
+    /* background-color: var(--primary-dark); */
     border-radius: 12px;
     padding: 1rem 1.5rem;
     gap: 1.2rem;
+    border: 1px solid var(--primary-light)
 }
 
 .option-container.danger {
@@ -130,6 +131,7 @@ async function acceptPersistantToggle(persistant: boolean) {
 .button {
     user-select: none;
     padding: 0.6rem 0.7rem;
+    border: none;
     border-radius: 8px;
     background-color: var(--primary-darker);
 }
