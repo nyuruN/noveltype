@@ -5,7 +5,7 @@ import { useStatsStore, useTypingStore } from '@/stores/typing'
 import { useSettingsStore } from '@/stores/settings'
 import { scrollToNextCaretPos } from '@/lib/utils'
 
-const { chapter, isFocused } = storeToRefs(useTypingStore())
+const { book, chapter, isFocused } = storeToRefs(useTypingStore())
 const { paragraphWPMs } = storeToRefs(useStatsStore())
 const { typing } = storeToRefs(useSettingsStore())
 
@@ -83,17 +83,24 @@ onMounted(() => {
 
             <div class="newline relative">
                 <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
-                <template v-if="paragraphWPMs[index]">
-                    <div class="stat" v-if="typing.statsDisplay == 'RAW'">
-                        raw: {{ paragraphWPMs[index].raw.toFixed(0) }}
+
+                <div class="trailers">
+                    <template v-if="paragraphWPMs[index]">
+                        <div class="stat" v-if="typing.statsDisplay == 'RAW'">
+                            raw: {{ paragraphWPMs[index].raw.toFixed(0) }}
+                        </div>
+                        <div class="stat" v-else-if="typing.statsDisplay == 'WPM'">
+                            wpm: {{ paragraphWPMs[index].wpm.toFixed(0) }}
+                        </div>
+                        <div class="stat" v-else-if="typing.statsDisplay == 'ACC'">
+                            acc: {{ (paragraphWPMs[index].acc * 100).toFixed(0) }}%
+                        </div>
+                    </template>
+                    <div style="font-size: 1.6em; margin-left: 0.5em"
+                        v-if="book?.record.bookmarks.findIndex(b => b.chapter == chapter?.index && b.paragraph == index) != -1">
+                        <font-awesome-icon :icon="['fas', 'bookmark']" />
                     </div>
-                    <div class="stat" v-else-if="typing.statsDisplay == 'WPM'">
-                        wpm: {{ paragraphWPMs[index].wpm.toFixed(0) }}
-                    </div>
-                    <div class="stat" v-else-if="typing.statsDisplay == 'ACC'">
-                        acc: {{ (paragraphWPMs[index].acc * 100).toFixed(0) }}%
-                    </div>
-                </template>
+                </div>
             </div>
         </div>
         <div class="newline" v-if="!chapter?.paragraphs[0]" style="padding: .2em">
@@ -103,17 +110,25 @@ onMounted(() => {
 </template>
 
 <style>
-.stat {
+.trailers {
     position: absolute;
     top: 0.4em;
     left: 1.9em;
-    padding: .1em 0.3em;
     height: 1.6em;
     font-size: 0.7em;
+    display: flex;
+}
+
+.stat {
+    /* position: absolute;
+    top: 0.4em;
+    left: 1.9em;
+    height: 1.6em;
+    font-size: 0.7em; */
+    padding: .1em 0.3em;
     text-wrap: nowrap;
     background-color: var(--typing-trailer);
     color: var(--typing-trailer-color);
-    /* transform: translate(0.8em, 0.4em); */
     border-radius: 6px;
 }
 
