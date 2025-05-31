@@ -13,8 +13,8 @@ const isBookmarked = computed(() => {
     return book.value?.record.bookmarks.find(bookmark => bookmark.chapter == chapter.value?.index) !== undefined;
 })
 
-async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p } }
-async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p } }
+async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p; chapter.value.goTo(0) } }
+async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p; chapter.value.goTo(0) } }
 async function larger() {
     typing.value.typingFontScale = typing.value.typingFontScale + 0.1
     typing.value.typingLineScale = typing.value.typingLineScale + 0.1
