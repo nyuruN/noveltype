@@ -52,7 +52,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     padding-top: 2rem;
     padding-bottom: 6rem;
 
-    background-color: var(--primary-darker);
+    background-color: var(--ui-toc-bg);
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
 
     scrollbar-width: thin;
@@ -82,10 +82,10 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
 
 #toc-content>ul.selected {
     color: var(--text);
-    background-color: var(--primary-dark);
+    background-color: var(--ui-toc-active);
 }
 
 #toc-content>ul:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--ui-toc-hover);
 }
 </style>

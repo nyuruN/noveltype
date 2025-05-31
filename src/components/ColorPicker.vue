@@ -49,13 +49,13 @@ function userInput() {
 
 <style scoped>
 .text-input::placeholder {
-    color: var(--text-dimmed);
+    color: var(--ui-button-text);
 }
 
 .text-input:focus {
     outline-style: solid;
     outline-width: 1px;
-    outline-color: var(--accent);
+    outline-color: var(--ui-border-active);
     outline-offset: -2px;
     color: var(--text);
 }
@@ -63,16 +63,16 @@ function userInput() {
 .color-input:focus {
     outline-style: solid;
     outline-width: 1px;
-    outline-color: var(--accent);
+    outline-color: var(--ui-border-active);
     outline-offset: -2px;
 }
 
 .color-input:hover {
-    background-color: var(--primary-light);
+    background-color: var(--ui-button-hover);
 }
 
 .color-input {
-    background-color: var(--primary-dark);
+    background-color: var(--ui-button-bg);
     aspect-ratio: 1 / 1;
     height: 38px;
     width: auto;
@@ -87,13 +87,13 @@ function userInput() {
     padding: 0.5rem 1rem;
     font-size: 1.2em;
     border-radius: 4px;
-    width: 12rem;
+    width: 10rem;
     cursor: pointer;
-    background-color: var(--primary-dark);
-    color: var(--text-dimmed);
+    background-color: var(--ui-button-bg);
+    color: var(--ui-button-text);
 }
 
 .button:hover {
-    background-color: var(--primary-light);
+    background-color: var(--ui-button-hover);
 }
 </style>

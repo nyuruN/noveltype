@@ -20,7 +20,7 @@ onMounted(async () => {
 })
 
 async function deleteProgramData() {
-    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will erase all site data!', true)
+    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will erase all site data!')
 
     if (confirm) {
         deleteDB()
@@ -42,7 +42,7 @@ async function acceptPersistantToggle(persistant: boolean) {
 
     <div class="settings-container flex-col" style="gap: 1rem;">
         <div class="option-container flex-col">
-            <h3 style="margin: 0;">Typing</h3>
+            <h2 style="margin: 0.5rem 0;">Typing</h2>
             <div class="option">
                 <div class="option-texts">
                     <div>Freedom mode</div>
@@ -69,7 +69,7 @@ async function acceptPersistantToggle(persistant: boolean) {
         </div>
 
         <div class="option-container flex-col danger">
-            <h3 style="margin: 0;">Important</h3>
+            <h2 style="margin: 0.5rem 0;">Important</h2>
             <div class="option">
                 <div class="option-texts">
                     <div style="margin-left: -0.1rem;">
@@ -88,7 +88,7 @@ async function acceptPersistantToggle(persistant: boolean) {
                     </div>
                     <span>Deletes your stored books and settings</span>
                 </div>
-                <button class="button danger" @click="deleteProgramData">
+                <button class="delete-button" @click="deleteProgramData">
                     <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
                 </button>
             </div>
@@ -101,14 +101,12 @@ async function acceptPersistantToggle(persistant: boolean) {
 <style scoped>
 .option-texts {
     flex-grow: 1;
+    color: var(--text);
 }
 
 .option-texts>*:first-child {
     font-weight: bold;
-}
-
-.option-texts>*:not(:first-child) {
-    color: var(--text);
+    color: var(--text-dimmed);
 }
 
 .option {
@@ -117,36 +115,28 @@ async function acceptPersistantToggle(persistant: boolean) {
 }
 
 .option-container {
-    /* background-color: var(--primary-dark); */
     border-radius: 12px;
     padding: 1rem 1.5rem;
     gap: 1.2rem;
-    border: 1px solid var(--primary-light)
+    background-color: var(--ui-content-bg);
+    border: 1px solid var(--ui-content-border)
 }
 
 .option-container.danger {
-    border: 2px solid var(--no);
+    border: 2px solid var(--ui-important);
 }
 
-.button {
+.delete-button {
     user-select: none;
     padding: 0.6rem 0.7rem;
     border: none;
     border-radius: 8px;
-    background-color: var(--primary-darker);
+    background-color: var(--ui-important);
+    color: color-mix(in hsl, var(--ui-important), black 20%);
 }
 
-.button:hover {
+.delete-button:hover {
     cursor: pointer;
-    background-color: var(--primary-light);
-}
-
-.button.danger {
-    background-color: var(--no);
-    color: color-mix(in hsl, var(--no), black 15%);
-}
-
-.button.danger:hover {
-    background-color: var(--no-light);
+    background-color: color-mix(in hsl, var(--ui-important), white 15%);
 }
 </style>

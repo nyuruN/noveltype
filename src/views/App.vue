@@ -54,7 +54,7 @@ useThemeStore()
   padding: 1rem 1rem;
   font-size: 1.2rem;
   background-color: transparent;
-  color: var(--text-dimmed);
+  color: var(--ui-nav-text);
   border: none;
   border-radius: 8px;
   user-select: none;
@@ -64,7 +64,7 @@ useThemeStore()
 }
 
 .nav-item:hover {
-  background-color: var(--primary-light);
+  background-color: var(--ui-nav-hover);
 }
 
 .nav {
@@ -72,13 +72,14 @@ useThemeStore()
   padding: 2rem 0.5rem;
   display: flex;
   flex-direction: column;
-  background-color: var(--primary-dark);
+  background-color: var(--ui-nav-bg);
 }
 
 .view-container {
   flex-grow: 1;
   padding: 2rem;
-  background-color: var(--primary-normal);
+  background-color: var(--ui-main-bg);
+  scroll-behavior: auto !important;
   overflow-y: auto;
   position: relative;
 }

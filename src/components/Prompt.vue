@@ -2,66 +2,44 @@
 import { usePromptStore } from '@/stores/prompt'
 import { storeToRefs } from 'pinia'
 
-const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
+const { resolveFn, title, description } = storeToRefs(usePromptStore())
 </script>
 
 <template>
-    <div class="prompt-bg" v-if="resolveFn">
-        <div class="prompt">
-            <div style="padding: 0.3rem;">
-                <div style="margin: 0; font-weight: bold; font-size: x-large;">{{ title }}</div>
-                <div style="margin: 0.5rem 0 0.5rem 0.2rem;">{{ description }}</div>
+    <div class="prompt-bg" v-if="resolveFn" @click="resolveFn(false)">
+        <div class="prompt" @click.stop>
+            <div style="margin-bottom: 1rem; font-size: large;">
+                <h2 style="margin: 1rem 0;">{{ title }}</h2>
+                <span>{{ description }}</span>
             </div>
-            <div class="prompt-buttons" v-if="invert">
-                <div class="prompt-button n" @click="resolveFn(true)">Ok</div>
-                <div class="prompt-button y" @click="resolveFn(false)">Cancel</div>
-            </div>
-            <div class="prompt-buttons" v-else>
-                <div class="prompt-button y" @click="resolveFn(true)">Ok</div>
-                <div class="prompt-button n" @click="resolveFn(false)">Cancel</div>
-            </div>
+            <button class="prompt-button" @click="resolveFn(true)">Confirm</button>
         </div>
     </div>
 </template>
 
 <style scoped>
-.y {
-    background-color: var(--yes);
-}
-
-.y:hover {
-    background-color: var(--yes-light);
-}
-
-.n {
-    background-color: var(--no);
-}
-
-.n:hover {
-    background-color: var(--no-light);
-}
-
 .prompt-button {
     flex-grow: 1;
-    padding: 0.3em 0;
+    padding: 0.5rem;
+    border: none;
     border-radius: 6px;
     cursor: pointer;
     text-align: center;
-    color: var(--primary-darker)
+    font-size: large;
+    background-color: var(--ui-button-bg);
+    color: var(--ui-button-text)
 }
-
-.prompt-buttons {
-    display: flex;
-    gap: 0.3rem;
+.prompt-button:hover {
+    background-color: var(--ui-button-hover);
 }
 
 .prompt {
     display: flex;
     flex-direction: column;
-    padding: 0.3rem;
+    padding: 1rem;
     min-height: 10%;
     min-width: 40%;
-    background-color: var(--primary-darker);
+    background-color: var(--ui-prompt-bg);
     border-radius: 8px;
 }
 
@@ -71,7 +49,7 @@ const {resolveFn, title, description, invert} = storeToRefs(usePromptStore())
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: #3b3b3b6c;
+    background-color: var(--ui-prompt-cover);
 
     display: flex;
     align-items: center;

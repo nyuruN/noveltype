@@ -79,15 +79,16 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
     border-radius: 8px;
     z-index: 1;
     opacity: 0;
+    color: var(--ui-card-more-text);
+    background-color: var(--ui-card-more-bg);
+}
+
+.card-more:hover {
+    background-color: var(--ui-card-more-hover);
 }
 
 .card:hover .card-more {
     opacity: 1;
-    background-color: hsla(0, 0%, 25%, 0.3);
-}
-
-.card:hover .card-more:hover {
-    background-color: hsla(0, 0%, 25%, 0.80);
 }
 
 
@@ -109,7 +110,7 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
     height: 20rem;
     width: 14rem;
     padding: 1rem;
-    background-color: transparent;
+    background-color: var(--ui-card);
     color: var(--text-dimmed);
     border: none;
     border-radius: 12px;
@@ -117,7 +118,7 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
 }
 
 .card:hover {
-    background-color: var(--primary-light);
+    background-color: var(--ui-card-hover);
     cursor: pointer;
 }
 

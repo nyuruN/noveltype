@@ -60,7 +60,7 @@ const primary = computed(() => ({
     align-items: center;
     justify-content: center;
 
-    border: 1px solid var(--primary-light)
+    border: 1px solid var(--ui-border)
 }
 
 #preview-menu {

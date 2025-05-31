@@ -25,31 +25,31 @@ const model = defineModel()
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     .slider {
         overflow: hidden;
-        background-color: #ddd;
+        background-color: var(--ui-slider-bg);
     }
 
     .slider::-webkit-slider-runnable-track {
         -webkit-appearance: none;
-        color: #444;
+        color: var(--ui-slider-bg);
     }
 
     .slider::-webkit-slider-thumb {
-        width: 1.1rem;
-        height: 1.1rem;
+        width: 1.0rem;
+        height: 1.0rem;
         -webkit-appearance: none;
         cursor: ew-resize;
-        background: #fff;
-        box-shadow: -340px 0 0 330px var(--accent), inset 0 0 0 2px var(--accent);
+        background: var(--ui-slider-thumb);
+        box-shadow: -340px 0 0 330px var(--ui-slider-active), inset 0 0 0 2px var(--ui-slider-active);
         border-radius: 50%;
         position: relative;
     }
 }
 
 .slider::-moz-range-progress {
-    background-color: var(--accent);
+    background-color: var(--ui-slider-active);
 }
 
 .slider::-moz-range-track {
-    color: #ddd;
+    color: var(--ui-slider-bg);
 }
 </style>

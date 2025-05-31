@@ -70,7 +70,7 @@ async function smaller() {
     border-radius: 10px;
     width: 60rem;
 
-    box-shadow: 0px 0px 32px 0px var(--typing-menu-bg);
+    box-shadow: 0px 0px 16px 0px var(--typing-menu-bg);
 }
 
 .title {

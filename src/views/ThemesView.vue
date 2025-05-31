@@ -57,7 +57,7 @@ function applyTheme() {
                     <ColorPicker v-model="preview.textDimmedColor" :reset-color="theme.textDimmedColor"
                         label="Text Dimmed Color"></ColorPicker>
                 </div>
-                <button class="button" @click="applyTheme">
+                <button class="button" @click="applyTheme" style="border-radius: 4px;">
                     Apply
                 </button>
             </div>
@@ -83,19 +83,18 @@ function applyTheme() {
     padding: 1rem;
     margin-bottom: 2rem;
     border-radius: 12px;
-    border: 1px solid var(--primary-light)
+    background-color: var(--ui-content-bg);
+    border: 1px solid var(--ui-content-border)
 }
 
 .option-texts {
     flex-grow: 1;
+    color: var(--text);
 }
 
 .option-texts>*:first-child {
     font-weight: bold;
-}
-
-.option-texts>*:not(:first-child) {
-    color: var(--text);
+    color: var(--text-dimmed);
 }
 
 #preview-options {
@@ -104,7 +103,7 @@ function applyTheme() {
 }
 
 #preview-options>.button:hover {
-    background-color: var(--primary-light);
+    background-color: var(--ui-button-hover);
 }
 
 #preview-container {
@@ -119,7 +118,7 @@ function applyTheme() {
     border-radius: 8px;
     width: 16rem;
     cursor: pointer;
-    background-color: var(--primary-dark);
-    color: var(--text);
+    background-color: var(--ui-button-bg);
+    color: var(--ui-button-text);
 }
 </style>
