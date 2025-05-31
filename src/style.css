@@ -19,22 +19,21 @@
   --primary-light: color-mix(in hsl, var(--primary), white 20%);
 
   --ui-main-bg: hsl(from var(--primary) h s l / var(--opacity));
-  --ui-nav-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
-  --ui-nav-hover: hsl(from var(--primary-light) h s l / calc(0.5 * var(--opacity)));
+  --ui-nav-bg: hsl(from var(--primary-dark) h s l / calc(0.6 * var(--opacity))); /* Control overlay strength */
+  --ui-nav-hover: hsl(from var(--primary-light) h s l / 0.5);
   --ui-nav-text: var(--text-dimmed);
-  --ui-toc-bg: hsl(from var(--primary-dark) h s l / calc(4 * var(--opacity)));
-  --ui-toc-hover: hsl(from var(--primary-light) h s l / calc(4 * var(--opacity)));
-  --ui-toc-active: hsl(from var(--primary) h s l / calc(4 * var(--opacity)));
+  --ui-content-bg: hsl(from var(--primary-dark) h s l / calc(0.6 * var(--opacity)));
+  --ui-content-border: var(--ui-border);
+  --ui-toc-bg: var(--primary-dark);
+  --ui-toc-hover: hsl(from var(--primary-light) h s l / 1);
+  --ui-toc-active: hsl(from var(--primary) h s l / 1);
   --ui-important: hsl(0 75% 65%);
   --ui-border-active: var(--accent);
-  --ui-border: var(--primary);
-  --ui-content-bg: transparent;
-  --ui-content-bg: hsl(from var(--primary-dark) h s l / calc(0.5 * var(--opacity)));
-  /* --ui-content-border: var(--ui-border); */
+  --ui-border: hsl(from var(--primary-light) h s l / calc(2 * var(--opacity))); /* transparent on low opacity */
 
   /* UI - Widgets */
   --ui-card: transparent;
-  --ui-card-hover: hsl(from var(--primary-light) h s l / calc(0.3 * var(--opacity)));
+  --ui-card-hover: hsl(from var(--primary-light) h s l / 0.3);
   --ui-card-more-bg: hsla(0, 0%, 25%, 0.3);
   --ui-card-more-hover: hsla(0, 0%, 25%, 0.8);
   --ui-card-more-text: #ddd;
@@ -75,6 +74,12 @@
   background-size: cover;
 
   color: var(--text-dimmed);
+}
+
+/* Adjust layout for a lighter color scheme */
+:root[data-mode="light"] {
+  --primary-light: color-mix(in hsl, var(--primary), black 20%);
+  --primary-dark: color-mix(in hsl, var(--primary), white 40%);
 }
 
 html,

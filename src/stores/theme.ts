@@ -45,6 +45,8 @@ export const useThemeStore = defineStore('theme', () => {
             return `${col.h} ${col.s}% ${col.l}%`
         }
 
+        let isDarkMode = t.primaryColor.l <= 50;
+        document.documentElement.setAttribute('data-mode', isDarkMode ? 'dark' : 'light')
         document.documentElement.style.setProperty('--primary-hsl', fmt(t.primaryColor));
         document.documentElement.style.setProperty('--accent-hsl', fmt(t.accentColor));
         document.documentElement.style.setProperty('--text-hsl', fmt(t.textColor));

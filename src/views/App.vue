@@ -51,7 +51,8 @@ useThemeStore()
 }
 
 .nav-item {
-  padding: 1rem 1rem;
+  width: 100%;
+  padding: 0.8rem 1rem;
   font-size: 1.2rem;
   background-color: transparent;
   color: var(--ui-nav-text);
@@ -68,17 +69,18 @@ useThemeStore()
 }
 
 .nav {
-  width: fit-content;
+  width: 10rem;
   padding: 2rem 0.5rem;
   display: flex;
   flex-direction: column;
   background-color: var(--ui-nav-bg);
+  border-right: 1px solid var(--ui-border);
 }
 
 .view-container {
   flex-grow: 1;
   padding: 2rem;
-  background-color: var(--ui-main-bg);
+  /* background-color: var(--ui-main-bg); */
   scroll-behavior: auto !important;
   overflow-y: auto;
   position: relative;
@@ -98,6 +100,7 @@ useThemeStore()
 
   -webkit-backdrop-filter: blur(var(--blur-amount));
   backdrop-filter: blur(var(--blur-amount));
+  background-color: var(--ui-main-bg);
 
   overflow-x: hidden;
 }
