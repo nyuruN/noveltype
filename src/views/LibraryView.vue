@@ -25,7 +25,12 @@ async function loadEpub(e: Event) {
     }
 }
 async function openBook(filename: string, chapterIdx?: number, paragraphIdx?: number) {
+    // Is book opened?
     if (book.value?.record.filename == filename) {
+        // Is chapter opened?
+        if (chapter.value?.index != chapterIdx) {
+            chapter.value = await book.value.getChapter(chapterIdx ? chapterIdx : 0)
+        }
         chapter.value?.goTo(paragraphIdx ? paragraphIdx : 0)
         showTyper.value = true;
         return;
@@ -56,8 +61,7 @@ async function inspectBook(_rec: BookRecord) {
         <div class="bookmarks flex-col" style="gap: 1rem;">
             <template v-for="book in library.books">
                 <div class="bookmark flex" v-for="bookmark in book.bookmarks">
-                    <div class="cover relative"
-                        @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
+                    <div class="cover relative" @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
                         <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
                         <div class="play-icon">
                             <font-awesome-icon :icon="['fas', 'play']" fixed-width class="absolute-center" />
@@ -102,12 +106,13 @@ async function inspectBook(_rec: BookRecord) {
     aspect-ratio: 1 / 1;
     min-width: 3rem;
     font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .play-icon {
     position: absolute;
     z-index: 1;
-    background-color: #0000004f;
+    background-color: #00000069;
     width: 100%;
     height: 100%;
     visibility: hidden;

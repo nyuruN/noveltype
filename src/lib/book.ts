@@ -166,6 +166,7 @@ export class Chapter {
     }
     goTo(paragraph: number) {
         this.caret.p = paragraph
+        this.caret.l = 0
         if (this.paragraphs[paragraph]) this.paragraphs[paragraph].render()
         if (this.paragraphs[paragraph + 1]) this.paragraphs[paragraph + 1].render()
     }
@@ -274,10 +275,26 @@ export class Paragraph {
      * Renders the each word as individual letters (expensive!)
      */
     render() {
+        if (this.isRendered) {
+            this.reset()
+            return;
+        }
+
         this.words.forEach((word) => {
             word.render()
         })
         this.isRendered = true
+    }
+    /**
+     * Resets paragraph typing state
+     */
+    reset() {
+        this.words.forEach(word => {
+            word.cLetters = []
+            word.error = false
+            word.overflow = []
+            word.typed = false
+        })
     }
     getWordLetterIdx(index: number): [number, number] {
         let i = 0, j = 0
