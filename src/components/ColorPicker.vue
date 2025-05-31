@@ -38,7 +38,7 @@ function userInput() {
 <template>
     <div class="flex" style="align-items: stretch; gap: .5rem;">
         <input type="color" class="color-input" v-model="inputValue" @input="refresh" />
-        <input type="text" class="text-input button" :placeholder="inputValue" style="overflow: auto"
+        <input type="text" class="text-input button" :name="props.label" :placeholder="inputValue" style="overflow: auto"
             v-model="inputText" @change="userInput" onfocus="this.select()" />
         <button class="button" style="width: auto; padding: 0.5rem;" @click="reset">
             <font-awesome-icon :icon="['fas', 'rotate-left']" fixed-width />

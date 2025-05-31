@@ -44,12 +44,6 @@ useThemeStore()
 </template>
 
 <style>
-@media screen and (max-width: 950px) {
-  .nav-item span {
-    display: none;
-  }
-}
-
 .nav-item {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -76,6 +70,22 @@ useThemeStore()
   background-color: var(--ui-nav-bg);
   border-right: 1px solid var(--ui-border);
 }
+
+@media screen and (max-width: 950px) {
+  .nav-item span {
+    display: none;
+  }
+
+  .nav-item {
+    width: fit-content;
+    padding: 0.8rem 0.6rem;
+  }
+
+  .nav {
+    width: fit-content;
+  }
+}
+
 
 .view-container {
   flex-grow: 1;
