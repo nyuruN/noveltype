@@ -24,7 +24,7 @@ async function loadEpub(e: Event) {
         await saveEpubFile(input.files[0])
     }
 }
-async function openBook(filename: string, _: number) {
+async function openBook(filename: string, chapterIdx?: number) {
     if (book.value?.record.filename == filename) {
         showTyper.value = true;
         return;
@@ -34,42 +34,114 @@ async function openBook(filename: string, _: number) {
     let epub = await library.loadBook(file)
 
     book.value = epub
-    chapter.value = await epub.getChapter(0)
+    chapter.value = await epub.getChapter(chapterIdx ? chapterIdx : 0)
     showTyper.value = true
 }
 async function triggerInput() {
     document.getElementById('file-input')?.click();
 }
-async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
-    event.stopPropagation()
-
+async function inspectBook(_rec: BookRecord) {
     // Change view to book inspection
+}
+async function openBookAt(filename: string, chapterIdx: number, paragraphIdx: number) {
+    openBook(filename, chapterIdx);
+
+    if (chapter.value) {
+        chapter.value.caret.p = paragraphIdx
+        if (chapter.value.paragraphs[paragraphIdx]) chapter.value.paragraphs[paragraphIdx].render()
+        if (chapter.value.paragraphs[paragraphIdx + 1]) chapter.value.paragraphs[paragraphIdx + 1].render()
+    }
 }
 </script>
 
 <template>
     <h1>Library</h1>
-    <div class="book-container flex" style="margin-top: 2rem;">
-        <div class="card relative" @click="openBook(book.filename, index)" v-for="(book, index) in library.books">
-            <div class="card-more" @click="event => inspectBook(event, book, index)">
-                <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
-            </div>
-            <div class="card-image relative">
-                <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center"/>
-            </div>
-            <div class="card-text">{{ book.title }}</div>
+
+    <div class="container" v-if="library.hasBookmarks">
+        <h2 style="margin: 0.5rem 0 1rem;">Bookmarks</h2>
+        <div class="bookmarks flex-col" style="gap: 1rem;">
+            <template v-for="book in library.books">
+                <div class="bookmark flex" v-for="bookmark in book.bookmarks">
+                    <div class="cover relative"
+                        @click="openBookAt(book.filename, bookmark.chapter, bookmark.paragraph)">
+                        <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
+                        <div class="play-icon">
+                            <font-awesome-icon :icon="['fas', 'play']" fixed-width class="absolute-center" />
+                        </div>
+                    </div>
+                    <span> {{ book.title }} </span>
+                    <span> {{ book.toc[bookmark.chapter] }} </span>
+                    <span> Chapter {{ bookmark.chapter + 1 }} </span>
+                    <span> Progress: {{ (bookmark.progress * 100).toFixed(1) }}% </span>
+                </div>
+            </template>
         </div>
-        <div class="card" @click="triggerInput">
-            <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
-            <div class="card-image relative">
-                <font-awesome-icon :icon="['fas', 'plus']" fixed-width class="absolute-center"/>
+    </div>
+
+    <div class="container" style="margin-top: 2rem;">
+        <h2 style="margin: 0.5rem 0 1rem;">My Books</h2>
+        <div class="cards flex">
+            <div class="card relative" @click="openBook(book.filename)" v-for="(book) in library.books">
+                <div class="card-more" @click.stop="inspectBook(book)">
+                    <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
+                </div>
+                <div class="card-image relative">
+                    <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
+                </div>
+                <div class="card-text">{{ book.title }}</div>
             </div>
-            <div class="card-text">Upload from device</div>
+            <div class="card" @click="triggerInput">
+                <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
+                <div class="card-image relative">
+                    <font-awesome-icon :icon="['fas', 'plus']" fixed-width class="absolute-center" />
+                </div>
+                <div class="card-text">Upload from device</div>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+.cover {
+    background-color: hsl(0 0 55);
+    color: hsl(0 0 90);
+    aspect-ratio: 1 / 1;
+    min-width: 3rem;
+    font-size: 1.5rem;
+}
+
+.play-icon {
+    position: absolute;
+    z-index: 1;
+    background-color: #0000004f;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+}
+
+.bookmark:hover .play-icon {
+    visibility: visible;
+}
+
+.bookmark {
+    width: 100%;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.bookmark:hover {
+    background-color: var(--ui-card-hover);
+}
+
+.container {
+    border-radius: 12px;
+    padding: 1rem;
+    gap: 1.2rem;
+    overflow: hidden;
+    background-color: var(--ui-content-bg);
+    border: 1px solid var(--ui-content-border);
+}
+
 .card-more {
     position: absolute;
     top: 0;
@@ -98,6 +170,7 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
     height: 75%;
     border-radius: 8px;
     font-size: 8rem;
+    overflow: hidden;
 }
 
 .card-text {
@@ -122,7 +195,7 @@ async function inspectBook(event: Event, _rec: BookRecord, _idx: number) {
     cursor: pointer;
 }
 
-.book-container {
+.cards {
     flex-wrap: wrap;
     gap: 1rem;
 }

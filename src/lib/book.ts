@@ -25,9 +25,9 @@ export class Book {
         this.tocHref = tocHref
         this.record = {
             toc: toc,
-            chapterCount: toc.length,
-
+            bookmarks: [],
             filename: filename,
+
             author: metadata.creator,
             title: metadata.title,
             description: metadata.creator,
@@ -181,7 +181,7 @@ export class Chapter {
     }
     next(): Promise<Chapter> | undefined {
         let book = this.book.deref()
-        return (book && this.index < book.record.chapterCount - 1) ? book.getChapter(this.index + 1) : undefined
+        return (book && this.index < book.record.toc.length - 1) ? book.getChapter(this.index + 1) : undefined
     }
     prev(): Promise<Chapter> | undefined {
         let book = this.book.deref()

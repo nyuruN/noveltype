@@ -116,7 +116,7 @@ async function acceptPersistantToggle(persistant: boolean) {
 
 .option-container {
     border-radius: 12px;
-    padding: 1rem 1.5rem;
+    padding: 1rem;
     gap: 1.2rem;
     background-color: var(--ui-content-bg);
     border: 1px solid var(--ui-content-border)

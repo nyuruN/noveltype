@@ -2,9 +2,16 @@
 import { storeToRefs } from 'pinia'
 import { useTypingStore } from '@/stores/typing';
 import { useSettingsStore } from '@/stores/settings';
+import { type Bookmark } from '@/stores/library';
+import { computed } from 'vue';
+
 
 const { book, chapter, showTyper, showToc } = storeToRefs(useTypingStore())
 const { typing } = storeToRefs(useSettingsStore())
+
+const isBookmarked = computed(() => {
+    return book.value?.record.bookmarks.find(bookmark => bookmark.chapter == chapter.value?.index) !== undefined;
+})
 
 async function next() { let p = chapter.value?.next(); if (p) { chapter.value = await p } }
 async function prev() { let p = chapter.value?.prev(); if (p) { chapter.value = await p } }
@@ -17,6 +24,24 @@ async function smaller() {
     typing.value.typingLineScale = typing.value.typingLineScale - 0.1
 }
 async function bookmark() {
+    if (!chapter.value || !book.value) {
+        return;
+    }
+
+    if (isBookmarked.value) {
+        let idx = book.value.record.bookmarks.findIndex(bookmark => bookmark.chapter == chapter.value?.index) as number
+        if (idx != -1) {
+            console.log(book.value.record.bookmarks.splice(idx, 1))
+        }
+    } else {
+        const bookmark = {
+            chapter: chapter.value.index,
+            paragraph: chapter.value.caret.p,
+            progress: chapter.value.caret.p / (chapter.value.paragraphs.length - 1),
+        } as Bookmark;
+        console.log(bookmark)
+        book.value.record.bookmarks.push(bookmark)
+    }
 }
 </script>
 
@@ -43,7 +68,8 @@ async function bookmark() {
 
         <div v-if="chapter" style="margin: 0 .3rem; display: flex;">
             <button @click="bookmark" class="menu-button" style="padding: .4rem .3rem;">
-                <font-awesome-icon :icon="['far', 'bookmark']" fixed-width />
+                <font-awesome-icon :icon="['fas', 'bookmark']" fixed-width v-if="isBookmarked" />
+                <font-awesome-icon :icon="['far', 'bookmark']" fixed-width v-else />
             </button>
             <button @click="larger" class="menu-button" style="padding: .4rem .3rem;">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass-plus']" fixed-width />
