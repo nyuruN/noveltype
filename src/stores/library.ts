@@ -3,7 +3,7 @@ import { Book } from '../lib/book'
 import ePub from 'epubjs'
 
 export interface BookRecord {
-  toc: [string, string][]
+  toc: string[]
   chapterCount: number
 
   filename: string

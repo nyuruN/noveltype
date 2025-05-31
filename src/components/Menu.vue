@@ -16,6 +16,8 @@ async function smaller() {
     typing.value.typingFontScale = typing.value.typingFontScale - 0.1
     typing.value.typingLineScale = typing.value.typingLineScale - 0.1
 }
+async function bookmark() {
+}
 </script>
 
 <template>
@@ -40,6 +42,9 @@ async function smaller() {
         <div class="grow"></div>
 
         <div v-if="chapter" style="margin: 0 .3rem; display: flex;">
+            <button @click="bookmark" class="menu-button" style="padding: .4rem .3rem;">
+                <font-awesome-icon :icon="['far', 'bookmark']" fixed-width />
+            </button>
             <button @click="larger" class="menu-button" style="padding: .4rem .3rem;">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass-plus']" fixed-width />
             </button>
@@ -68,7 +73,9 @@ async function smaller() {
     padding: .3rem;
     background-color: var(--typing-menu-bg);
     border-radius: 10px;
+    max-width: 80%;
     width: 60rem;
+    min-width: fit-content;
 
     box-shadow: 0px 0px 16px 0px var(--typing-menu-bg);
 }

@@ -16,9 +16,9 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
             pointerEvents: showToc ? 'auto' : 'none'
         }">
             <h2 style="padding-left: 1.5rem;">{{ book?.record.title }}</h2>
-            <template v-for="(arr, index) in book?.record.toc">
+            <template v-for="(title, index) in book?.record.toc">
                 <ul @click="toChapter(index)" :class="{ selected: index == chapter?.index }">
-                    {{ arr[0] }}
+                    {{ title }}
                 </ul>
             </template>
         </div>

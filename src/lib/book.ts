@@ -10,16 +10,19 @@ export class Book {
     constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
         this.epub = epub
 
-        let toc: [string, string][] = []
+        let toc: string[] = []
+        let tocHref: string[] = []
 
         let last = this.epub.spine.last().index
         for (let i = 0; i <= last; i++) {
             let section = this.epub.spine.get(i)
             let navItem = nav.get('#' + section.idref) || nav.get(section.href)
             let label = navItem ? navItem.label : 'undefined'
-            toc.push([label, section.href])
+            toc.push(label)
+            tocHref.push(section.href)
         }
 
+        this.tocHref = tocHref
         this.record = {
             toc: toc,
             chapterCount: toc.length,
@@ -36,9 +39,10 @@ export class Book {
 
     epub: EPub
     record: BookRecord
+    tocHref: string[] = []
 
     async getChapter(n: number): Promise<Chapter> {
-        let href = this.record.toc[n][1]
+        let href = this.tocHref[n]
         let doc = await this.epub.load(href) as XMLDocument
 
         return new Chapter(this, n, doc)
