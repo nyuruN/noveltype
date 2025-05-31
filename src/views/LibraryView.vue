@@ -24,8 +24,9 @@ async function loadEpub(e: Event) {
         await saveEpubFile(input.files[0])
     }
 }
-async function openBook(filename: string, chapterIdx?: number) {
+async function openBook(filename: string, chapterIdx?: number, paragraphIdx?: number) {
     if (book.value?.record.filename == filename) {
+        chapter.value?.goTo(paragraphIdx ? paragraphIdx : 0)
         showTyper.value = true;
         return;
     }
@@ -35,6 +36,8 @@ async function openBook(filename: string, chapterIdx?: number) {
 
     book.value = epub
     chapter.value = await epub.getChapter(chapterIdx ? chapterIdx : 0)
+    chapter.value.goTo(paragraphIdx ? paragraphIdx : 0)
+
     showTyper.value = true
 }
 async function triggerInput() {
@@ -42,15 +45,6 @@ async function triggerInput() {
 }
 async function inspectBook(_rec: BookRecord) {
     // Change view to book inspection
-}
-async function openBookAt(filename: string, chapterIdx: number, paragraphIdx: number) {
-    openBook(filename, chapterIdx);
-
-    if (chapter.value) {
-        chapter.value.caret.p = paragraphIdx
-        if (chapter.value.paragraphs[paragraphIdx]) chapter.value.paragraphs[paragraphIdx].render()
-        if (chapter.value.paragraphs[paragraphIdx + 1]) chapter.value.paragraphs[paragraphIdx + 1].render()
-    }
 }
 </script>
 
@@ -63,7 +57,7 @@ async function openBookAt(filename: string, chapterIdx: number, paragraphIdx: nu
             <template v-for="book in library.books">
                 <div class="bookmark flex" v-for="bookmark in book.bookmarks">
                     <div class="cover relative"
-                        @click="openBookAt(book.filename, bookmark.chapter, bookmark.paragraph)">
+                        @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
                         <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
                         <div class="play-icon">
                             <font-awesome-icon :icon="['fas', 'play']" fixed-width class="absolute-center" />

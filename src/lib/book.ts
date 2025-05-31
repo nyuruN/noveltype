@@ -56,22 +56,20 @@ export class Chapter {
         this.index = index
 
         const paragraphs = doc.querySelectorAll('p, blockquote, li, pre, h1, h2, h3, h4, h5, h6');
+        let idx = 0;
         paragraphs.forEach(el => {
             let text = (el as HTMLElement).innerText.trim()
 
             if (text) {
                 // Clean text
-                text = text.replace(/[\t\r\v\f\b\0]/g, '');
+                text = text.replace(/[\t\r\v\f\b\0]/g, '')
                 text = text.replace(/\n/g, ' ')
                 text = text.replace(/  +/g, ' ')
                 text = removeFancyTypography(text)
-                this.paragraphs.push(new Paragraph(text));
+                this.paragraphs.push(new Paragraph(text, idx))
+                idx++
             }
         });
-
-        // Buffer one rendered paragraph
-        if (this.paragraphs[0]) this.paragraphs[0].render();
-        if (this.paragraphs[1]) this.paragraphs[1].render();
     }
 
     book: WeakRef<Book>
@@ -166,6 +164,11 @@ export class Chapter {
         caret.style['top'] = offset.top + 'px'
         caret.style['left'] = offset.left + 'px'
     }
+    goTo(paragraph: number) {
+        this.caret.p = paragraph
+        if (this.paragraphs[paragraph]) this.paragraphs[paragraph].render()
+        if (this.paragraphs[paragraph + 1]) this.paragraphs[paragraph + 1].render()
+    }
     /**
      * Call when chapter layout has changed
      */
@@ -190,15 +193,17 @@ export class Chapter {
 }
 
 export class Paragraph {
-    constructor(text: string) {
+    constructor(text: string, index: number) {
         this.source = text
         this.words = this.source.split(' ').map((word: string): Word => {
             return new Word(word)
         })
+        this.index = index
     }
 
     words: Word[] = []
     source: string
+    index: number
     /**
      * Indicates whether each word should render as indivudual letters
      */
@@ -217,7 +222,7 @@ export class Paragraph {
         }
         if (!this.started) {
             this.started = true;
-            useStatsStore().beginParagraph()
+            useStatsStore().beginParagraph(this.index)
         }
 
         let [wid, lid] = this.getWordLetterIdx(idx)
@@ -263,7 +268,7 @@ export class Paragraph {
         store.typeWord(lastWord)
         lastWord.typed = true
 
-        store.endParagraph()
+        store.endParagraph(this.index)
     }
     /**
      * Renders the each word as individual letters (expensive!)

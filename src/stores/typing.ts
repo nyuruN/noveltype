@@ -67,19 +67,19 @@ export const useStatsStore = defineStore('stats', () => {
     // Clear stats
     let { chapter } = storeToRefs(useTypingStore())
     watch(chapter, () => {
-        paragraphWPMs.value = []
+        paragraphWPMs.value = new Array(chapter.value?.paragraphs.length)
     })
 
     function beginChapter() {
     }
     function endChapter() {
     }
-    function beginParagraph() {
+    function beginParagraph(_: number) {
         wpmCounter.value.beginTyping()
     }
-    function endParagraph() {
+    function endParagraph(p: number) {
         wpmCounter.value.endTyping()
-        paragraphWPMs.value.push(wpmCounter.value.get())
+        paragraphWPMs.value[p] = wpmCounter.value.get()
     }
     /**
      * @param length length of the typed word
