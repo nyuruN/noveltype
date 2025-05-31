@@ -5,7 +5,8 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faFolderOpen, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faRotateLeft, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faRotateLeft, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+import { faBookmark as farBookmark} from '@fortawesome/free-regular-svg-icons'
 
 import App from './views/App.vue'
 import LibraryView from './views/LibraryView.vue'
@@ -18,41 +19,44 @@ import '@/style.css'
 // Font-Awesome Icon definitions
 library.add(
     // Menu navigation
+    faHouse,
     faBars,
     faCaretLeft,
     faCaretRight,
     faMagnifyingGlassPlus,
     faMagnifyingGlassMinus,
-
-    faBook,
     faBookmark,
-    faBookOpen,
-    faFolderOpen,
-    faTurnDown,
-    faGear,
-    faHouse,
-    faPlus,
-    faPlay,
+    farBookmark,
+
+    // Typing view
     faKeyboard,
+    faTurnDown,
+
+    // Library view
+    faBookOpen,
+    faPlus,
+    faBook,
     faEllipsis,
+
+    // Settings view
+    faTriangleExclamation,
+    faTrash,
+    faGear,
+
+    // Themes view
+    faPalette,
+    faRotateLeft,
+
+    faPlay,
     faImage,
     faCloud,
-    faTrash,
     faDeleteLeft,
-    // Edit
     faPen,
     faPenToSquare,
-    faRotateLeft,
-    // Importance
     faCircleExclamation,
-    faTriangleExclamation,
     faStar,
-    // Theme
     faBrush,
     faPaintRoller,
-    faPalette,
-
-
 )
 
 const routes = [
