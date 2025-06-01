@@ -65,6 +65,19 @@ onMounted(() => {
         }
     })
 })
+
+// Toggles one paragraph specifically, bookmarking it if not already
+function toggleBookmarkAt(paragraph: number) {
+    if (!chapter.value) return
+
+    // Force bookmark this paragraph otherwise toggle
+    if (chapter.value.bookmark != paragraph) {
+        chapter.value.toggleBookmark() // Remove
+        chapter.value.toggleBookmark(paragraph)
+    } else {
+        chapter.value.toggleBookmark(paragraph)
+    }
+}
 </script>
 
 <template>
@@ -103,9 +116,9 @@ onMounted(() => {
                             acc: {{ (paragraphWPMs[index].acc * 100).toFixed(0) }}%
                         </div>
                     </template>
-                    <div style="font-size: 1.6em; margin-left: 0.5em" class="bookmark" v-if="chapter?.bookmark == index"
-                        @click="chapter.toggleBookmark()">
-                        <font-awesome-icon :icon="['fas', 'bookmark']" />
+                    <div style="font-size: 1.6em; margin-left: 0.5em" class="bookmark"
+                        @click="toggleBookmarkAt(index)" :class="{ inactive: chapter?.bookmark != index }">
+                        <font-awesome-icon :icon="[chapter?.bookmark == index ? 'fas' : 'far', 'bookmark']" />
                     </div>
                 </div>
             </div>

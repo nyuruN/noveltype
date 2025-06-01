@@ -159,9 +159,10 @@ export class Chapter {
         if (this.paragraphs[paragraph + 1]) this.paragraphs[paragraph + 1].render()
     }
     /**
-     *  Toggled the bookmark on this chapter (one per chapter only)
+     * Toggles the bookmark on this chapter (one per chapter only)
+     * @param paragraph specifies which paragraph to enable
      */
-    toggleBookmark() {
+    toggleBookmark(paragraph?: number) {
         let book = this.book.deref()
         if (!book) {
             return;
@@ -177,8 +178,8 @@ export class Chapter {
         } else {
             const bookmark = {
                 chapter: this.index,
-                paragraph: this.caret.p,
-                progress: this.caret.p / (this.paragraphs.length - 1),
+                paragraph: paragraph ? paragraph : this.caret.p,
+                progress: (paragraph ? paragraph : this.caret.p) / (this.paragraphs.length - 1),
             } as Bookmark;
             console.log(bookmark)
             book.record.bookmarks.push(bookmark)
