@@ -149,7 +149,7 @@ export class Chapter {
             // Update caret
             this.caret.p++
             this.caret.l = 0
-            nextTick().then(() => this.refreshCaret())
+            nextTick().then(() => this.refreshCaret(true))
         }
     }
     goTo(paragraph: number) {
@@ -197,13 +197,14 @@ export class Chapter {
 
         if (paragraph) {
             let offset = this.paragraphs[this.caret.p].getLetterOffset(paragraph, this.caret.l)
+
             caret.style['top'] = offset.top + 'px'
             caret.style['left'] = offset.left + 'px'
 
             if (scroll && offset.top - caret.offsetTop != 0) {
                 scrollToNextCaretPos(offset.top - caret.offsetTop)
             }
-        } else if (scroll) { // Handle empty chapter
+     } else if (scroll) { // Handle empty chapter
             caret.style['top'] = '0px'
             caret.style['left'] = '0px'
             scrollToNextCaretPos(-caret.offsetTop)

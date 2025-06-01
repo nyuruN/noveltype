@@ -71,7 +71,7 @@ function toggleBookmarkAt(paragraph: number) {
     if (!chapter.value) return
 
     // Force bookmark this paragraph otherwise toggle
-    if (chapter.value.bookmark != paragraph) {
+    if (chapter.value.bookmark != paragraph && chapter.value.bookmark != undefined) {
         chapter.value.toggleBookmark() // Remove
         chapter.value.toggleBookmark(paragraph)
     } else {

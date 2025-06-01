@@ -56,7 +56,7 @@ async function inspectBook(_rec: BookRecord) {
         <h2 style="margin: 0.5rem 0 1rem;">Bookmarks</h2>
         <div class="bookmarks flex-col" style="gap: 1rem;">
             <template v-for="book in library.books">
-                <div class="bookmark flex" v-for="bookmark in book.bookmarks">
+                <div class="bookmark-entry flex" v-for="bookmark in book.bookmarks">
                     <div class="cover relative" @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
                         <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
                         <div class="play-icon">
@@ -114,17 +114,17 @@ async function inspectBook(_rec: BookRecord) {
     visibility: hidden;
 }
 
-.bookmark:hover .play-icon {
+.bookmark-entry:hover .play-icon {
     visibility: visible;
 }
 
-.bookmark {
+.bookmark-entry {
     width: 100%;
     gap: 1.5rem;
     align-items: center;
 }
 
-.bookmark:hover {
+.bookmark-entry:hover {
     background-color: var(--ui-card-hover);
 }
 
