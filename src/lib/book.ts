@@ -92,6 +92,7 @@ export class Chapter {
             this.started = true;
             useStatsStore().beginChapter()
         }
+        if (!this.paragraphs[this.caret.p]) return
 
         let movement = this.paragraphs[this.caret.p].input(key, this.caret.l)
         this.moveCaret(movement)
@@ -216,6 +217,10 @@ export class Chapter {
             if (scroll) {
                 scrollToNextCaretPos(offset.top - caret.offsetTop)
             }
+        } else if (scroll) { // Handle empty chapter
+            caret.style['top'] = '0px'
+            caret.style['left'] = '0px'
+            scrollToNextCaretPos(-caret.offsetTop)
         }
     }
     /**

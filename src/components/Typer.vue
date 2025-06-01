@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted, onUpdated, watch } from 'vue'
+import { nextTick, onMounted, onUpdated, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useStatsStore, useTypingStore } from '@/stores/typing'
 import { useSettingsStore } from '@/stores/settings'
 
-const { chapter, isFocused } = storeToRefs(useTypingStore())
+const { chapter, isFocused, showTyper } = storeToRefs(useTypingStore())
 const { paragraphWPMs } = storeToRefs(useStatsStore())
 const { typing } = storeToRefs(useSettingsStore())
 
@@ -52,9 +52,22 @@ onUpdated(() => resizeObserver.observe(document.getElementById('typing-area') as
 
 // Scroll to caret when entering focused state
 onMounted(() => {
+    // Scroll on focus
     watch(isFocused, (focused) => {
         if (focused) {
             chapter.value?.refreshCaret(true)
+        }
+    })
+    // Scroll on typing view opened
+    watch(showTyper, (shown) => {
+        if (shown && chapter.value) {
+            nextTick().then(() => chapter.value?.refreshCaret(true))
+        }
+    })
+    // Scroll on chapter change
+    watch(chapter, (ch) => {
+        if (ch) {
+            nextTick().then(() => ch.refreshCaret(true))
         }
     })
 })

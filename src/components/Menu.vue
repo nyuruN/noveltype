@@ -7,8 +7,14 @@ import { useSettingsStore } from '@/stores/settings';
 const { book, chapter, showTyper, showToc } = storeToRefs(useTypingStore())
 const { typing } = storeToRefs(useSettingsStore())
 
-async function next() { let p = chapter.value?.next(); if (p) chapter.value = await p }
-async function prev() { let p = chapter.value?.prev(); if (p) chapter.value = await p }
+async function next() {
+    let p = chapter.value?.next();
+    if (p) chapter.value = await p
+}
+async function prev() {
+    let p = chapter.value?.prev();
+    if (p) chapter.value = await p
+}
 function larger() {
     typing.value.typingFontScale = typing.value.typingFontScale + 0.1
     typing.value.typingLineScale = typing.value.typingLineScale + 0.1

@@ -3,16 +3,14 @@ import { useTypingStore } from '@/stores/typing';
 import TypingView from './TypingView.vue';
 import { storeToRefs } from 'pinia';
 import { useThemeStore } from '@/stores/theme';
-import { nextTick } from 'vue';
 
-const { chapter, showTyper } = storeToRefs(useTypingStore())
+const { showTyper } = storeToRefs(useTypingStore())
 
 // Init theme
 useThemeStore()
 
 function resumeTyping() {
   showTyper.value = true
-  nextTick().then(() => chapter.value?.refreshCaret(true))
 }
 </script>
 
