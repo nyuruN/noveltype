@@ -176,10 +176,11 @@ export class Chapter {
                 console.log(book.record.bookmarks.splice(idx, 1))
             }
         } else {
+            const p = (paragraph !== undefined) ? paragraph : this.caret.p
             const bookmark = {
                 chapter: this.index,
-                paragraph: paragraph ? paragraph : this.caret.p,
-                progress: (paragraph ? paragraph : this.caret.p) / (this.paragraphs.length - 1),
+                paragraph: p,
+                progress: p / (this.paragraphs.length - 1),
             } as Bookmark;
             console.log(bookmark)
             book.record.bookmarks.push(bookmark)
