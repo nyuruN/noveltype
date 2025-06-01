@@ -5,6 +5,7 @@ import type { Bookmark, BookRecord } from '../stores/library';
 import { removeFancyTypography, scrollToNextCaretPos, type Offset } from './utils';
 import { useStatsStore, } from '@/stores/typing';
 import { useSettingsStore } from '@/stores/settings';
+import { nextTick } from 'vue';
 
 export class Book {
     constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
@@ -94,15 +95,15 @@ export class Chapter {
         }
         if (!this.paragraphs[this.caret.p]) return
 
-        let movement = this.paragraphs[this.caret.p].input(key, this.caret.l)
-        this.moveCaret(movement)
+        this.caret.l += this.paragraphs[this.caret.p].input(key, this.caret.l)
+        nextTick().then(() => this.refreshCaret(true))
     }
     /**
      * Required for undoing errors
      */
     backspace() {
-        let movement = this.paragraphs[this.caret.p].backspace(this.caret.l)
-        this.moveCaret(movement)
+        this.caret.l += this.paragraphs[this.caret.p].backspace(this.caret.l)
+        nextTick().then(() => this.refreshCaret(true))
     }
     /**
      * Call when enter is pressed
@@ -131,42 +132,15 @@ export class Chapter {
                 useStatsStore().endChapter()
                 return
             }
-            this.caret.p++
-            this.caret.l = 0
 
-            let p = document.getElementsByClassName('paragraph')[this.caret.p]
-            let offset = this.paragraphs[this.caret.p].getLetterOffset(p as HTMLElement, this.caret.l)
-            let caret = document.getElementById('caret') as HTMLElement;
-
-            caret.style['top'] = offset.top + 'px'
-            caret.style['left'] = offset.left + 'px'
-
-            scrollToNextCaretPos(offset.top - caret.offsetTop)
             // Buffer one rendered paragraph
             if (this.paragraphs[this.caret.p + 1]) this.paragraphs[this.caret.p + 1].render();
+
+            // Update caret
+            this.caret.p++
+            this.caret.l = 0
+            nextTick().then(() => this.refreshCaret())
         }
-    }
-    moveCaret(movement: number) {
-        this.caret.l += movement;
-
-        let p = document.getElementsByClassName('paragraph')[this.caret.p]
-        let offset = this.paragraphs[this.caret.p].getLetterOffset(p as HTMLElement, this.caret.l)
-
-        // Distinguish caret position and actual offset
-        if (offset.left == 0 && offset.top == 0) {
-            return
-        }
-
-        let caret = document.getElementById('caret') as HTMLElement
-
-        // Caret line changed (Scroll update)
-        if (caret.offsetTop != offset.top) {
-            console.log('line changed')
-            scrollToNextCaretPos(offset.top - caret.offsetTop)
-        }
-
-        caret.style['top'] = offset.top + 'px'
-        caret.style['left'] = offset.left + 'px'
     }
     goTo(paragraph: number) {
         this.caret.p = paragraph
@@ -214,7 +188,7 @@ export class Chapter {
             caret.style['top'] = offset.top + 'px'
             caret.style['left'] = offset.left + 'px'
 
-            if (scroll) {
+            if (scroll && offset.top - caret.offsetTop != 0) {
                 scrollToNextCaretPos(offset.top - caret.offsetTop)
             }
         } else if (scroll) { // Handle empty chapter
@@ -511,6 +485,9 @@ export class Word {
     render() {
         this.letters = this.word.split('')
     }
+    /**
+     * Should be called on the next tick!
+     */
     getOffset(w: HTMLElement, idx: number): Offset {
         // Normal letter
         if (idx < this.letters.length) {
@@ -520,27 +497,11 @@ export class Word {
                 left: l.offsetLeft
             }
         } else {
-            let overflow = Math.max(this.overflow.length - 1, 0)
-
-            let overflowLetter = w.getElementsByClassName('letter')[idx + overflow] as HTMLElement
-
-            // Sadly, because the offset is immediately needed after input()
-            // we may not use the last overflow letter since it is unrendered
-            if (overflowLetter) {
-                return {
-                    top: overflowLetter.offsetTop,
-                    left: overflowLetter.offsetLeft + overflowLetter.getBoundingClientRect().width
-                }
-            } else {
-                let l = w.getElementsByClassName('letter')[idx - 1 + overflow] as HTMLElement
-                let width = l.getBoundingClientRect().width
-                // We can only estimate based on the current letter width
-                return {
-                    top: l.offsetTop,
-                    left: l.offsetLeft + width * (this.overflow.length ? 2 : 1)
-                }
+            let l = w.getElementsByClassName('letter')[idx - 1 + this.overflow.length] as HTMLElement
+            return {
+                top: l.offsetTop,
+                left: l.offsetLeft + l.getBoundingClientRect().width
             }
-
         }
     }
 }

@@ -27,18 +27,12 @@ document.addEventListener('keydown', async (event: Event) => {
             isFocused.value = true
             chapter.value.backspace()
         }
-
     }
 
     // Next Chapter if completed
     if (chapter.value && chapter.value.finished) {
         chapter.value = await chapter.value.next();
-        // Reset scroll to top
-        let container = (document.getElementById('typer-wrapper') as HTMLElement)
-        container.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        })
+        await nextTick().then(() => chapter.value?.refreshCaret(true))
     }
 })
 
