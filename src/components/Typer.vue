@@ -21,7 +21,7 @@ document.addEventListener('keydown', async (event: Event) => {
         } else if (key === 'Enter') {
             keyevent.preventDefault()
             isFocused.value = true
-            chapter.value?.enter()
+            chapter.value.enter()
         } else if (key === 'Backspace') {
             keyevent.preventDefault()
             isFocused.value = true
@@ -30,7 +30,7 @@ document.addEventListener('keydown', async (event: Event) => {
     }
 
     // Next Chapter if completed
-    if (chapter.value && chapter.value.finished) {
+    if (chapter.value && chapter.value.typed) {
         chapter.value = await chapter.value.next();
         await nextTick().then(() => chapter.value?.refreshCaret(true))
     }
@@ -110,17 +110,6 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        <template v-if="!chapter?.paragraphs[0]">
-            <div class="newline" style="padding: .2em">
-                <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
-                <div class="trailers">
-                    <div style="font-size: 1.6em; margin-left: 0.5em; margin-top: 0.2em;" class="bookmark"
-                        v-if="chapter?.bookmark == 0" @click="chapter.toggleBookmark()">
-                        <font-awesome-icon :icon="['fas', 'bookmark']" />
-                    </div>
-                </div>
-            </div>
-        </template>
     </div>
 </template>
 
@@ -129,6 +118,14 @@ onMounted(() => {
     font-size: 1.6em;
     margin-left: 0.5em;
     transition: color 0.1s ease;
+}
+
+.bookmark.inactive {
+    visibility: hidden;
+}
+
+.paragraph:hover .bookmark.inactive {
+    visibility: visible;
 }
 
 .bookmark:hover {

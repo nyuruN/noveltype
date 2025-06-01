@@ -72,6 +72,11 @@ export class Chapter {
                 idx++
             }
         });
+
+        if (this.paragraphs.length == 0) {
+            this.empty = true
+            this.paragraphs.push(new Paragraph('', 0))
+        }
     }
 
     book: WeakRef<Book>
@@ -80,7 +85,14 @@ export class Chapter {
     index: number
     // Bookmarked paragraph
     bookmark: number | undefined = undefined
-    finished: boolean = false
+    /**
+     * Indicates that the user has finished typing
+     */
+    typed: boolean = false
+    /**
+     * The chapter is empty and will finish on enter press
+     */
+    empty: boolean = false
     paragraphs: Paragraph[] = []
     caret = {
         p: 0,
@@ -93,7 +105,6 @@ export class Chapter {
             this.started = true;
             useStatsStore().beginChapter()
         }
-        if (!this.paragraphs[this.caret.p]) return
 
         this.caret.l += this.paragraphs[this.caret.p].input(key, this.caret.l)
         nextTick().then(() => this.refreshCaret(true))
@@ -109,14 +120,13 @@ export class Chapter {
      * Call when enter is pressed
      */
     enter() {
-        let paragraph = this.paragraphs[this.caret.p]
-
         // There is no chapter to begin with (blank page)
-        if (!paragraph) {
-            this.finished = true
+        if (this.empty) {
+            this.typed = true
             return
         }
 
+        let paragraph = this.paragraphs[this.caret.p]
         let stopOnError = useSettingsStore().typing.stopOnError !== undefined;
         let lastWord = paragraph.words[paragraph.words.length - 1]
         let isError = lastWord ? lastWord.error : false
@@ -128,7 +138,7 @@ export class Chapter {
 
             // The entire chapter was typed
             if (this.caret.p + 1 > this.paragraphs.length - 1) {
-                this.finished = true
+                this.typed = true
                 useStatsStore().endChapter()
                 return
             }
@@ -230,11 +240,13 @@ export class Paragraph {
             return new Word(word)
         })
         this.index = index
+        this.empty = text === ''
     }
 
     words: Word[] = []
     source: string
     index: number
+    empty: boolean
     /**
      * Indicates whether each word should render as indivudual letters
      */
@@ -246,21 +258,26 @@ export class Paragraph {
      * @returns Horizontal movement of the caret
      */
     input(key: string, idx: number): number {
+        // Ignore all input if empty
+        if (this.empty) return 0;
+
+        if (!this.started) {
+            this.started = true;
+            useStatsStore().beginParagraph(this.index)
+        }
+
         // Don't let Word.input() complete but allow overflows
         // Should be handled by Chapter.enter()
         // Also don't allow overflows if the last word was skipped
         if (idx == this.source.length && key == ' ' || this.words[this.words.length - 1].typed) {
             return 0;
         }
-        if (!this.started) {
-            this.started = true;
-            useStatsStore().beginParagraph(this.index)
-        }
 
         let [wid, lid] = this.getWordLetterIdx(idx)
         let move = this.words[wid].input(key, lid)
-        // Limit move within bounds of this.source
-        // Required for backspacing incomplete words (last word)
+
+        // Limit idx within bounds of this.source
+        // Required for backspacing last word
         return Math.min(move, this.source.length - idx)
     }
     /**
@@ -268,6 +285,9 @@ export class Paragraph {
      * @returns Horizontal movement of the caret
      */
     backspace(idx: number): number {
+        // Ignore all input if empty
+        if (this.empty) return 0;
+
         let [wid, lid] = this.getWordLetterIdx(idx)
 
         // Allow going back to previous words in freedom mode or on error
@@ -276,9 +296,6 @@ export class Paragraph {
             if (lastword && (lastword.error || useSettingsStore().typing.freedomMode)) {
                 useStatsStore().untypeWord(lastword)
                 lastword.typed = false
-                // Reset error states caused by skipping
-                lastword.error = !lastword.cLetters.every(value => value)
-
                 // Go immediately to last letter position if any
                 let lastLetterIdx = lastword.letters.length - lastword.cLetters.length
                 return -1 - lastLetterIdx
@@ -297,8 +314,10 @@ export class Paragraph {
         // Confirm last typed word paragraphs is typed
         let lastWord = this.words[this.words.length - 1];
 
-        store.typeWord(lastWord)
-        lastWord.typed = true
+        if (!lastWord.typed) {
+            store.typeWord(lastWord)
+            lastWord.typed = true
+        }
 
         store.endParagraph(this.index)
     }
@@ -342,7 +361,7 @@ export class Paragraph {
     }
     getLetterOffset(p: HTMLElement, index: number): Offset {
         // Choose first word when first changing paragraphs and when not rendered
-        if (!this.isRendered) {
+        if (!this.isRendered || this.empty) {
             let d = p.getElementsByClassName('word')[0] as HTMLElement
             return {
                 top: d.offsetTop,
@@ -451,7 +470,7 @@ export class Word {
      * Revert any errors caused by overflow bahaviour
      */
     backspace(idx: number): number {
-        // Because we can skip words, leaving them incomplete, we have to explicitly untype the last word
+        // Reset states caused by skipping (last word only)
         if (this.typed) {
             useStatsStore().untypeWord(this)
             this.typed = false
