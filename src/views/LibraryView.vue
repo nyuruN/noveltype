@@ -3,6 +3,7 @@ import { saveEpubFile, loadEpubFile } from '@/lib/db'
 import { useLibraryStore, type BookRecord } from '@/stores/library'
 import { useTypingStore } from '@/stores/typing'
 import { storeToRefs } from 'pinia'
+import { nextTick } from 'vue'
 
 const library = useLibraryStore()
 const { book, chapter, showTyper } = storeToRefs(useTypingStore())
@@ -25,24 +26,24 @@ async function loadEpub(e: Event) {
     }
 }
 async function openBook(filename: string, chapterIdx?: number, paragraphIdx?: number) {
-    // Is book opened?
-    if (book.value?.record.filename == filename) {
-        // Is chapter opened?
-        if (chapter.value?.index != chapterIdx) {
-            chapter.value = await book.value.getChapter(chapterIdx ? chapterIdx : 0)
-        }
-        chapter.value?.goTo(paragraphIdx ? paragraphIdx : 0)
-        showTyper.value = true;
-        return;
+    // Open book if not already
+    if (book.value?.record.filename != filename) {
+        let file = await loadEpubFile(filename)
+        let epub = await library.loadBook(file)
+
+        book.value = epub
+        chapter.value = await epub.getChapter(chapterIdx ? chapterIdx : 0)
+    }
+    // Open chapter if not already
+    else if (chapter.value?.index != chapterIdx) {
+        chapter.value = await book.value.getChapter(chapterIdx ? chapterIdx : 0)
     }
 
-    let file = await loadEpubFile(filename)
-    let epub = await library.loadBook(file)
-
-    book.value = epub
-    chapter.value = await epub.getChapter(chapterIdx ? chapterIdx : 0)
-    chapter.value.goTo(paragraphIdx ? paragraphIdx : 0)
+    chapter.value?.goTo(paragraphIdx ? paragraphIdx : 0)
     showTyper.value = true
+
+    await nextTick()
+    chapter.value?.refreshCaret(true)
 }
 async function triggerInput() {
     document.getElementById('file-input')?.click();

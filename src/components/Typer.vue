@@ -3,7 +3,6 @@ import { onMounted, onUpdated, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useStatsStore, useTypingStore } from '@/stores/typing'
 import { useSettingsStore } from '@/stores/settings'
-import { scrollToNextCaretPos } from '@/lib/utils'
 
 const { chapter, isFocused } = storeToRefs(useTypingStore())
 const { paragraphWPMs } = storeToRefs(useStatsStore())
@@ -55,7 +54,7 @@ onUpdated(() => resizeObserver.observe(document.getElementById('typing-area') as
 onMounted(() => {
     watch(isFocused, (focused) => {
         if (focused) {
-            scrollToNextCaretPos(0)
+            chapter.value?.refreshCaret(true)
         }
     })
 })

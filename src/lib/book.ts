@@ -202,8 +202,9 @@ export class Chapter {
     }
     /**
      * Call when chapter layout has changed
+     * @param scroll scrolls to the caret position with calculated offset
      */
-    refreshCaret() {
+    refreshCaret(scroll?: boolean) {
         let caret = document.getElementById('caret') as HTMLElement
         let paragraph = document.getElementsByClassName('paragraph')[this.caret.p] as HTMLElement
 
@@ -211,6 +212,10 @@ export class Chapter {
             let offset = this.paragraphs[this.caret.p].getLetterOffset(paragraph, this.caret.l)
             caret.style['top'] = offset.top + 'px'
             caret.style['left'] = offset.left + 'px'
+
+            if (scroll) {
+                scrollToNextCaretPos(offset.top - caret.offsetTop)
+            }
         }
     }
     /**

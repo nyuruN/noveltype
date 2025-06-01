@@ -3,11 +3,17 @@ import { useTypingStore } from '@/stores/typing';
 import TypingView from './TypingView.vue';
 import { storeToRefs } from 'pinia';
 import { useThemeStore } from '@/stores/theme';
+import { nextTick } from 'vue';
 
-const { showTyper } = storeToRefs(useTypingStore())
+const { chapter, showTyper } = storeToRefs(useTypingStore())
 
 // Init theme
 useThemeStore()
+
+function resumeTyping() {
+  showTyper.value = true
+  nextTick().then(() => chapter.value?.refreshCaret(true))
+}
 </script>
 
 <template>
@@ -29,7 +35,7 @@ useThemeStore()
           </button>
         </div>
         <div class="grow"></div>
-        <button class="nav-item" style="font-size: 1.1rem" @click="showTyper = true">
+        <button class="nav-item" style="font-size: 1.1rem" @click="resumeTyping">
           <font-awesome-icon :icon="['fas', 'keyboard']" fixed-width />
           <span style="margin-left: 0.5rem;">Resume</span>
         </button>
