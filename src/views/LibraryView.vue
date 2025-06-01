@@ -42,7 +42,6 @@ async function openBook(filename: string, chapterIdx?: number, paragraphIdx?: nu
     book.value = epub
     chapter.value = await epub.getChapter(chapterIdx ? chapterIdx : 0)
     chapter.value.goTo(paragraphIdx ? paragraphIdx : 0)
-
     showTyper.value = true
 }
 async function triggerInput() {

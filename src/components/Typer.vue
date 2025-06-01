@@ -5,7 +5,7 @@ import { useStatsStore, useTypingStore } from '@/stores/typing'
 import { useSettingsStore } from '@/stores/settings'
 import { scrollToNextCaretPos } from '@/lib/utils'
 
-const { book, chapter, isFocused } = storeToRefs(useTypingStore())
+const { chapter, isFocused } = storeToRefs(useTypingStore())
 const { paragraphWPMs } = storeToRefs(useStatsStore())
 const { typing } = storeToRefs(useSettingsStore())
 
@@ -19,26 +19,27 @@ document.addEventListener('keydown', async (event: Event) => {
             keyevent.preventDefault()
             isFocused.value = true
             chapter.value.input(key)
-
         } else if (key === 'Enter') {
             keyevent.preventDefault()
             isFocused.value = true
             chapter.value?.enter()
-
-            // Next Chapter if completed
-            if (chapter.value.finished) {
-                chapter.value = await chapter.value.next();
-                let container = (document.getElementById('typer-wrapper') as HTMLElement)
-                container.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                })
-            }
         } else if (key === 'Backspace') {
             keyevent.preventDefault()
             isFocused.value = true
             chapter.value.backspace()
         }
+
+    }
+
+    // Next Chapter if completed
+    if (chapter.value && chapter.value.finished) {
+        chapter.value = await chapter.value.next();
+        // Reset scroll to top
+        let container = (document.getElementById('typer-wrapper') as HTMLElement)
+        container.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
     }
 })
 
@@ -96,8 +97,8 @@ onMounted(() => {
                             acc: {{ (paragraphWPMs[index].acc * 100).toFixed(0) }}%
                         </div>
                     </template>
-                    <div style="font-size: 1.6em; margin-left: 0.5em"
-                        v-if="book?.record.bookmarks.findIndex(b => b.chapter == chapter?.index && b.paragraph == index) != -1">
+                    <div style="font-size: 1.6em; margin-left: 0.5em" class="bookmark" v-if="chapter?.bookmark == index"
+                        @click="chapter.toggleBookmark()">
                         <font-awesome-icon :icon="['fas', 'bookmark']" />
                     </div>
                 </div>
@@ -110,6 +111,17 @@ onMounted(() => {
 </template>
 
 <style>
+.bookmark {
+    font-size: 1.6em;
+    margin-left: 0.5em;
+    transition: color 0.1s ease;
+}
+
+.bookmark:hover {
+    cursor: pointer;
+    color: var(--typing-trailer-color)
+}
+
 .trailers {
     position: absolute;
     top: 0.4em;

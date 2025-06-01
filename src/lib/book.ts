@@ -1,7 +1,7 @@
 import { Book as EPub } from 'epubjs'
 import type Navigation from 'epubjs/types/navigation';
 import type { PackagingMetadataObject } from 'epubjs/types/packaging';
-import type { BookRecord } from '../stores/library';
+import type { Bookmark, BookRecord } from '../stores/library';
 import { removeFancyTypography, scrollToNextCaretPos, type Offset } from './utils';
 import { useStatsStore, } from '@/stores/typing';
 import { useSettingsStore } from '@/stores/settings';
@@ -54,6 +54,7 @@ export class Chapter {
         this.book = new WeakRef(book)
         this.title = doc.getElementsByTagName('title')[0].textContent as string
         this.index = index
+        this.bookmark = book.record.bookmarks.find(b => b.chapter == this.index)?.paragraph;
 
         const paragraphs = doc.querySelectorAll('p, blockquote, li, pre, h1, h2, h3, h4, h5, h6');
         let idx = 0;
@@ -76,6 +77,8 @@ export class Chapter {
 
     title: string
     index: number
+    // Bookmarked paragraph
+    bookmark: number | undefined = undefined
     finished: boolean = false
     paragraphs: Paragraph[] = []
     caret = {
@@ -171,6 +174,33 @@ export class Chapter {
         if (this.paragraphs[paragraph + 1]) this.paragraphs[paragraph + 1].render()
     }
     /**
+     *  Toggled the bookmark on this chapter (one per chapter only)
+     */
+    toggleBookmark() {
+        let book = this.book.deref()
+        if (!book) {
+            return;
+        }
+
+        if (this.bookmark !== undefined) {
+            // Find bookmark in record and delete it
+            let idx = book.record.bookmarks.findIndex(bookmark => bookmark.chapter == this?.index)
+            if (idx != -1) {
+                this.bookmark = undefined
+                console.log(book.record.bookmarks.splice(idx, 1))
+            }
+        } else {
+            const bookmark = {
+                chapter: this.index,
+                paragraph: this.caret.p,
+                progress: this.caret.p / (this.paragraphs.length - 1),
+            } as Bookmark;
+            console.log(bookmark)
+            book.record.bookmarks.push(bookmark)
+            this.bookmark = bookmark.paragraph
+        }
+    }
+    /**
      * Call when chapter layout has changed
      */
     refreshCaret() {
@@ -183,13 +213,29 @@ export class Chapter {
             caret.style['left'] = offset.left + 'px'
         }
     }
+    /**
+     * Goes to the first paragraph of the next chapter
+     */
     next(): Promise<Chapter> | undefined {
         let book = this.book.deref()
-        return (book && this.index < book.record.toc.length - 1) ? book.getChapter(this.index + 1) : undefined
+        return (book && this.index < book.record.toc.length - 1)
+            ? book.getChapter(this.index + 1).then(chapter => {
+                chapter.goTo(0)
+                return chapter
+            })
+            : undefined
     }
+    /**
+     * Goes to the first paragraph of the previous chapter
+     */
     prev(): Promise<Chapter> | undefined {
         let book = this.book.deref()
-        return (book && this.index > 0) ? book.getChapter(this.index - 1) : undefined
+        return (book && this.index > 0)
+            ? book.getChapter(this.index - 1).then(chapter => {
+                chapter.goTo(0)
+                return chapter
+            })
+            : undefined
     }
 }
 
