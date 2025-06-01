@@ -248,7 +248,8 @@ export class Paragraph {
     input(key: string, idx: number): number {
         // Don't let Word.input() complete but allow overflows
         // Should be handled by Chapter.enter()
-        if (idx == this.source.length && key == ' ') {
+        // Also don't allow overflows if the last word was skipped
+        if (idx == this.source.length && key == ' ' || this.words[this.words.length - 1].typed) {
             return 0;
         }
         if (!this.started) {
@@ -450,14 +451,19 @@ export class Word {
      * Revert any errors caused by overflow bahaviour
      */
     backspace(idx: number): number {
+        // Because we can skip words, leaving them incomplete, we have to explicitly untype the last word
+        if (this.typed) {
+            useStatsStore().untypeWord(this)
+            this.typed = false
+        }
+
         // Remove error state if letter before is correct or itself is first letter
         if (this.error) {
             this.error = !((idx - 2) < 0 || this.cLetters.at(idx - 2))
         }
 
         // Delete overflowing letters
-        if (this.overflow.pop() !== undefined)
-            return 0
+        if (this.overflow.pop() !== undefined) return 0
 
         // Go to last completed letter if incomplete
         let isIncomplete = idx > this.cLetters.length;
