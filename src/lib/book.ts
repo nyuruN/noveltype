@@ -366,7 +366,7 @@ export class Paragraph {
         return [0, 0]
     }
     getLetterOffset(p: HTMLElement, index: number): Offset {
-        // Choose first word when first changing paragraphs
+        // Choose first word when first changing paragraphs and when not rendered
         if (!this.isRendered) {
             let d = p.getElementsByClassName('word')[0] as HTMLElement
             return {
@@ -512,6 +512,7 @@ export class Word {
         this.letters = this.word.split('')
     }
     getOffset(w: HTMLElement, idx: number): Offset {
+        // Normal letter
         if (idx < this.letters.length) {
             let l = w.getElementsByClassName('letter')[idx] as HTMLElement
             return {
@@ -519,16 +520,27 @@ export class Word {
                 left: l.offsetLeft
             }
         } else {
-            // We can only estimate based on the current letter width
             let overflow = Math.max(this.overflow.length - 1, 0)
-            let l = w.getElementsByClassName('letter')[idx - 1 + overflow] as HTMLElement
-            let width = l.getBoundingClientRect().width
-            return {
-                top: l.offsetTop,
-                // Sadly, because the offset is immediately needed after input()
-                // we cannot use the last overflow letter since it is unrendered
-                left: l.offsetLeft + width * (this.overflow.length ? 2 : 1)
+
+            let overflowLetter = w.getElementsByClassName('letter')[idx + overflow] as HTMLElement
+
+            // Sadly, because the offset is immediately needed after input()
+            // we may not use the last overflow letter since it is unrendered
+            if (overflowLetter) {
+                return {
+                    top: overflowLetter.offsetTop,
+                    left: overflowLetter.offsetLeft + overflowLetter.getBoundingClientRect().width
+                }
+            } else {
+                let l = w.getElementsByClassName('letter')[idx - 1 + overflow] as HTMLElement
+                let width = l.getBoundingClientRect().width
+                // We can only estimate based on the current letter width
+                return {
+                    top: l.offsetTop,
+                    left: l.offsetLeft + width * (this.overflow.length ? 2 : 1)
+                }
             }
+
         }
     }
 }

@@ -116,9 +116,17 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        <div class="newline" v-if="!chapter?.paragraphs[0]" style="padding: .2em">
-            <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
-        </div>
+        <template v-if="!chapter?.paragraphs[0]">
+            <div class="newline" style="padding: .2em">
+                <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
+                <div class="trailers">
+                    <div style="font-size: 1.6em; margin-left: 0.5em; margin-top: 0.2em;" class="bookmark"
+                        v-if="chapter?.bookmark == 0" @click="chapter.toggleBookmark()">
+                        <font-awesome-icon :icon="['fas', 'bookmark']" />
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
 
