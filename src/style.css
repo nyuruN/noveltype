@@ -58,7 +58,7 @@
   --typing-menu-bg: hsl(from var(--primary-dark) h s l / 100%);
   --typing-menu-color: var(--text-dimmed);
   --typing-menu-color-lighter: var(--text);
-  --typing-trailer: var(--primary-dark);
+  --typing-trailer: hsl(from var(--primary-dark) h s l / calc(1.3 * var(--opacity)));
   --typing-trailer-color: var(--text-dimmed);
   --typing-text: var(--text);
   --typing-text-dimmed: var(--text-dimmed);

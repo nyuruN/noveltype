@@ -78,6 +78,10 @@ function toggleBookmarkAt(paragraph: number) {
         chapter.value.toggleBookmark(paragraph)
     }
 }
+function goToParagraph(paragraph: number) {
+    chapter.value?.goTo(paragraph)
+    nextTick().then(() => chapter.value?.refreshCaret())
+}
 </script>
 
 <template>
@@ -101,10 +105,12 @@ function toggleBookmarkAt(paragraph: number) {
                 </div>
             </template>
 
-            <div class="newline relative">
-                <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
+            <div class="relative">
+                <div class="newline">
+                    <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
+                </div>
 
-                <div class="trailers">
+                <div class="trailers flex">
                     <template v-if="paragraphWPMs[index]">
                         <div class="stat" v-if="typing.statsDisplay == 'RAW'">
                             raw: {{ paragraphWPMs[index].raw.toFixed(0) }}
@@ -116,9 +122,12 @@ function toggleBookmarkAt(paragraph: number) {
                             acc: {{ (paragraphWPMs[index].acc * 100).toFixed(0) }}%
                         </div>
                     </template>
-                    <div style="font-size: 1.6em; margin-left: 0.5em" class="bookmark"
-                        @click="toggleBookmarkAt(index)" :class="{ inactive: chapter?.bookmark != index }">
+                    <div class="trailer" @click="toggleBookmarkAt(index)"
+                        :class="{ inactive: chapter?.bookmark != index }">
                         <font-awesome-icon :icon="[chapter?.bookmark == index ? 'fas' : 'far', 'bookmark']" />
+                    </div>
+                    <div class="trailer inactive" @click="goToParagraph(index)">
+                        <font-awesome-icon :icon="['far', chapter.caret.p == p.index ? '' : 'keyboard']" />
                     </div>
                 </div>
             </div>
@@ -127,49 +136,46 @@ function toggleBookmarkAt(paragraph: number) {
 </template>
 
 <style>
-.bookmark {
-    font-size: 1.6em;
-    margin-left: 0.5em;
-    transition: color 0.1s ease;
-}
-
-.bookmark.inactive {
-    visibility: hidden;
-}
-
-.paragraph:hover .bookmark.inactive {
-    visibility: visible;
-}
-
-.bookmark:hover {
-    cursor: pointer;
-    color: var(--typing-trailer-color)
-}
-
-.trailers {
-    position: absolute;
-    top: 0.4em;
-    left: 1.9em;
-    height: 1.6em;
-    font-size: 0.7em;
-    display: flex;
+.newline {
+    color: var(--typing-trailer);
 }
 
 .stat {
-    /* position: absolute;
-    top: 0.4em;
-    left: 1.9em;
-    height: 1.6em;
-    font-size: 0.7em; */
-    padding: .1em 0.3em;
+    font-size: 0.6em;
+    line-height: 1.75;
+    padding: 0 0.2em;
     text-wrap: nowrap;
+    height: fit-content;
     background-color: var(--typing-trailer);
     color: var(--typing-trailer-color);
     border-radius: 6px;
 }
 
-.newline {
+.trailer {
+    transition: color 0.1s ease;
     color: var(--typing-trailer);
+}
+
+.trailer.inactive {
+    visibility: hidden;
+}
+
+.paragraph:hover .trailer.inactive {
+    visibility: visible;
+}
+
+.trailer:hover {
+    cursor: pointer;
+    color: var(--typing-trailer-color);
+}
+
+.trailers {
+    position: absolute;
+    top: 0em;
+    left: 1.4em;
+    height: 1.6em;
+    align-items: center;
+    gap: 0.4em;
 }
 
 .paragraph {
