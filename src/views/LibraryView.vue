@@ -55,7 +55,7 @@ async function inspectBook(rec: BookRecord) {
 <template>
     <h1>Library</h1>
 
-    <div class="content-container" v-if="library.hasBookmarks">
+    <div class="content-container" v-if="library.hasBookmarks" style="gap: 0.5rem;">
         <h2 style="margin: 0.5rem 0 1rem;">Bookmarks</h2>
         <div class="bookmarks flex-col" style="gap: 1rem;">
             <template v-for="book in library.books">
@@ -75,8 +75,8 @@ async function inspectBook(rec: BookRecord) {
         </div>
     </div>
 
-    <div class="content-container">
-        <h2 style="margin: 0.5rem 0 1rem;">My Books</h2>
+    <div class="content-container" style="gap: 0.5rem">
+        <h2 style="margin: 0.5rem 0 .5rem;">My Books</h2>
         <div class="cards flex">
             <div class="card relative" @click="openBook(book.filename)" v-for="(book) in library.books">
                 <div class="card-more" @click.stop="inspectBook(book)">
@@ -129,16 +129,6 @@ async function inspectBook(rec: BookRecord) {
 
 .bookmark-entry:hover {
     background-color: var(--ui-card-hover);
-}
-
-.content-container {
-    border-radius: 12px;
-    margin-bottom: 2rem;
-    padding: 1rem;
-    gap: 1.2rem;
-    overflow: hidden;
-    background-color: var(--ui-content-bg);
-    border: 1px solid var(--ui-content-border);
 }
 
 .card-more {

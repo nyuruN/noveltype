@@ -95,6 +95,35 @@ body {
 }
 
 /*
+* WIDGETS
+*/
+
+/* General container/section for content in a page */
+.content-container {
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    overflow: hidden;
+    background-color: var(--ui-content-bg);
+    border: 1px solid var(--ui-content-border);
+}
+
+/* For important sections */
+.content-container.danger {
+    border: 2px solid var(--ui-important);
+}
+
+.content-texts {
+    flex-grow: 1;
+    color: var(--text);
+}
+
+.content-texts>*:first-child {
+    font-weight: bold;
+    color: var(--text-dimmed);
+}
+
+/*
 * UTILITIES (layout only!)
 */
 

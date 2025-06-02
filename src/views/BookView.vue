@@ -37,7 +37,7 @@ async function deleteBook() {
     <h1>{{ (bookIdx != -1) ? book?.title : 'Ooops, nothing here!' }}</h1>
 
     <template v-if="bookIdx != -1">
-        <div class="entry-container flex-col">
+        <div class="content-container flex-col" style="gap: 0.5rem">
             <h2 style="margin: 0.5rem 0;">Metadata</h2>
             <div class="entry-texts">
                 <div>Title</div>
@@ -64,8 +64,8 @@ async function deleteBook() {
                 <span>{{ book?.lang }}</span>
             </div>
         </div>
-        <div class="entry-container danger flex-col" style="margin-top: 2rem">
-            <h2 style="margin: 0.5rem 0;">Danger Zone</h2>
+        <div class="content-container danger flex-col" style="gap: 0.5rem">
+            <h2 style="margin: 0.5rem 0 0.5rem;">Danger Zone</h2>
             <div class="flex" style="align-items: center;">
                 <div class="entry-texts">
                     <div style="margin-left: -0.1rem;">
@@ -93,18 +93,6 @@ async function deleteBook() {
 .entry-texts>*:first-child {
     font-weight: bold;
     color: var(--text-dimmed);
-}
-
-.entry-container {
-    border-radius: 12px;
-    padding: 1rem;
-    gap: 0.5rem;
-    background-color: var(--ui-content-bg);
-    border: 1px solid var(--ui-content-border);
-}
-
-.entry-container.danger {
-    border: 2px solid var(--ui-important);
 }
 
 .delete-button {

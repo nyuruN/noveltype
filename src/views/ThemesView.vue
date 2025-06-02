@@ -24,17 +24,17 @@ function applyTheme() {
 <template>
     <h1>Themes</h1>
 
-    <div class="option-container flex-col" style="gap: 1rem">
-        <h2>General</h2>
+    <div class="content-container flex-col" style="gap: 0.5rem">
+        <h2 style="margin: 0.5rem 0;">General</h2>
         <div class="flex align-center">
-            <div class="option-texts grow">
+            <div class="content-texts">
                 <div>Opacity</div>
                 <span>Gives the UI a transparent look</span>
             </div>
             <Slider :min="0" :max="1" :step="0.01" v-model="opacity"/>
         </div>
         <div class="flex align-center">
-            <div class="option-texts grow">
+            <div class="content-texts">
                 <div>Blur</div>
                 <span>Gives the UI a glassy look</span>
             </div>
@@ -42,8 +42,8 @@ function applyTheme() {
         </div>
     </div>
 
-    <div class="option-container">
-        <h2>Color Preview</h2>
+    <div class="content-container">
+        <h2 style="margin: 0.5rem 0 1rem;">Color Preview</h2>
         <div id="preview-container" class="flex" style="height: 20rem; align-items: stretch;">
             <ThemePreview v-model="preview" />
             <div id="preview-options" class="grow flex-col">
@@ -64,9 +64,9 @@ function applyTheme() {
         </div>
     </div>
 
-    <div class="option-container">
-        <h2>Color Presets</h2>
-        <div class="flex" style="margin-top: 2rem; gap: 1rem; flex-wrap: wrap;">
+    <div class="content-container">
+        <h2 style="margin: 0.5rem 0 1rem;">Color Presets</h2>
+        <div class="flex" style="gap: 1rem; flex-wrap: wrap;">
             <template v-for="(theme) in Themes">
                 <button style="cursor: pointer;" class="button"
                     :style="{ backgroundColor: hslString(theme.primaryColor), color: hslString(theme.accentColor) }"
@@ -79,24 +79,6 @@ function applyTheme() {
 </template>
 
 <style scoped>
-.option-container {
-    padding: 1rem;
-    margin-bottom: 2rem;
-    border-radius: 12px;
-    background-color: var(--ui-content-bg);
-    border: 1px solid var(--ui-content-border)
-}
-
-.option-texts {
-    flex-grow: 1;
-    color: var(--text);
-}
-
-.option-texts>*:first-child {
-    font-weight: bold;
-    color: var(--text-dimmed);
-}
-
 #preview-options {
     gap: 0.5rem;
     height: 100%;

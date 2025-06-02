@@ -40,17 +40,17 @@ async function acceptPersistantToggle(persistant: boolean) {
 <template>
     <h1>Settings</h1>
 
-    <div class="option-container flex-col">
+    <div class="content-container flex-col" style="gap: 1rem">
         <h2 style="margin: 0.5rem 0;">Typing</h2>
         <div class="option">
-            <div class="option-texts">
+            <div class="content-texts">
                 <div>Freedom mode</div>
                 <span>Allows you to edit all previously typed words</span>
             </div>
             <ToggleSwitch v-model="typing.freedomMode"></ToggleSwitch>
         </div>
         <div class="option">
-            <div class="option-texts">
+            <div class="content-texts">
                 <div>Stop on error</div>
                 <span>Prevents you from skipping incorrect elements</span>
             </div>
@@ -58,7 +58,7 @@ async function acceptPersistantToggle(persistant: boolean) {
             </ButtonGroup>
         </div>
         <div class="option">
-            <div class="option-texts">
+            <div class="content-texts">
                 <div>Paragraph statistic display</div>
                 <span>Displays a trailing statistic indicator at the end of a typed paragraph</span>
             </div>
@@ -67,10 +67,10 @@ async function acceptPersistantToggle(persistant: boolean) {
         </div>
     </div>
 
-    <div class="option-container flex-col danger">
+    <div class="content-container danger flex-col" style="gap: 1rem">
         <h2 style="margin: 0.5rem 0;">Important</h2>
         <div class="option">
-            <div class="option-texts">
+            <div class="content-texts">
                 <div style="margin-left: -0.1rem;">
                     <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
                     <span style="margin-left: 0.1rem;">Persistant storage</span>
@@ -80,7 +80,7 @@ async function acceptPersistantToggle(persistant: boolean) {
             <ToggleSwitch v-model="isPersistant" :accept="acceptPersistantToggle"></ToggleSwitch>
         </div>
         <div class="option">
-            <div class="option-texts">
+            <div class="content-texts">
                 <div style="margin-left: -0.1rem;">
                     <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
                     <span style="margin-left: 0.1rem;">Delete all site data</span>
@@ -97,32 +97,9 @@ async function acceptPersistantToggle(persistant: boolean) {
 </template>
 
 <style scoped>
-.option-texts {
-    flex-grow: 1;
-    color: var(--text);
-}
-
-.option-texts>*:first-child {
-    font-weight: bold;
-    color: var(--text-dimmed);
-}
-
 .option {
     display: flex;
     align-items: center;
-}
-
-.option-container {
-    border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 2rem;
-    gap: 1.2rem;
-    background-color: var(--ui-content-bg);
-    border: 1px solid var(--ui-content-border)
-}
-
-.option-container.danger {
-    border: 2px solid var(--ui-important);
 }
 
 .delete-button {

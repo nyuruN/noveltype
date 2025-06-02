@@ -24,7 +24,7 @@ export function removeFancyTypography(textToClean: string) {
 }
 
 export function scrollToNextCaretPos(offset: number) {
-    let container = document.querySelector('#typer-wrapper') as HTMLElement
+    let container = document.getElementById('typer-wrapper') as HTMLElement
     let caret = document.getElementById('caret') as HTMLElement
 
     let containerR = container.getBoundingClientRect()
