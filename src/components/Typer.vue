@@ -42,7 +42,10 @@ const resizeObserver = new ResizeObserver(_ => {
     clearTimeout(caretRefreshTimeout)
     caretRefreshTimeout = setTimeout(() => { chapter.value?.refreshCaret(); }, 80)
 })
-onUpdated(() => resizeObserver.observe(document.getElementById('typing-area') as Element))
+onUpdated(() => {
+    let el = document.getElementById('typing-area') as Element | null
+    if (el) resizeObserver.observe(el)
+})
 
 // Scroll to caret when entering focused state
 onMounted(() => {

@@ -12,7 +12,7 @@ export const useSettingsStore = defineStore('settings', () => {
   let typing = ref({
     freedomMode: false,
     stopOnError: undefined as (stopOnErrorType | undefined),
-    statsDisplay: 'RAW' as (statsDisplayType | undefined),
+    statsDisplay: 'WPM' as (statsDisplayType | undefined),
     typingFontScale: 1,
     typingLineScale: 1,
   })
@@ -21,7 +21,7 @@ export const useSettingsStore = defineStore('settings', () => {
     typing.value = {
       freedomMode: false,
       stopOnError: undefined,
-      statsDisplay: 'RAW',
+      statsDisplay: 'WPM',
       typingFontScale: 1,
       typingLineScale: 1,
     }
