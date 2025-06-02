@@ -50,6 +50,9 @@ onMounted(() => {
     watch(isFocused, (focused) => {
         if (focused) {
             chapter.value?.refreshCaret(true)
+            document.body.style.cursor = 'none'
+        } else {
+            document.body.style.cursor = 'default'
         }
     })
     // Scroll on typing view opened
@@ -123,10 +126,10 @@ function goToParagraph(paragraph: number) {
                         </div>
                     </template>
                     <div class="trailer" @click="toggleBookmarkAt(index)"
-                        :class="{ inactive: chapter?.bookmark != index }">
+                        :class="{ inactive: chapter?.bookmark != index }" v-show="!isFocused">
                         <font-awesome-icon :icon="[chapter?.bookmark == index ? 'fas' : 'far', 'bookmark']" />
                     </div>
-                    <div class="trailer inactive" @click="goToParagraph(index)">
+                    <div class="trailer inactive" @click="goToParagraph(index)" v-show="!isFocused">
                         <font-awesome-icon :icon="['far', chapter.caret.p == p.index ? '' : 'keyboard']" />
                     </div>
                 </div>
