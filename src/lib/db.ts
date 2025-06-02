@@ -45,3 +45,10 @@ export async function loadEpubFile(filename: string) {
 
     return file
 }
+export async function deleteEpubFile(filename: string) {
+    let db = createDB();
+
+    await db.table('epub').delete(filename)
+
+    db.close()
+}

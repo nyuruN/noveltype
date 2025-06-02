@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Prompt from '@/components/Prompt.vue';
 import ButtonGroup from '@/components/ButtonGroup.vue';
+import ToggleSwitch from '@/components/ToggleSwitch.vue';
 import { deleteDB, isStoragePersistant, persist } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
 import { statsDisplayOptions, stopOnErrorOptions, useSettingsStore } from '@/stores/settings';
 import { useStatsStore, useTypingStore } from '@/stores/typing';
 import { storeToRefs } from 'pinia';
-import ToggleSwitch from '@/components/ToggleSwitch.vue';
 import { onMounted, ref } from 'vue';
 import { useThemeStore } from '@/stores/theme';
 

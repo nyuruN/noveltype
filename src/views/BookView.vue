@@ -1,10 +1,32 @@
 <script setup lang="ts">
+import Prompt from '@/components/Prompt.vue';
+import { deleteEpubFile } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
-import { useRoute } from 'vue-router';
+import { usePromptStore } from '@/stores/prompt';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute()
-const book = useLibraryStore().books.find(record => record.title == route.params.title)
+const router = useRouter()
+const libraryStore = useLibraryStore()
+const { books } = storeToRefs(libraryStore)
+const bookIdx = ref(books.value.findIndex(record => record.title == route.params.title))
+let book = books.value.at(bookIdx.value)
 
+async function deleteBook() {
+    if (!book) return
+
+    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will permanently remove it from your library!')
+
+    if (confirm) {
+        console.log(books.value.splice(bookIdx.value, 1))
+        await deleteEpubFile(book.filename)
+        book = undefined
+        bookIdx.value = -1
+        router.back()
+    }
+}
 </script>
 
 <template>
@@ -12,35 +34,54 @@ const book = useLibraryStore().books.find(record => record.title == route.params
         <font-awesome-icon :icon="['fas', 'arrow-left']" fixed-width />
     </button>
 
-    <h1>{{ $route.params.title }}</h1>
+    <h1>{{ (bookIdx != -1) ? book?.title : 'Ooops, nothing here!' }}</h1>
 
-    <div class="entry-container flex-col">
-        <h2 style="margin: 0.5rem 0;">Metadata</h2>
-        <div class="entry-texts">
-            <div>Title</div>
-            <span>{{ book?.title }}</span>
+    <template v-if="bookIdx != -1">
+        <div class="entry-container flex-col">
+            <h2 style="margin: 0.5rem 0;">Metadata</h2>
+            <div class="entry-texts">
+                <div>Title</div>
+                <span>{{ book?.title }}</span>
+            </div>
+            <div class="entry-texts">
+                <div>Author</div>
+                <span>{{ book?.author }}</span>
+            </div>
+            <div class="entry-texts">
+                <div>Description</div>
+                <span>{{ book?.description }}</span>
+            </div>
+            <div class="entry-texts">
+                <div>Filename</div>
+                <span>{{ book?.filename }}</span>
+            </div>
+            <div class="entry-texts">
+                <div>Book Id</div>
+                <span>{{ book?.id }}</span>
+            </div>
+            <div class="entry-texts">
+                <div>Language</div>
+                <span>{{ book?.lang }}</span>
+            </div>
         </div>
-        <div class="entry-texts">
-            <div>Author</div>
-            <span>{{ book?.author }}</span>
+        <div class="entry-container danger flex-col" style="margin-top: 2rem">
+            <h2 style="margin: 0.5rem 0;">Danger Zone</h2>
+            <div class="flex" style="align-items: center;">
+                <div class="entry-texts">
+                    <div style="margin-left: -0.1rem;">
+                        <font-awesome-icon :icon="['fas', 'triangle-exclamation']" fixed-width />
+                        <span style="margin-left: 0.1rem;">Delete book</span>
+                    </div>
+                    <span>Removes this book from your library</span>
+                </div>
+                <button class="delete-button" @click="deleteBook">
+                    <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
+                </button>
+            </div>
         </div>
-        <div class="entry-texts">
-            <div>Description</div>
-            <span>{{ book?.description }}</span>
-        </div>
-        <div class="entry-texts">
-            <div>Filename</div>
-            <span>{{ book?.filename }}</span>
-        </div>
-        <div class="entry-texts">
-            <div>Book Id</div>
-            <span>{{ book?.id }}</span>
-        </div>
-        <div class="entry-texts">
-            <div>Language</div>
-            <span>{{ book?.lang }}</span>
-        </div>
-    </div>
+    </template>
+
+    <Prompt />
 </template>
 
 <style scoped>
@@ -64,6 +105,20 @@ const book = useLibraryStore().books.find(record => record.title == route.params
 
 .entry-container.danger {
     border: 2px solid var(--ui-important);
+}
+
+.delete-button {
+    user-select: none;
+    padding: 0.6rem 0.7rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--ui-important);
+    color: color-mix(in hsl, var(--ui-important), black 20%);
+}
+
+.delete-button:hover {
+    cursor: pointer;
+    background-color: color-mix(in hsl, var(--ui-important), white 15%);
 }
 
 #back-button {
