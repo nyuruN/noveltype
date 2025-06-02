@@ -3,9 +3,11 @@ import { saveEpubFile, loadEpubFile } from '@/lib/db'
 import { useLibraryStore, type BookRecord } from '@/stores/library'
 import { useTypingStore } from '@/stores/typing'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 
 const library = useLibraryStore()
 const { book, chapter, showTyper } = storeToRefs(useTypingStore())
+const router = useRouter()
 
 async function loadEpub(e: Event) {
     var input = e.target as HTMLInputElement
@@ -44,8 +46,9 @@ async function openBook(filename: string, chapterIdx?: number, paragraphIdx?: nu
 async function triggerInput() {
     document.getElementById('file-input')?.click();
 }
-async function inspectBook(_rec: BookRecord) {
-    // Change view to book inspection
+// Change view to book inspection
+async function inspectBook(rec: BookRecord) {
+    router.push('/books/' + rec.title)
 }
 </script>
 

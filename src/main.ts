@@ -5,11 +5,12 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faRotateLeft, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faRotateLeft, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
 import { faBookmark as farBookmark, faKeyboard as farKeyboard} from '@fortawesome/free-regular-svg-icons'
 
 import App from './views/App.vue'
 import LibraryView from './views/LibraryView.vue'
+import BookView from './views/BookView.vue'
 import ThemesView from './views/ThemesView.vue'
 import SettingsView from './views/SettingsView.vue'
 
@@ -32,12 +33,16 @@ library.add(
     faKeyboard,
     farKeyboard,
     faTurnDown,
+    faPlay,
 
     // Library view
     faBookOpen,
     faPlus,
     faBook,
     faEllipsis,
+
+    // Book view
+    faArrowLeft,
 
     // Settings view
     faTriangleExclamation,
@@ -48,7 +53,6 @@ library.add(
     faPalette,
     faRotateLeft,
 
-    faPlay,
     faImage,
     faCloud,
     faDeleteLeft,
@@ -62,6 +66,7 @@ library.add(
 
 const routes = [
     { path: '/', component: LibraryView },
+    { path: '/books/:title', component: BookView },
     { path: '/themes', component: ThemesView },
     { path: '/settings', component: SettingsView },
 ]

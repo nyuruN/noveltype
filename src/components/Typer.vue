@@ -130,7 +130,7 @@ function goToParagraph(paragraph: number) {
                         <font-awesome-icon :icon="[chapter?.bookmark == index ? 'fas' : 'far', 'bookmark']" />
                     </div>
                     <div class="trailer inactive" @click="goToParagraph(index)" v-show="!isFocused">
-                        <font-awesome-icon :icon="['far', chapter.caret.p == p.index ? '' : 'keyboard']" />
+                        <font-awesome-icon :icon="['far', 'keyboard']" v-show="chapter.caret.p != p.index" />
                     </div>
                 </div>
             </div>
