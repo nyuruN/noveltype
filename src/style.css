@@ -103,7 +103,6 @@ body {
     border-radius: 12px;
     margin-bottom: 2rem;
     padding: 1rem;
-    overflow: hidden;
     background-color: var(--ui-content-bg);
     border: 1px solid var(--ui-content-border);
 }

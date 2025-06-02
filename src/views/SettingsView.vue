@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Prompt from '@/components/Prompt.vue';
-import ButtonGroup from '@/components/ButtonGroup.vue';
 import ToggleSwitch from '@/components/ToggleSwitch.vue';
+import Dropdown from '@/components/Dropdown.vue';
 import { deleteDB, isStoragePersistant, persist } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
@@ -54,16 +54,16 @@ async function acceptPersistantToggle(persistant: boolean) {
                 <div>Stop on error</div>
                 <span>Prevents you from skipping incorrect elements</span>
             </div>
-            <ButtonGroup v-model="typing.stopOnError" :options="stopOnErrorOptions" use-default="">
-            </ButtonGroup>
+            <Dropdown v-model="typing.stopOnError" :options="stopOnErrorOptions" default="None">
+            </Dropdown>
         </div>
         <div class="option">
             <div class="content-texts">
                 <div>Paragraph statistic display</div>
                 <span>Displays a trailing statistic indicator at the end of a typed paragraph</span>
             </div>
-            <ButtonGroup v-model="typing.statsDisplay" :options="statsDisplayOptions" use-default="">
-            </ButtonGroup>
+            <Dropdown v-model="typing.statsDisplay" :options="statsDisplayOptions" default="Off">
+            </Dropdown>
         </div>
     </div>
 
