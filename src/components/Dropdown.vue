@@ -73,7 +73,7 @@ let showDropdown = ref(false)
     background-color: var(--ui-dropdown-bg);
     color: var(--text-dimmed);
 
-    transition: border 0.1s ease, color 0.1s ease;
+    transition: var(--ui-border-transition), color 0.2s ease;
 }
 
 .dropdown-button:hover,

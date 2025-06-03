@@ -24,7 +24,9 @@ async function toggle() {
 $toggleScale: 0.32;
 $toggleWidth: 200px * $toggleScale;
 $toggleHeight: 100px * $toggleScale;
-$togglePadding: 5px * $toggleScale;
+$togglePadding: 6px * $toggleScale;
+$toggleAnimation: 0.3s;
+$borderWidth: 1px;
 
 .toggle-switch {
     cursor: pointer;
@@ -35,22 +37,28 @@ $togglePadding: 5px * $toggleScale;
     display: block;
     border: none;
     border-radius: $toggleHeight;
+    border: 1px solid var(--ui-border);
     position: relative;
+    transition: var(--ui-border-transition), background $toggleAnimation ease;
+
+    &:hover {
+        border-color: var(--ui-border-active);
+    }
 
     &:after {
         content: '';
         position: absolute;
         top: $togglePadding;
         left: $togglePadding;
-        width: $toggleHeight - $togglePadding * 2;
-        height: $toggleHeight - $togglePadding * 2;
+        width: $toggleHeight - $togglePadding * 2 - $borderWidth * 2;
+        height: $toggleHeight - $togglePadding * 2 - $borderWidth * 2;
         background: var(--ui-toggle-thumb);
         border-radius: $toggleHeight - $togglePadding * 2;
-        transition: 0.3s;
+        transition: $toggleAnimation;
     }
 
     &:active:after {
-        width: $toggleHeight * 1.3;
+        width: $toggleHeight * 1.2;
     }
 }
 

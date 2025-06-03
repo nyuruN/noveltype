@@ -47,7 +47,7 @@
   --ui-slider-thumb: #fff;
   --ui-dropdown-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
   --ui-dropdown-hover: hsl(from var(--primary) h s l / var(--opacity));
-  --ui-toggle-bg: #aaa;
+  --ui-toggle-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
   --ui-toggle-active: var(--accent);
   --ui-toggle-thumb: #fff;
   --ui-prompt-cover: #00000069;
