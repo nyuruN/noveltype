@@ -58,6 +58,7 @@ function userInput() {
     aspect-ratio: 1 / 1;
     height: 40px;
     width: auto;
+    outline: none;
     border: none;
     border-radius: 4px;
     border: 1px solid var(--ui-border);
@@ -80,7 +81,8 @@ function userInput() {
     color: var(--text);
 }
 
-.button:hover {
+.button:hover,
+.button:focus {
     border-color: var(--ui-border-active);
 }
 
@@ -88,6 +90,7 @@ function userInput() {
     width: 10rem;
     padding: 0.5rem 1rem;
     font-size: 1.2em;
+    outline: none;
     border: none;
     border-radius: 4px;
     border: 1px solid var(--ui-border);

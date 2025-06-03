@@ -90,7 +90,8 @@ function applyTheme() {
 }
 
 
-.button:hover {
+.button:hover,
+.button:focus {
     border-color: var(--ui-border-active);
 }
 
@@ -98,6 +99,7 @@ function applyTheme() {
     width: 16rem;
     padding: 0.5rem 1rem;
     font-size: 1.2em;
+    outline: none;
     border: none;
     border-radius: 4px;
     border: 1px solid var(--ui-border);

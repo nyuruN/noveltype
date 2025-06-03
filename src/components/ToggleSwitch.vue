@@ -35,13 +35,15 @@ $borderWidth: 1px;
     min-width: $toggleWidth * 0.6;
     background: var(--ui-toggle-bg);
     display: block;
+    outline: none;
     border: none;
     border-radius: $toggleHeight;
     border: 1px solid var(--ui-border);
     position: relative;
     transition: var(--ui-border-transition), background $toggleAnimation ease;
 
-    &:hover {
+    &:hover,
+    &:focus {
         border-color: var(--ui-border-active);
     }
 
