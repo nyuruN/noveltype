@@ -37,13 +37,15 @@ let showDropdown = ref(false)
     border: none;
     border-radius: 4px;
     border-bottom: 1px solid var(--primary);
-    background-color: hsl(from var(--primary-dark) h s l / var(--opacity));
+    background-color: var(--ui-dropdown-bg);
     color: var(--text-dimmed);
+
+    transition: background 0.2s ease;
 }
 
 .dropdown-item:hover {
     cursor: pointer;
-    background-color: hsl(from var(--primary) h s l / var(--opacity));
+    background-color: var(--ui-dropdown-hover);
 }
 
 .dropdown {
@@ -57,7 +59,7 @@ let showDropdown = ref(false)
 
     border-radius: 4px;
     border: 1px solid var(--ui-border);
-    background-color: hsl(from var(--primary-dark) h s l / var(--opacity));
+    background-color: var(--ui-dropdown-bg);
 }
 
 .dropdown-button {
@@ -68,7 +70,7 @@ let showDropdown = ref(false)
     border: none;
     border-radius: 4px;
     border: 1px solid var(--ui-border);
-    background-color: hsl(from var(--primary-dark) h s l / var(--opacity));
+    background-color: var(--ui-dropdown-bg);
     color: var(--text-dimmed);
 
     transition: border 0.1s ease, color 0.1s ease;
