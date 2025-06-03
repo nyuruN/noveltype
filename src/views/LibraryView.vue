@@ -3,28 +3,33 @@ import { saveEpubFile, loadEpubFile } from '@/lib/db'
 import { useLibraryStore, type BookRecord } from '@/stores/library'
 import { useTypingStore } from '@/stores/typing'
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const library = useLibraryStore()
 const { book, chapter, showTyper } = storeToRefs(useTypingStore())
 const router = useRouter()
 
-async function loadEpub(e: Event) {
-    var input = e.target as HTMLInputElement
-
-    if (!input.files || !input.files[0] || input.files[0].type !== 'application/epub+zip') {
-        return
-    }
+async function loadEpub(file: File) {
+    if (file.type !== 'application/epub+zip') return
 
     // Load book
-    if (!library.exists(input.files[0].name)) {
-        let epub = await library.loadBook(input.files[0])
+    if (!library.exists(file.name)) {
+        let epub = await library.loadBook(file)
 
         book.value = epub
         chapter.value = await epub.getChapter(0)
 
-        await saveEpubFile(input.files[0])
+        await saveEpubFile(file)
     }
+}
+async function fileInputHandler(e: Event) {
+    var input = e.target as HTMLInputElement
+
+    if (!input.files || !input.files[0]) return
+
+    // Load book
+    loadEpub(input.files[0])
 }
 async function openBook(filename: string, chapterIdx?: number, paragraphIdx?: number) {
     // Open book if not already
@@ -53,6 +58,19 @@ async function inspectBook(rec: BookRecord) {
 function removeBookmark(rec: BookRecord, idx: number) {
     rec.bookmarks.splice(idx, 1)
 }
+async function dropHandler(event: Event) {
+    dropping.value = false
+    let ev = event as DragEvent;
+
+    if (!ev.dataTransfer) return;
+
+    // Use DataTransfer interface to access the file(s)
+    [...ev.dataTransfer.files].forEach((file, i) => {
+        console.log(`… file[${i}].name = ${file.name}`);
+        loadEpub(file)
+    });
+}
+const dropping = ref(false)
 </script>
 
 <template>
@@ -63,7 +81,8 @@ function removeBookmark(rec: BookRecord, idx: number) {
         <div class="bookmarks flex-col" style="gap: 0.75rem;">
             <template v-for="book in library.books">
                 <div class="bookmark-entry flex" v-for="(bookmark, idx) in book.bookmarks">
-                    <button class="cover relative" @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
+                    <button class="cover relative"
+                        @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
                         <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
                         <div class="play-icon">
                             <font-awesome-icon :icon="['fas', 'play']" fixed-width class="absolute-center" />
@@ -72,7 +91,7 @@ function removeBookmark(rec: BookRecord, idx: number) {
                     <div class="entry-text grow flex">
                         <span> {{ book.title }} </span>
                         <span> {{ book.toc[bookmark.chapter] }} </span>
-                        <span> c{{(bookmark.chapter + 1)}} {{(bookmark.progress * 100).toFixed(0) }}% </span>
+                        <span> c{{ (bookmark.chapter + 1) }} {{ (bookmark.progress * 100).toFixed(0) }}% </span>
                     </div>
                     <button class="button" style=" width: fit-content; padding: 0.5rem"
                         @click="removeBookmark(book, idx)">
@@ -83,7 +102,13 @@ function removeBookmark(rec: BookRecord, idx: number) {
         </div>
     </div>
 
-    <div class="content-container" style="gap: 0.5rem">
+    <div class="content-container relative" style="gap: 0.5rem; overflow: clip;" @dragenter.prevent="dropping = true">
+        <div class="drop-zone absolute-fill" v-show="dropping" @dragleave.prevent="dropping = false" @dragover.prevent
+            @drop.prevent="dropHandler">
+            <div class="absolute-center" style="pointer-events: none;">
+                <font-awesome-icon :icon="['fas', 'right-to-bracket']" fixed-width class="fa-rotate-90" />
+            </div>
+        </div>
         <h2 style="margin: 0.5rem 0 .5rem;">My Books</h2>
         <div class="cards flex">
             <div class="card relative" @click="openBook(book.filename)" v-for="(book) in library.books">
@@ -96,7 +121,7 @@ function removeBookmark(rec: BookRecord, idx: number) {
                 <div class="card-text">{{ book.title }}</div>
             </div>
             <div class="card" @click="triggerInput">
-                <input id='file-input' type="file" accept=".epub" @change="loadEpub" style="display: none;" />
+                <input id='file-input' type="file" accept=".epub" @change="fileInputHandler" style="display: none;" />
                 <div class="card-image relative">
                     <font-awesome-icon :icon="['fas', 'plus']" fixed-width class="absolute-center" />
                 </div>
@@ -107,6 +132,15 @@ function removeBookmark(rec: BookRecord, idx: number) {
 </template>
 
 <style scoped>
+.drop-zone {
+    /* Above .card-more */
+    z-index: 2;
+    font-size: 7rem;
+    background-color: #00000099;
+    outline: 8px dashed var(--text-dimmed);
+    outline-offset: -2rem;
+}
+
 .entry-text:hover {
     cursor: default;
 }
