@@ -30,6 +30,8 @@ const model = defineModel()
 
 /* Webkit */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
+
+    /* This is picked up by Firefox */
     .slider {
         overflow: hidden;
         background-color: var(--ui-slider-bg);
@@ -54,9 +56,12 @@ const model = defineModel()
 
 .slider::-moz-range-progress {
     background-color: var(--ui-slider-active);
+    height: 1.0rem;
 }
 
-.slider::-moz-range-track {
-    color: var(--ui-slider-bg);
+.slider::-moz-range-thumb {
+    background-color: var(--ui-slider-thumb);
+    border-radius: 1rem;
+    border: 1px solid var(--ui-slider-active);
 }
 </style>
