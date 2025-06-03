@@ -98,8 +98,7 @@ function resumeTyping() {
 .view-container {
   flex-grow: 1;
   padding: 2rem;
-  /* background-color: var(--ui-main-bg); */
-  scroll-behavior: auto !important;
+  scrollbar-width: thin;
   overflow-y: auto;
   position: relative;
 }

@@ -36,8 +36,8 @@
   /* UI - Widgets */
   --ui-card: transparent;
   --ui-card-hover: hsl(from var(--primary-light) h s l / 0.3);
-  --ui-card-more-bg: hsla(0, 0%, 25%, 0.3);
-  --ui-card-more-hover: hsla(0, 0%, 25%, 0.8);
+  --ui-card-more-bg: hsla(0, 0%, 0%, 0.3);
+  --ui-card-more-hover: hsla(0, 0%, 0%, 0.6);
   --ui-card-more-text: #ddd;
   --ui-button-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
   --ui-button-text: var(--text-dimmed);

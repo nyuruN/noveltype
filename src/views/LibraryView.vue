@@ -50,6 +50,9 @@ async function triggerInput() {
 async function inspectBook(rec: BookRecord) {
     router.push('/books/' + rec.title)
 }
+function removeBookmark(rec: BookRecord, idx: number) {
+    rec.bookmarks.splice(idx, 1)
+}
 </script>
 
 <template>
@@ -57,19 +60,24 @@ async function inspectBook(rec: BookRecord) {
 
     <div class="content-container" v-if="library.hasBookmarks" style="gap: 0.5rem;">
         <h2 style="margin: 0.5rem 0 1rem;">Bookmarks</h2>
-        <div class="bookmarks flex-col" style="gap: 1rem;">
+        <div class="bookmarks flex-col" style="gap: 0.75rem;">
             <template v-for="book in library.books">
-                <div class="bookmark-entry flex" v-for="bookmark in book.bookmarks">
-                    <div class="cover relative" @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
+                <div class="bookmark-entry flex" v-for="(bookmark, idx) in book.bookmarks">
+                    <button class="cover relative" @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
                         <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
                         <div class="play-icon">
                             <font-awesome-icon :icon="['fas', 'play']" fixed-width class="absolute-center" />
                         </div>
+                    </button>
+                    <div class="entry-text grow flex">
+                        <span> {{ book.title }} </span>
+                        <span> {{ book.toc[bookmark.chapter] }} </span>
+                        <span> c{{(bookmark.chapter + 1)}} {{(bookmark.progress * 100).toFixed(0) }}% </span>
                     </div>
-                    <span> {{ book.title }} </span>
-                    <span> {{ book.toc[bookmark.chapter] }} </span>
-                    <span> Chapter {{ bookmark.chapter + 1 }} </span>
-                    <span> Progress: {{ (bookmark.progress * 100).toFixed(1) }}% </span>
+                    <button class="button" style=" width: fit-content; padding: 0.5rem"
+                        @click="removeBookmark(book, idx)">
+                        <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
+                    </button>
                 </div>
             </template>
         </div>
@@ -99,19 +107,44 @@ async function inspectBook(rec: BookRecord) {
 </template>
 
 <style scoped>
+.entry-text:hover {
+    cursor: default;
+}
+
+.entry-text>span {
+    padding: 0.5rem;
+}
+
+.entry-text>span:not(:last-child) {
+    border-right: 1px solid var(--ui-border);
+}
+
+.cover:hover,
+.cover:focus-visible {
+    border-color: var(--ui-border-active);
+}
+
 .cover {
     background-color: hsl(0 0 55);
     color: hsl(0 0 90);
+    padding: 0;
+    border: none;
+    border: 1px solid var(--ui-border);
     aspect-ratio: 1 / 1;
     min-width: 3rem;
     font-size: 1.5rem;
     cursor: pointer;
+
+    transition: var(--ui-border-transition);
 }
 
 .play-icon {
     position: absolute;
     z-index: 1;
     background-color: #00000069;
+    color: var(--text);
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     opacity: 0;
@@ -124,7 +157,7 @@ async function inspectBook(rec: BookRecord) {
 
 .bookmark-entry {
     width: 100%;
-    gap: 1.5rem;
+    gap: 1rem;
     align-items: center;
 
     transition: var(--ui-bg-transition);
@@ -132,10 +165,6 @@ async function inspectBook(rec: BookRecord) {
 
 .bookmark-entry:hover {
     background-color: var(--ui-card-hover);
-}
-
-.bookmark-entry span:hover {
-    cursor: default;
 }
 
 .card-more {
@@ -149,6 +178,8 @@ async function inspectBook(rec: BookRecord) {
     opacity: 0;
     color: var(--ui-card-more-text);
     background-color: var(--ui-card-more-bg);
+
+    transition: var(--ui-bg-transition);
 }
 
 .card-more:hover {
