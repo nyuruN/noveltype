@@ -19,7 +19,8 @@
   --primary-light: color-mix(in hsl, var(--primary), white 20%);
 
   --ui-main-bg: hsl(from var(--primary) h s l / var(--opacity));
-  --ui-nav-bg: hsl(from var(--primary-dark) h s l / calc(0.6 * var(--opacity))); /* Control overlay strength */
+  /* Control overlay strength */
+  --ui-nav-bg: hsl(from var(--primary-dark) h s l / calc(0.6 * var(--opacity)));
   --ui-nav-hover: hsl(from var(--primary-light) h s l / 0.5);
   --ui-nav-text: var(--text-dimmed);
   --ui-content-bg: hsl(from var(--primary-dark) h s l / calc(0.6 * var(--opacity)));
@@ -29,7 +30,8 @@
   --ui-toc-active: hsl(from var(--primary) h s l / 1);
   --ui-important: hsl(0 75% 65%);
   --ui-border-active: var(--accent);
-  --ui-border: hsl(from var(--primary-light) h s l / calc(2 * var(--opacity))); /* transparent on low opacity */
+  /* transparent on low opacity */
+  --ui-border: hsl(from var(--primary-light) h s l / calc(2 * var(--opacity)));
 
   /* UI - Widgets */
   --ui-card: transparent;
@@ -38,10 +40,7 @@
   --ui-card-more-hover: hsla(0, 0%, 25%, 0.8);
   --ui-card-more-text: #ddd;
   --ui-button-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
-  /* --ui-button-hover: var(--primary-light); */
   --ui-button-text: var(--text-dimmed);
-  /* --ui-button-active-bg: var(--accent); */
-  /* --ui-button-active-text: var(--primary-dark); */
   --ui-slider-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
   --ui-slider-active: var(--accent);
   --ui-slider-thumb: #fff;
@@ -105,26 +104,46 @@ body {
 
 /* General container/section for content in a page */
 .content-container {
-    border-radius: 12px;
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background-color: var(--ui-content-bg);
-    border: 1px solid var(--ui-content-border);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: var(--ui-content-bg);
+  border: 1px solid var(--ui-content-border);
 }
 
 /* For important sections */
 .content-container.danger {
-    border: 2px solid var(--ui-important);
+  border: 2px solid var(--ui-important);
 }
 
 .content-texts {
-    flex-grow: 1;
-    color: var(--text);
+  flex-grow: 1;
+  color: var(--text);
 }
 
 .content-texts>*:first-child {
-    font-weight: bold;
-    color: var(--text-dimmed);
+  font-weight: bold;
+  color: var(--text-dimmed);
+}
+
+.button:hover,
+.button:focus {
+  border-color: var(--ui-border-active);
+}
+
+.button {
+  width: 16rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.2em;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  border: 1px solid var(--ui-border);
+  background-color: var(--ui-button-bg);
+  color: var(--ui-button-text);
+
+  cursor: pointer;
+  transition: var(--ui-border-transition);
 }
 
 /*

@@ -31,14 +31,14 @@ function applyTheme() {
                 <div>Opacity</div>
                 <span>Gives the UI a transparent look</span>
             </div>
-            <Slider :min="0" :max="1" :step="0.01" v-model="opacity"/>
+            <Slider :min="0" :max="1" :step="0.01" v-model="opacity" />
         </div>
         <div class="flex align-center">
             <div class="content-texts">
                 <div>Blur</div>
                 <span>Gives the UI a glassy look</span>
             </div>
-            <Slider :min="0" :max="64" :step="1" v-model="blur"/>
+            <Slider :min="0" :max="64" :step="1" v-model="blur" />
         </div>
     </div>
 
@@ -57,7 +57,7 @@ function applyTheme() {
                     <ColorPicker v-model="preview.textDimmedColor" :reset-color="theme.textDimmedColor"
                         label="Text Dimmed Color"></ColorPicker>
                 </div>
-                <button class="button" @click="applyTheme">
+                <button class="button" @click="applyTheme" style="width: 16rem;">
                     Apply
                 </button>
             </div>
@@ -87,27 +87,6 @@ function applyTheme() {
 #preview-container {
     gap: 1rem;
     overflow: hidden;
-}
-
-
-.button:hover,
-.button:focus {
-    border-color: var(--ui-border-active);
-}
-
-.button {
-    width: 16rem;
-    padding: 0.5rem 1rem;
-    font-size: 1.2em;
-    outline: none;
-    border: none;
-    border-radius: 4px;
-    border: 1px solid var(--ui-border);
-    background-color: var(--ui-button-bg);
-    color: var(--ui-button-text);
-
-    cursor: pointer;
-    transition: var(--ui-border-transition);
 }
 
 .preset-button {

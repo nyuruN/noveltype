@@ -39,8 +39,8 @@ function userInput() {
     <div class="flex" style="align-items: stretch; gap: .5rem;">
         <input type="color" class="color-input" v-model="inputValue" @input="refresh" />
         <input type="text" class="text-input button" :name="props.label" :placeholder="inputValue"
-            style="overflow: auto" v-model="inputText" @change="userInput" onfocus="this.select()" />
-        <button class="button" style="width: auto; padding: 0.5rem;" @click="reset">
+            style="width: 10rem; overflow: auto" v-model="inputText" @change="userInput" onfocus="this.select()" />
+        <button class="button" style="width: fit-content; padding: 0.5rem;" @click="reset">
             <font-awesome-icon :icon="['fas', 'rotate-left']" fixed-width />
         </button>
         <span style="align-self: center; overflow: hidden; text-wrap: nowrap;">{{ props.label }}</span>
@@ -72,32 +72,7 @@ function userInput() {
     color: var(--ui-button-text);
 }
 
-.text-input {
-    outline: none;
-}
-
 .text-input:focus {
-    border-color: var(--ui-border-active);
     color: var(--text);
-}
-
-.button:hover,
-.button:focus {
-    border-color: var(--ui-border-active);
-}
-
-.button {
-    width: 10rem;
-    padding: 0.5rem 1rem;
-    font-size: 1.2em;
-    outline: none;
-    border: none;
-    border-radius: 4px;
-    border: 1px solid var(--ui-border);
-    background-color: var(--ui-button-bg);
-    color: var(--ui-button-text);
-
-    cursor: pointer;
-    transition: var(--ui-border-transition);
 }
 </style>
