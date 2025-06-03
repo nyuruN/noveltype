@@ -29,7 +29,7 @@ function userInput() {
     // Test for valid hex color
     if (/^#(?:[0-9a-fA-F]{3,4}){1,2}$/.exec(inputText.value)) {
         color.value = hexToHsl(inputText.value)
-    }    
+    }
 
     inputText.value = ''
 }
@@ -38,8 +38,8 @@ function userInput() {
 <template>
     <div class="flex" style="align-items: stretch; gap: .5rem;">
         <input type="color" class="color-input" v-model="inputValue" @input="refresh" />
-        <input type="text" class="text-input button" :name="props.label" :placeholder="inputValue" style="overflow: auto"
-            v-model="inputText" @change="userInput" onfocus="this.select()" />
+        <input type="text" class="text-input button" :name="props.label" :placeholder="inputValue"
+            style="overflow: auto" v-model="inputText" @change="userInput" onfocus="this.select()" />
         <button class="button" style="width: auto; padding: 0.5rem;" @click="reset">
             <font-awesome-icon :icon="['fas', 'rotate-left']" fixed-width />
         </button>
@@ -48,52 +48,53 @@ function userInput() {
 </template>
 
 <style scoped>
-.text-input::placeholder {
-    color: var(--ui-button-text);
-}
-
-.text-input:focus {
-    outline-style: solid;
-    outline-width: 1px;
-    outline-color: var(--ui-border-active);
-    outline-offset: -2px;
-    color: var(--text);
-}
-
-.color-input:focus {
-    outline-style: solid;
-    outline-width: 1px;
-    outline-color: var(--ui-border-active);
-    outline-offset: -2px;
-}
-
+.color-input:focus,
 .color-input:hover {
-    background-color: var(--ui-button-hover);
+    border-color: var(--ui-border-active);
 }
 
 .color-input {
     background-color: var(--ui-button-bg);
     aspect-ratio: 1 / 1;
-    height: 38px;
+    height: 40px;
     width: auto;
     border: none;
     border-radius: 4px;
+    border: 1px solid var(--ui-border);
     padding: 0.1rem;
     cursor: pointer;
+
+    transition: var(--ui-border-transition);
 }
 
-.button {
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1.2em;
-    border-radius: 4px;
-    width: 10rem;
-    cursor: pointer;
-    background-color: var(--ui-button-bg);
+.text-input::placeholder {
     color: var(--ui-button-text);
 }
 
+.text-input {
+    outline: none;
+}
+
+.text-input:focus {
+    border-color: var(--ui-border-active);
+    color: var(--text);
+}
+
 .button:hover {
-    background-color: var(--ui-button-hover);
+    border-color: var(--ui-border-active);
+}
+
+.button {
+    width: 10rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 4px;
+    border: 1px solid var(--ui-border);
+    background-color: var(--ui-button-bg);
+    color: var(--ui-button-text);
+
+    cursor: pointer;
+    transition: var(--ui-border-transition);
 }
 </style>

@@ -37,11 +37,11 @@
   --ui-card-more-bg: hsla(0, 0%, 25%, 0.3);
   --ui-card-more-hover: hsla(0, 0%, 25%, 0.8);
   --ui-card-more-text: #ddd;
-  --ui-button-bg: var(--primary-dark);
-  --ui-button-hover: var(--primary-light);
+  --ui-button-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
+  /* --ui-button-hover: var(--primary-light); */
   --ui-button-text: var(--text-dimmed);
-  --ui-button-active-bg: var(--accent);
-  --ui-button-active-text: var(--primary-dark);
+  /* --ui-button-active-bg: var(--accent); */
+  /* --ui-button-active-text: var(--primary-dark); */
   --ui-slider-bg: #ddd;
   --ui-slider-active: var(--accent);
   --ui-slider-thumb: #fff;
@@ -52,6 +52,9 @@
   --ui-toggle-thumb: #fff;
   --ui-prompt-cover: #00000069;
   --ui-prompt-bg: var(--primary);
+
+  /* COMMON TRANSITIONS */
+  --ui-border-transition: border 0.2s ease;
 
   /* TYPING */
   --typing-font-scale: 1;

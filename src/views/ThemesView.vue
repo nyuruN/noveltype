@@ -57,7 +57,7 @@ function applyTheme() {
                     <ColorPicker v-model="preview.textDimmedColor" :reset-color="theme.textDimmedColor"
                         label="Text Dimmed Color"></ColorPicker>
                 </div>
-                <button class="button" @click="applyTheme" style="border-radius: 4px;">
+                <button class="button" @click="applyTheme">
                     Apply
                 </button>
             </div>
@@ -68,7 +68,7 @@ function applyTheme() {
         <h2 style="margin: 0.5rem 0 1rem;">Color Presets</h2>
         <div class="flex" style="gap: 1rem; flex-wrap: wrap;">
             <template v-for="(theme) in Themes">
-                <button style="cursor: pointer;" class="button"
+                <button style="cursor: pointer;" class="preset-button"
                     :style="{ backgroundColor: hslString(theme.primaryColor), color: hslString(theme.accentColor) }"
                     @click="preview = { ...theme }">
                     {{ theme.name }}
@@ -84,16 +84,31 @@ function applyTheme() {
     height: 100%;
 }
 
-#preview-options>.button:hover {
-    background-color: var(--ui-button-hover);
-}
-
 #preview-container {
     gap: 1rem;
     overflow: hidden;
 }
 
+
+.button:hover {
+    border-color: var(--ui-border-active);
+}
+
 .button {
+    width: 16rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 4px;
+    border: 1px solid var(--ui-border);
+    background-color: var(--ui-button-bg);
+    color: var(--ui-button-text);
+
+    cursor: pointer;
+    transition: var(--ui-border-transition);
+}
+
+.preset-button {
     border: none;
     padding: 0.5rem 1rem;
     font-size: 1.2em;
