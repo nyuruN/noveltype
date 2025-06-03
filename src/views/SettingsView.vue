@@ -87,7 +87,7 @@ async function acceptPersistantToggle(persistant: boolean) {
                 </div>
                 <span>Deletes your stored books and settings</span>
             </div>
-            <button class="delete-button" @click="deleteProgramData">
+            <button class="button danger" @click="deleteProgramData">
                 <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
             </button>
         </div>

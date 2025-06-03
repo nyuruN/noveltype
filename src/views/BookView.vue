@@ -74,7 +74,7 @@ async function deleteBook() {
                     </div>
                     <span>Removes this book from your library</span>
                 </div>
-                <button class="delete-button" @click="deleteBook">
+                <button class="button danger" @click="deleteBook">
                     <font-awesome-icon :icon="['fas', 'trash']" fixed-width />
                 </button>
             </div>

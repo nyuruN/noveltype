@@ -129,10 +129,11 @@ body {
 .button:hover,
 .button:focus {
   border-color: var(--ui-border-active);
+  color: var(--text);
 }
 
 .button {
-  width: 16rem;
+  width: 12rem;
   padding: 0.5rem 1rem;
   font-size: 1.2em;
   outline: none;
@@ -143,7 +144,16 @@ body {
   color: var(--ui-button-text);
 
   cursor: pointer;
-  transition: var(--ui-border-transition);
+  transition: var(--ui-border-transition), color 0.2s ease;
+}
+
+.button.danger {
+  border: 1px solid var(--ui-important);
+}
+
+.button.danger:hover,
+.button.danger:focus {
+  color: var(--ui-important);
 }
 
 /*
