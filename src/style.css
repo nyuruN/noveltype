@@ -50,7 +50,7 @@
   --ui-toggle-active: var(--accent);
   --ui-toggle-thumb: #fff;
   --ui-prompt-cover: #00000069;
-  --ui-prompt-bg: var(--primary);
+  --ui-prompt-bg: hsl(from var(--primary) h s l / calc(2.5 * var(--opacity)));
 
   /* COMMON TRANSITIONS */
   --ui-border-transition: border 0.2s ease;

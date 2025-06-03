@@ -6,14 +6,16 @@ export const usePromptStore = defineStore('prompt', {
     resolveFn: undefined as ((val: boolean) => void) | undefined,
     title: 'Confirm Action',
     description: 'I\'m the description~!',
+    danger: false
   }),
   actions: {
-    async openPrompt(_title: string, _description: string) {
+    async openPrompt(title: string, description: string, danger?: boolean) {
       let { promise, resolve } = Promise.withResolvers<boolean>()
 
       this.resolveFn = resolve
-      this.title = _title
-      this.description = _description
+      this.title = title
+      this.description = description
+      this.danger = danger || this.danger;
 
       let confirm = await promise;
 

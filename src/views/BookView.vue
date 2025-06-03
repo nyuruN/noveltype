@@ -17,7 +17,7 @@ let book = books.value.at(bookIdx.value)
 async function deleteBook() {
     if (!book) return
 
-    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will permanently remove it from your library!')
+    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will permanently remove the book from your library!', true)
 
     if (confirm) {
         console.log(books.value.splice(bookIdx.value, 1))

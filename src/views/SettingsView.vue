@@ -20,7 +20,7 @@ onMounted(async () => {
 })
 
 async function deleteProgramData() {
-    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will erase all site data!')
+    let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will permanently erase all site data including your books, bookmarks and user config!', true)
 
     if (confirm) {
         deleteDB()
