@@ -5,7 +5,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faArrowLeft, faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faDeleteLeft, faEllipsis, faFileImport, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faRightToBracket, faRotateLeft, faStar, faTrash, faTriangleExclamation, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faBars, faBook, faBookmark, faBookOpen, faBrush, faCaretLeft, faCaretRight, faCircleExclamation, faCloud, faCloudArrowUp, faDeleteLeft, faEllipsis, faFileImport, faGear, faHouse, faImage, faKeyboard, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faPaintRoller, faPalette, faPen, faPenToSquare, faPlay, faPlus, faRightToBracket, faRotateLeft, faStar, faTrash, faTriangleExclamation, faTurnDown, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { faBookmark as farBookmark, faKeyboard as farKeyboard} from '@fortawesome/free-regular-svg-icons'
 
 import App from './views/App.vue'
@@ -54,6 +54,8 @@ library.add(
     faPalette,
     faRotateLeft,
 
+    faUpload,
+    faCloudArrowUp,
     faFileImport,
     faImage,
     faCloud,

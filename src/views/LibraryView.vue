@@ -58,7 +58,7 @@ async function inspectBook(rec: BookRecord) {
 function removeBookmark(rec: BookRecord, idx: number) {
     rec.bookmarks.splice(idx, 1)
 }
-async function dropHandler(event: Event) {
+function dropHandler(event: Event) {
     dropping.value = false
     let ev = event as DragEvent;
 
@@ -69,6 +69,11 @@ async function dropHandler(event: Event) {
         console.log(`… file[${i}].name = ${file.name}`);
         loadEpub(file)
     });
+}
+// Only begin Drag&Drop if data is a file
+function dragenterHandler(event: Event) {
+    if ((event as DragEvent).dataTransfer?.files.length)
+        dropping.value = true
 }
 const dropping = ref(false)
 </script>
@@ -102,14 +107,34 @@ const dropping = ref(false)
         </div>
     </div>
 
-    <div class="content-container relative" style="gap: 0.5rem; overflow: clip;" @dragenter.prevent="dropping = true">
+    <div class="content-container relative" style="gap: 0.5rem; min-height: 30rem; overflow: clip;"
+        @dragenter.prevent="dragenterHandler">
+        <div class="flex">
+            <h2 class="grow" style="margin: 0.5rem 0 .5rem;">My Books</h2>
+            <button class="button" @click="triggerInput" v-if="library.books.length">
+                <font-awesome-icon :icon="['fas', 'upload']" fixed-width />
+                <span style="margin-left: 0.5rem;">Upload</span>
+            </button>
+        </div>
+        <div class="absolute-center" style="font-size: 2rem;" v-if="!library.books.length">
+            <div class="flex-col align-center" style="gap: 1rem; text-align: center;">
+                <div style="font-size: 6rem;">
+                    <font-awesome-icon :icon="['fas', 'cloud-arrow-up']" fixed-width />
+                </div>
+                <span>Drag & Drop to Upload EPUB</span>
+                <div>OR</div>
+                <button class="button" style="font-size: 1.5rem;" @click="triggerInput">Browse File</button>
+            </div>
+        </div>
+
         <div class="drop-zone absolute-fill" v-show="dropping" @dragleave.prevent="dropping = false" @dragover.prevent
             @drop.prevent="dropHandler">
             <div class="absolute-center" style="pointer-events: none;">
                 <font-awesome-icon :icon="['fas', 'right-to-bracket']" fixed-width class="fa-rotate-90" />
             </div>
         </div>
-        <h2 style="margin: 0.5rem 0 .5rem;">My Books</h2>
+        <input id='file-input' type="file" accept=".epub" @change="fileInputHandler" style="display: none;" />
+
         <div class="cards flex">
             <div class="card relative" @click="openBook(book.filename)" v-for="(book) in library.books">
                 <div class="card-more" @click.stop="inspectBook(book)">
@@ -119,13 +144,6 @@ const dropping = ref(false)
                     <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
                 </div>
                 <div class="card-text">{{ book.title }}</div>
-            </div>
-            <div class="card" @click="triggerInput">
-                <input id='file-input' type="file" accept=".epub" @change="fileInputHandler" style="display: none;" />
-                <div class="card-image relative">
-                    <font-awesome-icon :icon="['fas', 'plus']" fixed-width class="absolute-center" />
-                </div>
-                <div class="card-text">Upload from device</div>
             </div>
         </div>
     </div>
