@@ -60,6 +60,8 @@ function resumeTyping() {
   cursor: pointer;
   display: flex;
   align-items: center;
+
+  transition: var(--ui-bg-transition);
 }
 
 .nav-item:hover,

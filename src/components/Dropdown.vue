@@ -40,7 +40,7 @@ let showDropdown = ref(false)
     background-color: var(--ui-dropdown-bg);
     color: var(--text-dimmed);
 
-    transition: background 0.2s ease;
+    transition: var(--ui-bg-transition), var(--ui-text-transition);
 }
 
 .dropdown-item:hover,
@@ -48,6 +48,7 @@ let showDropdown = ref(false)
     cursor: pointer;
     outline: none;
     background-color: var(--ui-dropdown-hover);
+    color: var(--text);
 }
 
 .dropdown {
@@ -75,7 +76,7 @@ let showDropdown = ref(false)
     background-color: var(--ui-dropdown-bg);
     color: var(--text-dimmed);
 
-    transition: var(--ui-border-transition), color 0.2s ease;
+    transition: var(--ui-border-transition), var(--ui-text-transition);
 }
 
 .dropdown-button:hover,

@@ -158,7 +158,7 @@ function goToParagraph(paragraph: number) {
 }
 
 .trailer {
-    transition: color 0.1s ease;
+    transition: var(--typing-text-transition);
     color: var(--typing-trailer);
 }
 
@@ -206,7 +206,7 @@ function goToParagraph(paragraph: number) {
 .letter {
     display: inline;
     color: var(--typing-text-dimmed);
-    transition: color 0.1s;
+    transition: var(--typing-letter-transition);
 }
 
 .letter.correct {
@@ -227,7 +227,7 @@ function goToParagraph(paragraph: number) {
     width: var(--typing-caret-width);
     border-radius: 0.1em;
     background-color: var(--typing-caret-color);
-    transition: top 0.05s ease, left 0.1s ease;
+    transition: var(--typing-caret-transition);
     z-index: 1;
 }
 

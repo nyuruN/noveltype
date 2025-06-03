@@ -112,7 +112,7 @@ function bookmark() {
     color: var(--typing-menu-color);
     cursor: pointer;
 
-    transition: color 0.25s;
+    transition: var(--typing-text-transition);
 }
 
 .menu-button:hover {

@@ -77,7 +77,7 @@ async function toChapter(n: number) { let c = book.value?.getChapter(n); if (c) 
     cursor: pointer;
     color: var(--text-dimmed);
 
-    transition: background-color 0.25s ease;
+    transition: var(--typing-bg-transition);
 }
 
 #toc-content>ul.selected {

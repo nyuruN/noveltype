@@ -114,21 +114,28 @@ async function inspectBook(rec: BookRecord) {
     background-color: #00000069;
     width: 100%;
     height: 100%;
-    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .bookmark-entry:hover .play-icon {
-    visibility: visible;
+    opacity: 1;
 }
 
 .bookmark-entry {
     width: 100%;
     gap: 1.5rem;
     align-items: center;
+
+    transition: var(--ui-bg-transition);
 }
 
 .bookmark-entry:hover {
     background-color: var(--ui-card-hover);
+}
+
+.bookmark-entry span:hover {
+    cursor: default;
 }
 
 .card-more {
@@ -177,6 +184,8 @@ async function inspectBook(rec: BookRecord) {
     border: none;
     border-radius: 12px;
     overflow: hidden;
+
+    transition: var(--ui-bg-transition);
 }
 
 .card:hover {

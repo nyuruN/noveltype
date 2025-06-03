@@ -126,7 +126,7 @@ async function deleteBook() {
     border-radius: 2rem;
     padding: 0.2rem;
 
-    transition: color .2s ease, border .2s ease;
+    transition: var(--ui-border-transition), var(--ui-text-transition);
 }
 
 #back-button:hover {
