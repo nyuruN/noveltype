@@ -11,14 +11,21 @@ const model = defineModel()
 .slider {
     appearance: none;
     -webkit-appearance: none;
-    outline: 0;
+    outline: none;
     border: 0;
     border-radius: 1rem;
+    border: 1px solid var(--ui-border);
     max-width: 100%;
     width: 12rem;
-    height: 1rem;
+    height: 1.1rem;
 
-    margin: 12px 0 0;
+    transition: var(--ui-border-transition);
+}
+
+.slider:hover,
+.slider:focus {
+    border-color: var(--ui-border-active);
+    cursor: pointer;
 }
 
 /* Webkit */
@@ -34,12 +41,12 @@ const model = defineModel()
     }
 
     .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
         width: 1.0rem;
         height: 1.0rem;
-        -webkit-appearance: none;
         cursor: ew-resize;
         background: var(--ui-slider-thumb);
-        box-shadow: -340px 0 0 330px var(--ui-slider-active), inset 0 0 0 2px var(--ui-slider-active);
+        box-shadow: -340px 0 0 330px var(--ui-slider-active), inset 0 0 0 1px var(--ui-slider-active);
         border-radius: 50%;
         position: relative;
     }

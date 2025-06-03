@@ -42,7 +42,7 @@
   --ui-button-text: var(--text-dimmed);
   /* --ui-button-active-bg: var(--accent); */
   /* --ui-button-active-text: var(--primary-dark); */
-  --ui-slider-bg: #ddd;
+  --ui-slider-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
   --ui-slider-active: var(--accent);
   --ui-slider-thumb: #fff;
   --ui-dropdown-bg: hsl(from var(--primary-dark) h s l / var(--opacity));
