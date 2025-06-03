@@ -68,7 +68,7 @@ function applyTheme() {
         <h2 style="margin: 0.5rem 0 1rem;">Color Presets</h2>
         <div class="flex" style="gap: 1rem; flex-wrap: wrap;">
             <template v-for="(theme) in Themes">
-                <button style="cursor: pointer;" class="preset-button"
+                <button style="cursor: pointer;" class="button preset-button"
                     :style="{ backgroundColor: hslString(theme.primaryColor), color: hslString(theme.accentColor) }"
                     @click="preview = { ...theme }">
                     {{ theme.name }}
@@ -90,13 +90,7 @@ function applyTheme() {
 }
 
 .preset-button {
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1.2em;
-    border-radius: 8px;
     width: 16rem;
-    cursor: pointer;
-    background-color: var(--ui-button-bg);
-    color: var(--ui-button-text);
+    border-radius: 8px;
 }
 </style>

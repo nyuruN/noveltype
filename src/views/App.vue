@@ -54,7 +54,6 @@ function resumeTyping() {
   font-size: 1.2rem;
   background-color: transparent;
   color: var(--ui-nav-text);
-  outline: none;
   border: none;
   border-radius: 8px;
   user-select: none;
@@ -64,7 +63,8 @@ function resumeTyping() {
 }
 
 .nav-item:hover,
-.nav-item:focus {
+.nav-item:focus-visible {
+  outline: none;
   background-color: var(--ui-nav-hover);
 }
 

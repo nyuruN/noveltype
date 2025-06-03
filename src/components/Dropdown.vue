@@ -34,7 +34,6 @@ let showDropdown = ref(false)
 .dropdown-item {
     font-size: 1rem;
     padding: 0.5rem;
-    outline: none;
     border: none;
     border-radius: 4px;
     border-bottom: 1px solid var(--primary);
@@ -47,6 +46,7 @@ let showDropdown = ref(false)
 .dropdown-item:hover,
 .dropdown-item:focus {
     cursor: pointer;
+    outline: none;
     background-color: var(--ui-dropdown-hover);
 }
 
@@ -69,7 +69,6 @@ let showDropdown = ref(false)
     width: 12rem;
     height: 2rem;
     padding: 0;
-    outline: none;
     border: none;
     border-radius: 4px;
     border: 1px solid var(--ui-border);
@@ -83,6 +82,7 @@ let showDropdown = ref(false)
 .dropdown-button:focus,
 .dropdown-button.focus {
     cursor: pointer;
+    outline: none;
     border: 1px solid var(--ui-border-active);
     color: var(--text);
 }

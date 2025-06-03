@@ -11,7 +11,6 @@ const model = defineModel()
 .slider {
     appearance: none;
     -webkit-appearance: none;
-    outline: none;
     border: 0;
     border-radius: 1rem;
     border: 1px solid var(--ui-border);
@@ -23,7 +22,8 @@ const model = defineModel()
 }
 
 .slider:hover,
-.slider:focus {
+.slider:focus-visible {
+    outline: none;
     border-color: var(--ui-border-active);
     cursor: pointer;
 }

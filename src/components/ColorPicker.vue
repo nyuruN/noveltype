@@ -58,7 +58,6 @@ function userInput() {
     aspect-ratio: 1 / 1;
     height: 40px;
     width: auto;
-    outline: none;
     border: none;
     border-radius: 4px;
     border: 1px solid var(--ui-border);
@@ -69,6 +68,7 @@ function userInput() {
 }
 
 .text-input::placeholder {
+    outline: none;
     color: var(--ui-button-text);
 }
 
