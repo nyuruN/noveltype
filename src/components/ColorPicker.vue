@@ -56,7 +56,7 @@ function userInput() {
 .color-input {
     background-color: var(--ui-button-bg);
     aspect-ratio: 1 / 1;
-    height: 40px;
+    height: 2.75rem;
     width: auto;
     border: none;
     border-radius: 4px;

@@ -234,6 +234,7 @@ function goToParagraph(paragraph: number) {
 #typing-area {
     display: block;
     position: relative;
+    font-family: var(--typing-font);
     font-size: calc(2.0rem * var(--typing-font-scale));
     line-height: calc(2.4rem * var(--typing-line-scale));
 }

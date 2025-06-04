@@ -59,6 +59,7 @@ const primary = computed(() => ({
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 
     border: 1px solid var(--ui-border)
 }
@@ -76,6 +77,7 @@ const primary = computed(() => ({
 #preview-paragraph {
     width: 80%;
     flex-wrap: wrap;
+    font-family: var(--typing-font);
     font-size: 1.5rem;
     gap: 0.5em;
 }

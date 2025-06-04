@@ -77,13 +77,17 @@
   --typing-caret-color: var(--accent);
   --typing-caret-width: calc(2px * var(--typing-font-scale));
 
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
+  --ui-font: sans-serif;
+  --typing-font: monospace;
+  --ui-button-text: var(--ui-font);
 
   background-color: var(--primary);
   background-image: url(https://images.unsplash.com/photo-1745669754254-c30c98e5f8b1?w=2070&auto=format&fit=crop);
   background-size: cover;
 
   color: var(--text-dimmed);
+  font-family: var(--ui-font);
 }
 
 /* Adjust layout for a lighter color scheme */
@@ -144,6 +148,7 @@ body {
 
   cursor: pointer;
   transition: var(--ui-border-transition), var(--ui-text-transition);
+  font-family: var(--ui-button-font)
 }
 
 .button:hover,
