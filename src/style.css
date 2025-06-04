@@ -9,11 +9,6 @@
   --text: hsl(var(--text-hsl));
   --text-dimmed: hsl(var(--text-dimmed-hsl));
 
-  /* OTHER*/
-  --app-padding: 3rem 3rem;
-  --blur-amount: 16px;
-  --opacity: 0.8;
-
   /* UI */
   --primary-dark: color-mix(in hsl, var(--primary), black 20%);
   --primary-light: color-mix(in hsl, var(--primary), white 20%);
@@ -77,14 +72,23 @@
   --typing-caret-color: var(--accent);
   --typing-caret-width: calc(2px * var(--typing-font-scale));
 
-  /* font-family: sans-serif; */
+  /* FONTS */
   --ui-font: sans-serif;
   --typing-font: monospace;
   --ui-button-text: var(--ui-font);
 
-  background-color: var(--primary);
-  background-image: url(https://images.unsplash.com/photo-1745669754254-c30c98e5f8b1?w=2070&auto=format&fit=crop);
-  background-size: cover;
+  /* OTHER*/
+  --app-padding: 3rem 3rem;
+  --blur-amount: 16px;
+  --opacity: 0.8;
+  --image-layout: cover;
+  --image-url: url(https://images.unsplash.com/photo-1745669754254-c30c98e5f8b1?w=2070&auto=format&fit=crop);
+
+  background-color: var(--primary-dark);
+  background-image: var(--image-url);
+  background-size: var(--image-layout);
+  background-position: center;
+  /* background-repeat: no-repeat; */
 
   color: var(--text-dimmed);
   font-family: var(--ui-font);
@@ -106,6 +110,16 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+h2 {
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+h3 {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
 }
 
 /*

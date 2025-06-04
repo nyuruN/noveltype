@@ -3,11 +3,12 @@ import ThemePreview from '@/components/ThemePreview.vue';
 import ColorPicker from '@/components/ColorPicker.vue';
 import Slider from '@/components/Slider.vue';
 import { hslString } from '@/lib/color';
-import { useThemeStore, Themes } from '@/stores/theme';
+import { useThemeStore, Themes, imageLayoutOptions } from '@/stores/theme';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import Dropdown from '@/components/Dropdown.vue';
 
-const { theme, savedThemes, opacity, blur } = storeToRefs(useThemeStore())
+const { theme, savedThemes, opacity, blur, imageLayout, imageUrl } = storeToRefs(useThemeStore())
 
 let preview = ref({ ...theme.value })
 
@@ -28,13 +29,35 @@ function themeAction() {
 }
 
 let isFavorite = computed(() => savedThemes.value.find(t => t.name == preview.value.name))
+let urlInputBuffer = imageUrl.value?.slice()
 </script>
 
 <template>
     <h1>Themes</h1>
 
-    <div class="content-container flex-col" style="gap: 0.5rem">
-        <h2 style="margin: 0.5rem 0;">General</h2>
+    <div class="content-container flex-col" style="gap: 1rem">
+        <h2>General</h2>
+
+        <div class="flex align-center">
+            <div class="content-texts">
+                <div>Image Url</div>
+                <span>Loads an image as the backdrop of the website</span>
+            </div>
+            <div class="flex" style="gap: 0.5rem; width: 24rem;">
+                <input type="text" class="text-input button grow" name="imageUrl" placeholder="Paste image URL here"
+                    v-model="urlInputBuffer" onfocus="this.select()" />
+                <button class="button icon-btn" @click="imageUrl = urlInputBuffer">
+                    <font-awesome-icon :icon="['fas', 'floppy-disk']" fixed-width />
+                </button>
+            </div>
+        </div>
+        <div class="flex align-center">
+            <div class="content-texts">
+                <div>Image layout</div>
+                <span>Determines how the image is layed out</span>
+            </div>
+            <Dropdown v-model="imageLayout" :options="imageLayoutOptions" />
+        </div>
         <div class="flex align-center">
             <div class="content-texts">
                 <div>Opacity</div>
@@ -52,14 +75,14 @@ let isFavorite = computed(() => savedThemes.value.find(t => t.name == preview.va
     </div>
 
     <div class="content-container">
-        <h2 style="margin: 0.5rem 0 1rem;">Color Preview</h2>
+        <h2 style="margin-bottom: 1rem;">Color Preview</h2>
         <div id="preview-container" class="flex" style="height: 20rem; align-items: stretch;">
             <ThemePreview v-model="preview" />
             <div class="grow">
                 <div id="preview-options" class="flex-col" style="width: 16rem;">
                     <div class="flex" style="gap: 0.5rem">
                         <input type="text" class="text-input button grow" name="theme-name" placeholder="Theme Name"
-                            style="overflow: auto" v-model="preview.name" onfocus="this.select()" />
+                            v-model="preview.name" onfocus="this.select()" />
                         <button class="button icon-btn" @click="themeAction" :class="{ active: isFavorite }">
                             <font-awesome-icon :icon="[isFavorite ? 'fas' : 'far', 'star']" fixed-width />
                         </button>
@@ -83,13 +106,13 @@ let isFavorite = computed(() => savedThemes.value.find(t => t.name == preview.va
     </div>
 
     <div class="content-container">
-        <h2 style="margin: 0.5rem 0 1rem;">Color Presets</h2>
+        <h2 style="margin-bottom: 1rem;">Color Presets</h2>
 
         <template v-if="savedThemes.length">
-            <h2 style="margin: 0.5rem 0 1rem; font-size: 1.25rem">
+            <h3 style="margin-bottom: 1rem;">
                 <font-awesome-icon :icon="['fas', 'star']" fixed-width />
                 Favourites
-            </h2>
+            </h3>
             <div class="flex" style="gap: 1rem; flex-wrap: wrap;">
                 <template v-for="(theme) in savedThemes">
                     <button style="cursor: pointer;" class="button preset-button"
