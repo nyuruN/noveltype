@@ -1,16 +1,31 @@
-# Noveltype
+# noveltype
 
 Practice typing by reading novels!
 
-This project uses Vue3 + Vite + TypeScript (+ Neutralino for native application)
+A hobby project inspired by [monkeytype](https://github.com/monkeytypegame/monkeytype) and [GlassMusicPlayer](https://github.com/XiangZi7/GlassMusicPlayer)
+
+This project uses Vue3 + Vite + TypeScript
 
 ---
 
-Compile the application with:
+Compile the website with:
+
+```bash
+npm i
+npm run dev
+```
+
+Or alternatively as a Neutralino application:
 
 ```bash
 npm i
 neu update
-npx patch-package epubjs
-npm run start
+npm start
 ```
+
+Install Neutralino CLI:
+
+```bash
+npm install -g @neutralinojs/neu
+```
+
