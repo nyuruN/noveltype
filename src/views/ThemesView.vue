@@ -5,9 +5,9 @@ import Slider from '@/components/Slider.vue';
 import { hslString } from '@/lib/color';
 import { useThemeStore, Themes } from '@/stores/theme';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-const { theme, opacity, blur } = storeToRefs(useThemeStore())
+const { theme, savedThemes, opacity, blur } = storeToRefs(useThemeStore())
 
 let preview = ref({ ...theme.value })
 
@@ -15,10 +15,19 @@ function applyTheme() {
     let newTheme = {
         ...preview.value
     }
-    newTheme.name = 'Custom'
     theme.value = newTheme
 }
+function themeAction() {
+    let idx = savedThemes.value.findIndex(t => t.name == preview.value.name)
 
+    if (idx != -1) {
+        console.log(savedThemes.value.splice(idx, 1))
+    } else if (preview.value.name) {
+        savedThemes.value.push({ ...preview.value })
+    }
+}
+
+let isFavorite = computed(() => savedThemes.value.find(t => t.name == preview.value.name))
 </script>
 
 <template>
@@ -46,8 +55,16 @@ function applyTheme() {
         <h2 style="margin: 0.5rem 0 1rem;">Color Preview</h2>
         <div id="preview-container" class="flex" style="height: 20rem; align-items: stretch;">
             <ThemePreview v-model="preview" />
-            <div id="preview-options" class="grow flex-col">
-                <div class="flex-col" style="gap: 0.5rem">
+            <div class="grow">
+                <div id="preview-options" class="flex-col" style="width: 16rem;">
+                    <div class="flex" style="gap: 0.5rem">
+                        <input type="text" class="text-input button grow" name="theme-name" placeholder="Theme Name"
+                            style="overflow: auto" v-model="preview.name" onfocus="this.select()" />
+                        <button class="button icon-btn" @click="themeAction" :class="{ active: isFavorite }">
+                            <font-awesome-icon :icon="[isFavorite ? 'fas' : 'far', 'star']" fixed-width />
+                        </button>
+                    </div>
+
                     <ColorPicker v-model="preview.primaryColor" :reset-color="theme.primaryColor" label="Primary Color">
                     </ColorPicker>
                     <ColorPicker v-model="preview.accentColor" :reset-color="theme.accentColor" label="Accent Color">
@@ -55,17 +72,37 @@ function applyTheme() {
                     <ColorPicker v-model="preview.textColor" :reset-color="theme.textColor" label="Text Color">
                     </ColorPicker>
                     <ColorPicker v-model="preview.textDimmedColor" :reset-color="theme.textDimmedColor"
-                        label="Text Dimmed Color"></ColorPicker>
+                        label="Text Dimmed Color" style="width: auto;"></ColorPicker>
+
+                    <button class="button" style="width: auto;" @click="applyTheme">
+                        Apply
+                    </button>
                 </div>
-                <button class="button" @click="applyTheme" style="width: 16rem;">
-                    Apply
-                </button>
             </div>
         </div>
     </div>
 
     <div class="content-container">
         <h2 style="margin: 0.5rem 0 1rem;">Color Presets</h2>
+
+        <template v-if="savedThemes.length">
+            <h2 style="margin: 0.5rem 0 1rem; font-size: 1.25rem">
+                <font-awesome-icon :icon="['fas', 'star']" fixed-width />
+                Favourites
+            </h2>
+            <div class="flex" style="gap: 1rem; flex-wrap: wrap;">
+                <template v-for="(theme) in savedThemes">
+                    <button style="cursor: pointer;" class="button preset-button"
+                        :style="{ backgroundColor: hslString(theme.primaryColor), color: hslString(theme.accentColor) }"
+                        @click="preview = { ...theme }">
+                        <span>{{ theme.name }}</span>
+                    </button>
+                </template>
+            </div>
+
+            <div class="divider"></div>
+        </template>
+
         <div class="flex" style="gap: 1rem; flex-wrap: wrap;">
             <template v-for="(theme) in Themes">
                 <button style="cursor: pointer;" class="button preset-button"
@@ -79,6 +116,11 @@ function applyTheme() {
 </template>
 
 <style scoped>
+.icon-btn:hover,
+.icon-btn.active {
+    color: var(--accent)
+}
+
 #preview-options {
     gap: 0.5rem;
     height: 100%;

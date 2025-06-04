@@ -136,6 +136,11 @@ body {
   color: var(--text-dimmed);
 }
 
+.divider {
+  margin: 1rem 0;
+  border-bottom: 1px solid var(--ui-border);
+}
+
 .button {
   width: 12rem;
   padding: 0.5rem 1rem;
@@ -165,6 +170,11 @@ body {
 .button.danger:hover,
 .button.danger:focus-visible {
   color: var(--ui-important);
+}
+
+.button.icon-btn {
+  width: fit-content;
+  padding: 0.5rem;
 }
 
 /*

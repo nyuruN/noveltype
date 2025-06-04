@@ -36,14 +36,14 @@ function userInput() {
 </script>
 
 <template>
-    <div class="flex" style="align-items: stretch; gap: .5rem;">
+    <div class="flex relative" style="align-items: stretch; gap: .5rem;">
         <input type="color" class="color-input" v-model="inputValue" @input="refresh" />
-        <input type="text" class="text-input button" :name="props.label" :placeholder="inputValue"
-            style="width: 10rem; overflow: auto" v-model="inputText" @change="userInput" onfocus="this.select()" />
-        <button class="button" style="width: fit-content; padding: 0.5rem;" @click="reset">
+        <input type="text" class="button text-input" :name="props.label" :placeholder="inputValue" v-model="inputText"
+            @change="userInput" onfocus="this.select()" />
+        <button class="button icon-btn" @click="reset">
             <font-awesome-icon :icon="['fas', 'rotate-left']" fixed-width />
         </button>
-        <span style="align-self: center; overflow: hidden; text-wrap: nowrap;">{{ props.label }}</span>
+        <span class="label">{{ props.label }}</span>
     </div>
 </template>
 
@@ -56,7 +56,7 @@ function userInput() {
 .color-input {
     background-color: var(--ui-button-bg);
     aspect-ratio: 1 / 1;
-    height: 2.75rem;
+    height: 2.5rem;
     width: auto;
     border: none;
     border-radius: 4px;
@@ -65,6 +65,19 @@ function userInput() {
     cursor: pointer;
 
     transition: var(--ui-border-transition);
+}
+
+.label {
+    position: absolute;
+    left: 104%;
+    align-self: center;
+    overflow: hidden;
+    text-wrap: nowrap;
+}
+
+.text-input {
+    min-width: 0;
+    /* padding: 0.5rem; */
 }
 
 .text-input::placeholder {
