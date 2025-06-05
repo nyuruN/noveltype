@@ -13,24 +13,32 @@ export const useWindowStore = defineStore('window', () => {
         pos.value = { x: 0, y: 0, }
         size.value = { x: 600, y: 400, }
     }
+    function fromWindow() {
+        let app = document.getElementById('app-window') as HTMLElement
+        pos.value = { x: app.offsetLeft, y: app.offsetTop }
+        size.value = { x: app.clientWidth, y: app.clientHeight }
+    }
     function applyLayout() {
         let app = document.getElementById('app-window') as HTMLElement
-        
-        app.style['top'] = `${pos.value.y}px`
-        app.style['left'] = `${pos.value.x}px`
-        app.style['width'] = `${size.value.x}px`
-        app.style['height'] = `${size.value.y}px`
+        app.style['top'] = `${pos.value.y / window.innerHeight * 100}%`
+        app.style['left'] = `${pos.value.x / window.innerWidth * 100}%`
+        app.style['width'] = `${size.value.x / window.innerWidth * 100}%`
+        app.style['height'] = `${size.value.y / window.innerHeight * 100}%`
     }
 
+    let resizeTimeout = setTimeout(() => { })
     onMounted(() => {
-        if (changed.value) {
-            applyLayout()
-        } else {
-            let app = document.getElementById('app-window') as HTMLElement
-            pos.value = { x: app.offsetLeft, y: app.offsetTop }
-            size.value = { x: app.clientWidth, y: app.clientHeight }
-            applyLayout()
-        }
+        window.addEventListener('resize', _ => {
+            clearTimeout(resizeTimeout)
+            resizeTimeout = setTimeout(() => {
+                fromWindow()
+            }, 250)
+        })
+
+        if (!changed.value)
+            fromWindow()
+
+        applyLayout()
     })
 
     return {

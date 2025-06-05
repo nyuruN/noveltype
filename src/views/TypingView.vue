@@ -15,7 +15,7 @@ mouseSampleTimeout;
 let mouseLastX = 0;
 let mouseLastY = 0;
 let mouseThrottle = false;
-document.addEventListener('mousemove', async (event: Event) => {
+document.addEventListener('mousemove', (event: Event) => {
 	if (!mouseThrottle) {
 		mouseThrottle = true
 		mouseSampleTimeout = setTimeout(() => mouseThrottle = false, 100)
