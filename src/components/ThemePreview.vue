@@ -19,7 +19,7 @@ const primary = computed(() => ({
 <template>
     <div id="preview" class="grow relative" :style="primary">
         <div id="preview-menu" class="flex"
-            :style="{ backgroundColor: hslString(darken(preview.primaryColor, 0.2)), color: hslString(preview.textDimmedColor) }">
+            :style="{ backgroundColor: hslString(darken(preview.primaryColor, 0.15)), color: hslString(preview.textDimmedColor) }">
             <font-awesome-icon :icon="['fas', 'home']" fixed-width />
             <font-awesome-icon :icon="['fas', 'bars']" fixed-width />
             <span class="grow" style="text-align: center;">{{ preview.name }}</span>
@@ -44,7 +44,7 @@ const primary = computed(() => ({
             <div :style="textDimmed">autem</div>
             <div :style="textDimmed">rem?</div>
 
-            <div :style="{ color: hslString(darken(preview.primaryColor, 0.1)) }">
+            <div :style="{ color: hslString(darken(preview.primaryColor, 0.15)) }">
                 <font-awesome-icon :icon="['fas', 'turn-down']" class="fa-rotate-90" transform="down-5 right-2" />
             </div>
         </div>

@@ -60,10 +60,10 @@
   --typing-font-scale: 1;
   --typing-line-scale: 1;
   --typing-bg: hsl(from var(--primary) h s l / var(--opacity));
-  --typing-menu-bg: hsl(from var(--primary-dark) h s l / 100%);
+  --typing-menu-bg: hsl(from var(--primary) h s calc(l * 0.85) / 100%);
   --typing-menu-color: var(--text-dimmed);
   --typing-menu-color-lighter: var(--text);
-  --typing-trailer: hsl(from var(--primary-dark) h s l / calc(1.3 * var(--opacity)));
+  --typing-trailer: hsl(from var(--primary) h s calc(l * 0.85) / calc(2 * var(--opacity)));
   --typing-trailer-color: var(--text-dimmed);
   --typing-text: var(--text);
   --typing-text-dimmed: var(--text-dimmed);
