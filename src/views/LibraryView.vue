@@ -71,9 +71,8 @@ function dropHandler(event: Event) {
     });
 }
 // Only begin Drag&Drop if data is a file
-function dragenterHandler(event: Event) {
-    if ((event as DragEvent).dataTransfer?.files.length)
-        dropping.value = true
+function dragenterHandler(_event: Event) {
+    dropping.value = true
 }
 const dropping = ref(false)
 </script>
