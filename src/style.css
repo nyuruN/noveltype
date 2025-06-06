@@ -144,6 +144,8 @@ h3 {
   padding: 1rem;
   background-color: var(--ui-content-bg);
   border: 1px solid var(--ui-content-border);
+
+  transition: var(--ui-bg-transition);
 }
 
 /* For important sections */

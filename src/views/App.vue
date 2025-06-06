@@ -148,6 +148,8 @@ document.addEventListener('mouseup', _ => {
   background-color: var(--ui-main-bg);
 
   overflow-x: hidden;
+
+  transition: var(--ui-bg-transition);
 }
 
 .grab {
@@ -276,6 +278,8 @@ document.addEventListener('mouseup', _ => {
   background-color: var(--ui-nav-bg);
   border-right: 1px solid var(--ui-border);
   overflow: hidden;
+
+  transition: var(--ui-bg-transition);
 }
 
 @media screen and (max-width: 950px) {
