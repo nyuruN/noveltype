@@ -86,7 +86,7 @@ document.addEventListener('mouseup', _ => {
   <div id="app-window">
     <div id="app-container" class="relative">
       <div class="center-container" v-show="!showTyper">
-        <nav class="nav">
+        <nav id="app-nav" class="nav">
           <div class="nav-items">
             <button class="nav-item" @click="$router.push('/')">
               <font-awesome-icon :icon="['fas', 'book-open']" fixed-width />
@@ -291,6 +291,19 @@ document.addEventListener('mouseup', _ => {
   .nav {
     min-width: fit-content;
   }
+}
+
+#app-nav[data-collapse="true"] .nav-item span {
+  display: none;
+}
+
+#app-nav[data-collapse="true"] .nav-item {
+  width: fit-content;
+  padding: 0.8rem 0.6rem;
+}
+
+#app-nav[data-collapse="true"] {
+  min-width: fit-content;
 }
 
 
