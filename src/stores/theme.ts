@@ -18,17 +18,32 @@ export interface Theme {
 
 export const Themes: Theme[] = [
     {
-        name: 'Default',
+        name: 'Default Dark',
         primaryColor: hsl(0, 0, 30),
         accentColor: hsl(80, 70, 55),
         textColor: hsl(0, 0, 97),
         textDimmedColor: hsl(0, 0, 72),
-    }, {
-        name: 'Light',
+    },
+    {
+        name: 'The Infection',
         primaryColor: hsl(30, 15, 90),
         accentColor: hsl(20, 90, 60),
         textColor: hsl(0, 0, 10),
         textDimmedColor: hsl(0, 0, 40),
+    },
+    {
+        name: 'Dory',
+        primaryColor: hsl(240, 23, 30),
+        accentColor: hsl(55, 100, 50),
+        textColor: hsl(247, 100, 95),
+        textDimmedColor: hsl(0, 0, 72),
+    },
+    {
+        name: 'Spooky Horseman',
+        primaryColor: hsl(0, 0, 15),
+        accentColor: hsl(35, 100, 50),
+        textColor: hsl(0, 0, 78),
+        textDimmedColor: hsl(0, 0, 32),
     },
 ] as const;
 
