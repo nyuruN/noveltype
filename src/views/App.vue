@@ -31,10 +31,10 @@ let lock = {
   y: false
 };
 
-function dragStart(lockX: boolean, lockY: boolean) {
+function dragStart(axisLock: { x?: boolean, y?: boolean }) {
   lock = {
-    x: lockX,
-    y: lockY
+    x: axisLock.x,
+    y: axisLock.y
   }
   drag = true
   clearSelection()
@@ -106,10 +106,15 @@ document.addEventListener('mouseup', _ => {
       <TypingView v-show="showTyper"></TypingView>
 
     </div>
-    <div class="grab left" @mousedown="dragStart(false, true)"></div>
-    <div class="grab right" @mousedown="dragStart(false, true)"></div>
-    <div class="grab top" @mousedown="dragStart(true, false)"></div>
-    <div class="grab bottom" @mousedown="dragStart(true, false)"></div>
+    <div class="grab w" @mousedown="dragStart({ y: true })"></div>
+    <div class="grab e" @mousedown="dragStart({ y: true })"></div>
+    <div class="grab n" @mousedown="dragStart({ x: true })"></div>
+    <div class="grab s" @mousedown="dragStart({ x: true })"></div>
+
+    <div class="grab corner nw" @mousedown="dragStart({})"></div>
+    <div class="grab corner ne" @mousedown="dragStart({})"></div>
+    <div class="grab corner se" @mousedown="dragStart({})"></div>
+    <div class="grab corner sw" @mousedown="dragStart({})"></div>
   </div>
 </template>
 
@@ -134,42 +139,86 @@ document.addEventListener('mouseup', _ => {
   background-color: var(--ui-border-active);
 } */
 
-.grab.left:hover,
-.grab.right:hover {
+.grab.corner {
+  z-index: 1;
+  width: calc(var(--grab-width) * 2.25);
+  height: calc(var(--grab-width) * 2.25);
+}
+
+.sw {
+  left: var(--grab-offset);
+  bottom: var(--grab-offset);
+}
+
+.se {
+  right: var(--grab-offset);
+  bottom: var(--grab-offset);
+}
+
+.ne {
+  right: var(--grab-offset);
+  top: var(--grab-offset);
+}
+
+.nw {
+  left: var(--grab-offset);
+  top: var(--grab-offset);
+}
+
+.n,
+.s {
+  left: 0;
+  width: 100%;
+  height: var(--grab-width);
+}
+
+.w,
+.e {
+  top: 0;
+  height: 100%;
+  width: var(--grab-width);
+}
+
+.w {
+  left: var(--grab-offset);
+}
+
+.n {
+  top: var(--grab-offset);
+}
+
+.e {
+  right: var(--grab-offset);
+}
+
+.s {
+  bottom: var(--grab-offset);
+}
+
+.w:hover,
+.e:hover {
   cursor: ew-resize;
 }
 
-.grab.top:hover,
-.grab.bottom:hover {
+.n:hover,
+.s:hover {
   cursor: ns-resize;
 }
 
-.grab.left {
-  left: var(--grab-offset);
-  top: 0;
-  height: 100%;
-  width: var(--grab-width);
+.grab.sw:hover {
+  cursor: sw-resize;
 }
 
-.grab.top {
-  left: 0;
-  top: var(--grab-offset);
-  width: 100%;
-  height: var(--grab-width);
+.grab.se:hover {
+  cursor: se-resize;
 }
 
-.grab.right {
-  right: var(--grab-offset);
-  top: 0;
-  height: 100%;
-  width: var(--grab-width);
+.grab.ne:hover {
+  cursor: ne-resize;
 }
 
-.grab.bottom {
-  left: 0;
-  bottom: var(--grab-offset);
-  width: 100%;
-  height: var(--grab-width);
+.grab.nw:hover {
+  cursor: nw-resize;
 }
 
 .nav-item {
