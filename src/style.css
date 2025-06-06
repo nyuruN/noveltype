@@ -53,7 +53,7 @@
   --ui-text-transition: color 0.2s ease;
   --typing-bg-transition: background 0.25s ease;
   --typing-text-transition: color 0.25s ease;
-  --typing-caret-transition: top 0.05s ease, left 0.1s ease;
+  --typing-caret-transition: top 0.1s ease, left 0.1s ease-out;
   --typing-letter-transition: color 0.1s;
 
   /* TYPING */

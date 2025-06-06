@@ -107,14 +107,14 @@ export class Chapter {
         }
 
         this.caret.l += this.paragraphs[this.caret.p].input(key, this.caret.l)
-        nextTick().then(() => this.refreshCaret(true))
+        nextTick().then(() => this.refreshCaret())
     }
     /**
      * Required for undoing errors
      */
     backspace() {
         this.caret.l += this.paragraphs[this.caret.p].backspace(this.caret.l)
-        nextTick().then(() => this.refreshCaret(true))
+        nextTick().then(() => this.refreshCaret())
     }
     /**
      * Call when enter is pressed
@@ -201,7 +201,7 @@ export class Chapter {
             caret.style['top'] = offset.top + 'px'
             caret.style['left'] = offset.left + 'px'
 
-            if (scroll && offset.top - caret.offsetTop != 0) {
+            if (scroll || offset.top - caret.offsetTop != 0) {
                 scrollToNextCaretPos(offset.top - caret.offsetTop)
             }
         } else if (scroll) { // Handle empty chapter
