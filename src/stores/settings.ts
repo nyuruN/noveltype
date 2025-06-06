@@ -13,6 +13,7 @@ export const useSettingsStore = defineStore('settings', () => {
     freedomMode: false,
     stopOnError: undefined as (stopOnErrorType | undefined),
     statsDisplay: 'WPM' as (statsDisplayType | undefined),
+    reducedScrolling: true,
     typingFontScale: 1,
     typingLineScale: 1,
   })
@@ -22,6 +23,7 @@ export const useSettingsStore = defineStore('settings', () => {
       freedomMode: false,
       stopOnError: undefined,
       statsDisplay: 'WPM',
+      reducedScrolling: true,
       typingFontScale: 1,
       typingLineScale: 1,
     }

@@ -65,6 +65,13 @@ async function acceptPersistantToggle(persistant: boolean) {
             <Dropdown v-model="typing.statsDisplay" :options="statsDisplayOptions" default="Off">
             </Dropdown>
         </div>
+        <div class="option">
+            <div class="content-texts">
+                <div>Reduced scrolling</div>
+                <span>Scrolling is reduced to a fixed range</span>
+            </div>
+            <ToggleSwitch v-model="typing.reducedScrolling"></ToggleSwitch>
+        </div>
     </div>
 
     <div class="content-container danger flex-col" style="gap: 1rem">

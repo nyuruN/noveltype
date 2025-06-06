@@ -1,3 +1,4 @@
+import { useSettingsStore } from "@/stores/settings";
 import { useWindowStore } from "@/stores/window";
 
 export interface Offset {
@@ -52,13 +53,20 @@ export function scrollToNextCaretPos(offset: number) {
     caretTop = caretTop - store.pos.y;
     // Caret is inside upper 30% (of app window)
     let scroll = (caretTop < max * 0.30)
-        // Caret is inside lower 40% (of app window)
-        || (caretTop > max - max * 0.40);
+        // Caret is inside lower 37% (of app window)
+        || (caretTop > max - max * 0.37);
 
-    if (scroll) {
-        // Scroll caret to roughly 35% (of app window)
+
+    if (!useSettingsStore().typing.reducedScrolling) {
+        // Scroll caret to roughly 45% (of app window)
         container.scrollTo({
-            top: scrollY - (max * 0.35),
+            top: scrollY - (max * 0.45),
+            behavior: 'smooth'
+        })
+    } else if (scroll) {
+        // Scroll caret to roughly 34% (of app window)
+        container.scrollTo({
+            top: scrollY - (max * 0.34),
             behavior: 'smooth'
         })
     }
