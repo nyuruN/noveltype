@@ -204,7 +204,7 @@ export class Chapter {
             if (scroll && offset.top - caret.offsetTop != 0) {
                 scrollToNextCaretPos(offset.top - caret.offsetTop)
             }
-     } else if (scroll) { // Handle empty chapter
+        } else if (scroll) { // Handle empty chapter
             caret.style['top'] = '0px'
             caret.style['left'] = '0px'
             scrollToNextCaretPos(-caret.offsetTop)
@@ -299,6 +299,8 @@ export class Paragraph {
             if (lastword && (lastword.error || useSettingsStore().typing.freedomMode)) {
                 useStatsStore().untypeWord(lastword)
                 lastword.typed = false
+                // Recalculate error state since incomplete words count as errors
+                lastword.error = !lastword.cLetters.every(c => c);
                 // Go immediately to last letter position if any
                 let lastLetterIdx = lastword.letters.length - lastword.cLetters.length
                 return -1 - lastLetterIdx
@@ -477,6 +479,8 @@ export class Word {
         if (this.typed) {
             useStatsStore().untypeWord(this)
             this.typed = false
+            // Recalculate error state since incomplete words count as errors
+            this.error = !this.cLetters.every(c => c);
         }
 
         // Remove error state if letter before is correct or itself is first letter
