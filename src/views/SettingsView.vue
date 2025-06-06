@@ -41,7 +41,7 @@ async function acceptPersistantToggle(persistant: boolean) {
     <h1>Settings</h1>
 
     <div class="content-container flex-col" style="gap: 1rem">
-        <h2 style="margin: 0.5rem 0;">Typing</h2>
+        <h2>Typing</h2>
         <div class="option">
             <div class="content-texts">
                 <div>Freedom mode</div>
@@ -75,7 +75,7 @@ async function acceptPersistantToggle(persistant: boolean) {
     </div>
 
     <div class="content-container danger flex-col" style="gap: 1rem">
-        <h2 style="margin: 0.5rem 0;">Danger Zone</h2>
+        <h2>Danger Zone</h2>
         <div class="option">
             <div class="content-texts">
                 <div style="margin-left: -0.1rem;">

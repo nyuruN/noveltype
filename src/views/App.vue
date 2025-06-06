@@ -296,7 +296,7 @@ document.addEventListener('mouseup', _ => {
 
 .view-container {
   flex-grow: 1;
-  padding: 2rem;
+  padding: 1.5rem;
   scrollbar-width: thin;
   overflow-y: auto;
   position: relative;

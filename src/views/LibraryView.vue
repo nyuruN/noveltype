@@ -80,9 +80,9 @@ const dropping = ref(false)
 <template>
     <h1>Library</h1>
 
-    <div class="content-container" v-if="library.hasBookmarks" style="gap: 0.5rem;">
-        <h2 style="margin: 0.5rem 0 1rem;">Bookmarks</h2>
-        <div class="bookmarks flex-col" style="gap: 0.75rem;">
+   <div class="content-container" v-if="library.hasBookmarks">
+        <h2 style="margin-bottom: 1rem;">Bookmarks</h2>
+        <div class="bookmarks flex-col" style="gap: 0.5rem;">
             <template v-for="book in library.books">
                 <div class="bookmark-entry flex" v-for="(bookmark, idx) in book.bookmarks">
                     <button class="cover relative"
@@ -106,10 +106,10 @@ const dropping = ref(false)
         </div>
     </div>
 
-    <div class="content-container relative" style="gap: 0.5rem; min-height: 30rem; overflow: clip;"
+    <div class="content-container relative" style="min-height: 30rem; overflow: clip;"
         @dragenter.prevent="dragenterHandler">
         <div class="flex">
-            <h2 class="grow" style="margin: 0.5rem 0 .5rem;">My Books</h2>
+            <h2 class="grow" style="margin-bottom: .5rem;">My Books</h2>
             <button class="button" @click="triggerInput" v-if="library.books.length">
                 <font-awesome-icon :icon="['fas', 'upload']" fixed-width />
                 <span style="margin-left: 0.5rem;">Upload</span>
