@@ -1,3 +1,4 @@
+import { useWindowStore } from "@/stores/window";
 
 export interface Offset {
     top: number,
@@ -24,6 +25,8 @@ export function removeFancyTypography(textToClean: string) {
 }
 
 export function scrollToNextCaretPos(offset: number) {
+    let store = useWindowStore()
+
     let container = document.getElementById('typer-wrapper') as HTMLElement
     let caret = document.getElementById('caret') as HTMLElement
 
@@ -38,19 +41,24 @@ export function scrollToNextCaretPos(offset: number) {
     // Adjust center of caret to center of scroll
     scrollY += (caretR.height / 2)
 
-    // Get viewport size
-    // TODO: Why 'null' here?
-    let max = window.visualViewport?.height || Infinity
+    // Height of the app window
+    let max = store.size.y
 
-    // Caret is inside upper 30% (of viewport)
+    /**
+     * TODO: Let users tweak these values according to their typing preferences
+    */
+
+    // Convert from relative to viewport to relative to app window
+    caretTop = caretTop - store.pos.y;
+    // Caret is inside upper 30% (of app window)
     let scroll = (caretTop < max * 0.30)
-        // Caret is inside lower 40% (of viewport)
+        // Caret is inside lower 40% (of app window)
         || (caretTop > max - max * 0.40);
 
     if (scroll) {
-        // Scroll caret to roughly 32% (of viewport)
+        // Scroll caret to roughly 35% (of app window)
         container.scrollTo({
-            top: scrollY - (max * 0.32),
+            top: scrollY - (max * 0.35),
             behavior: 'smooth'
         })
     }
