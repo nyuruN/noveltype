@@ -26,21 +26,30 @@ function clearSelection() {
 }
 
 let drag = false
+let move = false
 let lock = {
   x: false,
   y: false
 };
 
-function dragStart(axisLock: { x?: boolean, y?: boolean }) {
+function dragStart(axisLock: { x?: boolean, y?: boolean }, moveOnly?: boolean) {
   lock = {
-    x: axisLock.x,
-    y: axisLock.y
+    x: Boolean(axisLock.x),
+    y: Boolean(axisLock.y)
   }
   drag = true
+  move = Boolean(moveOnly)
   clearSelection()
 }
 document.addEventListener('mousemove', ev => {
   if (!drag) return
+
+  if (move) {
+    pos.value.x += ev.movementX
+    pos.value.y += ev.movementY
+    windowStore.applyLayout()
+    return
+  }
 
   let app = document.getElementById('app-window') as HTMLElement
 
@@ -69,13 +78,13 @@ document.addEventListener('mousemove', ev => {
 document.addEventListener('mouseup', _ => {
   if (drag)
     drag = false
+  move = false
 })
-
 </script>
 
 <template>
   <div id="app-window">
-    <div class="app-container relative">
+    <div id="app-container" class="relative">
       <div class="center-container" v-show="!showTyper">
         <nav class="nav">
           <div class="nav-items">
@@ -104,11 +113,11 @@ document.addEventListener('mouseup', _ => {
       </div>
 
       <TypingView v-show="showTyper"></TypingView>
-
     </div>
+
     <div class="grab w" @mousedown="dragStart({ y: true })"></div>
     <div class="grab e" @mousedown="dragStart({ y: true })"></div>
-    <div class="grab n" @mousedown="dragStart({ x: true })"></div>
+    <div class="grab n" @mousedown="dragStart({}, true)"></div>
     <div class="grab s" @mousedown="dragStart({ x: true })"></div>
 
     <div class="grab corner nw" @mousedown="dragStart({})"></div>
@@ -129,6 +138,18 @@ document.addEventListener('mouseup', _ => {
   --grab-offset: -4px;
 }
 
+#app-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  backdrop-filter: blur(var(--blur-amount));
+  background-color: var(--ui-main-bg);
+
+  overflow-x: hidden;
+}
+
 .grab {
   position: absolute;
   user-select: none;
@@ -143,6 +164,10 @@ document.addEventListener('mouseup', _ => {
   z-index: 1;
   width: calc(var(--grab-width) * 2.25);
   height: calc(var(--grab-width) * 2.25);
+}
+
+.grab.n:hover {
+  cursor: move !important;
 }
 
 .sw {
@@ -282,17 +307,5 @@ document.addEventListener('mouseup', _ => {
   flex-direction: row;
 
   height: 100%;
-}
-
-.app-container {
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-
-  -webkit-backdrop-filter: blur(var(--blur-amount));
-  backdrop-filter: blur(var(--blur-amount));
-  background-color: var(--ui-main-bg);
-
-  overflow-x: hidden;
 }
 </style>
