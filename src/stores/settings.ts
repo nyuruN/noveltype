@@ -9,40 +9,40 @@ export type stopOnErrorType = typeof stopOnErrorOptions[number];
 
 
 export const useSettingsStore = defineStore('settings', () => {
-  let typing = ref({
-    freedomMode: false,
-    stopOnError: undefined as (stopOnErrorType | undefined),
-    statsDisplay: 'WPM' as (statsDisplayType | undefined),
-    reducedScrolling: true,
-    typingFontScale: 1,
-    typingLineScale: 1,
-  })
+    let typing = ref({
+        freedomMode: false,
+        stopOnError: undefined as (stopOnErrorType | undefined),
+        statsDisplay: 'WPM' as (statsDisplayType | undefined),
+        reducedScrolling: true,
+        typingFontScale: 1,
+        typingLineScale: 1,
+    })
 
-  function $reset() {
-    typing.value = {
-      freedomMode: false,
-      stopOnError: undefined,
-      statsDisplay: 'WPM',
-      reducedScrolling: true,
-      typingFontScale: 1,
-      typingLineScale: 1,
+    function $reset() {
+        typing.value = {
+            freedomMode: false,
+            stopOnError: undefined,
+            statsDisplay: 'WPM',
+            reducedScrolling: true,
+            typingFontScale: 1,
+            typingLineScale: 1,
+        }
     }
-  }
 
-  // Watchers
-  watch(() => typing.value.typingFontScale, (scale) => {
-    document.documentElement.style.setProperty('--typing-font-scale', String(scale));
-  })
-  watch(() => typing.value.typingLineScale, (scale) => {
-    document.documentElement.style.setProperty('--typing-line-scale', String(scale));
-  })
+    // Watchers
+    watch(() => typing.value.typingFontScale, (scale) => {
+        document.documentElement.style.setProperty('--typing-font-scale', String(scale));
+    })
+    watch(() => typing.value.typingLineScale, (scale) => {
+        document.documentElement.style.setProperty('--typing-line-scale', String(scale));
+    })
 
-  return {
-    // States
-    typing,
-    // Functions
-    $reset,
-  }
+    return {
+        // States
+        typing,
+        // Functions
+        $reset,
+    }
 }, {
-  persist: true
+    persist: true
 })

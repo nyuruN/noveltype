@@ -80,7 +80,7 @@ const dropping = ref(false)
 <template>
     <h1>Library</h1>
 
-   <div class="content-container" v-if="library.hasBookmarks">
+    <div class="content-container" v-if="library.hasBookmarks">
         <h2 style="margin-bottom: 1rem;">Bookmarks</h2>
         <div class="bookmarks flex-col" style="gap: 0.5rem;">
             <template v-for="book in library.books">

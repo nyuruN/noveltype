@@ -1,14 +1,31 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>noveltype</title>
-  </head>
-  <body>
+</head>
+
+<body>
+    <div id="bg"></div>
+    <canvas id="c"></canvas>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
     <script src="/neutralino.js"></script>
-  </body>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
+    <script>
+    VANTA.CLOUDS({
+      el: "#bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 1000.00,
+      minWidth: 1800.00
+    })
+  </script> -->
+</body>
+
 </html>
