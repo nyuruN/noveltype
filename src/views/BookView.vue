@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Prompt from '@/components/Prompt.vue';
+import Prompt from '@/components/widgets/Prompt.vue';
 import { deleteEpubFile } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import ThemePreview from '@/components/ThemePreview.vue';
-import ColorPicker from '@/components/ColorPicker.vue';
-import Slider from '@/components/Slider.vue';
+import ThemePreview from '@/components/widgets/ThemePreview.vue';
+import ColorPicker from '@/components/widgets/ColorPicker.vue';
+import Slider from '@/components/widgets/Slider.vue';
+import Dropdown from '@/components/widgets/Dropdown.vue';
 import { hslString } from '@/lib/color';
 import { useThemeStore, Themes, imageLayoutOptions } from '@/stores/theme';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import Dropdown from '@/components/Dropdown.vue';
 
 const { theme, savedThemes, opacity, blur, imageLayout, imageUrl } = storeToRefs(useThemeStore())
 

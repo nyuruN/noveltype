@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Prompt from '@/components/Prompt.vue';
-import ToggleSwitch from '@/components/ToggleSwitch.vue';
-import Dropdown from '@/components/Dropdown.vue';
+import Prompt from '@/components/widgets/Prompt.vue';
+import ToggleSwitch from '@/components/widgets/ToggleSwitch.vue';
+import Dropdown from '@/components/widgets/Dropdown.vue';
 import { deleteDB, isStoragePersistant, persist } from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
