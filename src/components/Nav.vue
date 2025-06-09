@@ -20,6 +20,10 @@ const { showTyper } = storeToRefs(useTypingStore())
                 <font-awesome-icon :icon="['fas', 'gear']" fixed-width />
                 <span style="margin-left: 0.5rem;">Settings</span>
             </button>
+            <button class="nav-item" @click="$router.push('/animated')">
+                <font-awesome-icon :icon="['fas', 'brush']" fixed-width />
+                <span style="margin-left: 0.5rem;">Animated</span>
+            </button>
         </div>
         <div class="grow"></div>
         <button class="nav-item" style="font-size: 1.1rem" @click="showTyper = true">
@@ -32,7 +36,7 @@ const { showTyper } = storeToRefs(useTypingStore())
 <style scoped>
 .nav-item {
     width: 100%;
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 1rem;
     font-size: 1.2rem;
     background-color: transparent;
     color: var(--ui-nav-text);

@@ -13,6 +13,7 @@ import LibraryView from './views/LibraryView.vue'
 import BookView from './views/BookView.vue'
 import ThemesView from './views/ThemesView.vue'
 import SettingsView from './views/SettingsView.vue'
+import AnimatedView from './views/AnimatedView.vue'
 
 import '@/style.css'
 
@@ -76,6 +77,7 @@ const routes = [
     { path: '/books/:title', component: BookView },
     { path: '/themes', component: ThemesView },
     { path: '/settings', component: SettingsView },
+    { path: '/animated', component: AnimatedView },
 ]
 
 const router = createRouter({

@@ -5,6 +5,7 @@ import TypingView from './TypingView.vue';
 import { storeToRefs } from 'pinia';
 import { useThemeStore } from '@/stores/theme';
 import { useWindowStore } from '@/stores/window';
+import Background from './Background.vue';
 
 const { showTyper } = storeToRefs(useTypingStore())
 const windowStore = useWindowStore()
@@ -82,6 +83,7 @@ document.addEventListener('mouseup', _ => {
 
 <template>
     <div>
+        <Background />
         <div id="app-window">
             <div id="app-container" class="relative">
                 <div class="center-container" v-show="!showTyper">

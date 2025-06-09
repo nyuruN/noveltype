@@ -105,15 +105,6 @@
   height: 100%;
 }
 
-#bg, #c {
-  z-index: -1;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-}
-
 html,
 body {
   height: 100%;
