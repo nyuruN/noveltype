@@ -258,9 +258,9 @@ const dropping = ref(false)
 }
 
 .card {
-    height: 20rem;
-    width: 14rem;
-    padding: 1rem;
+    height: 18rem;
+    width: 13rem;
+    padding: 0.5rem;
     background-color: var(--ui-card);
     color: var(--text-dimmed);
     border: none;
