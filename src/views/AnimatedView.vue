@@ -41,7 +41,11 @@ const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimat
     <div class="content-container flex-col" style="gap: 1rem">
         <h2 style="margin-bottom: -0.5rem;">Presets</h2>
         <div class="cards flex">
-            <div class="card relative" @click="currentShader = { ...shader };" v-for="shader in SHADERS">
+            <div class="card relative" @click="currentShader = { ...shader };" v-for="shader in SHADERS"
+                :class="{ selected: currentShader.name == shader.name }">
+                <div class="card-check">
+                    <font-awesome-icon :icon="['fas', 'check']" fixed-width />
+                </div>
                 <div class="card-image relative">
                     <font-awesome-icon :icon="['fas', 'brush']" fixed-width class="absolute-center" />
                 </div>
@@ -53,6 +57,24 @@ const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimat
 </template>
 
 <style scoped>
+.card-check {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.4rem 0.5rem;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    z-index: 1;
+    visibility: hidden;
+    color: var(--accent);
+    color: var(--ui-card-more-text);
+    background-color: var(--ui-card-more-bg);
+}
+
+.card.selected .card-check {
+    visibility: inherit;
+}
+
 .card-image {
     background-color: hsl(0 0 55);
     color: hsl(0 0 90);
@@ -75,7 +97,7 @@ const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimat
     background-color: var(--ui-card);
     color: var(--text-dimmed);
     border: none;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
 
     transition: var(--ui-bg-transition);
