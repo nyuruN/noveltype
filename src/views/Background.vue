@@ -2,23 +2,19 @@
 import { useAnimatedStore } from '@/stores/animated';
 import { storeToRefs } from 'pinia';
 import * as THREE from 'three'
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 
-const { enabled } = storeToRefs(useAnimatedStore())
-const renderScale = ref(0.1);
-const renderFps = ref(24);
-
-let uniforms = {
-    iMouse: { value: new THREE.Vector4(0) },
-    iResolution: { value: new THREE.Vector3(0, 0, 0) },
-    iTime: { value: 0 },
-}
-const mat = new THREE.ShaderMaterial({
-    fragmentShader: `
+const UNIFORM_DEFS = `
 uniform float iTime;
 uniform vec3 iResolution;
 uniform vec4 iMouse;
-        ` + `
+` as const;
+const GLSL_MAIN = `
+void main() {
+    mainImage(gl_FragColor, gl_FragCoord.xy);
+}
+` as const;
+const SHADERTOY_SHADER = `
 // By iq: https://www.shadertoy.com/user/iq
 // license: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
@@ -33,50 +29,49 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // Output to screen
     fragColor = vec4(col,1.0);
 }
-    ` + `
-void main() {
-    mainImage(gl_FragColor, gl_FragCoord.xy);
-}
-`,
-    uniforms,
-})
+` as const;
+
+const { enabled, renderScale, renderFps, uniforms } = storeToRefs(useAnimatedStore())
 
 let renderer = undefined as undefined | THREE.WebGLRenderer
 
 const scene = new THREE.Scene()
 const camera = new THREE.OrthographicCamera(-1, 1, 1, -1)
+camera.position.z = 1;
 
 const quadGeo = new THREE.PlaneGeometry(2, 2)
-const quad = new THREE.Mesh(quadGeo, mat)
-
-camera.position.z = 1;
+const quadMat = new THREE.ShaderMaterial({
+    fragmentShader: UNIFORM_DEFS + SHADERTOY_SHADER + GLSL_MAIN,
+    uniforms: uniforms.value,
+})
+const quad = new THREE.Mesh(quadGeo, quadMat)
 
 scene.add(quad)
 
 let previousCanvasSize = [0, 0]
+let previousRenderScale = renderScale.value
 function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
     const canvas = renderer.domElement;
-    const needResize = canvas.clientWidth !== previousCanvasSize[0] || canvas.clientHeight !== previousCanvasSize[1];
+    const needResize = canvas.clientWidth !== previousCanvasSize[0] || canvas.clientHeight !== previousCanvasSize[1] || renderScale.value !== previousRenderScale;
     previousCanvasSize = [canvas.clientWidth, canvas.clientHeight]
+    previousRenderScale = renderScale.value;
 
     if (needResize) {
-        console.log('resize')
         renderer.setSize(canvas.clientWidth * renderScale.value, canvas.clientHeight * renderScale.value, false);
     }
     return needResize;
 }
 
 function animate(time: number) {
-    console.log('render')
-    if (!enabled.value || !renderer) return
-
+    if (!enabled.value) return
     setTimeout(() => requestAnimationFrame(animate), 1000 / renderFps.value);
+    if (!renderer) return
 
     const canvas = renderer.domElement
     resizeRendererToDisplaySize(renderer)
 
-    uniforms.iResolution.value.set(canvas.width, canvas.height, 1)
-    uniforms.iTime.value = time * 0.001 // in seconds
+    uniforms.value.iResolution.value.set(canvas.width, canvas.height, 1)
+    uniforms.value.iTime.value = time * 0.001 // in seconds
 
     renderer.render(scene, camera)
 }
@@ -98,13 +93,11 @@ watch(enabled, ne => {
 
 <template>
     <div>
-        <!-- <div id="bg"></div> -->
-        <canvas id="c" v-show="enabled"></canvas>
+        <canvas id="c" v-show="enabled" />
     </div>
 </template>
 
 <style scoped>
-/* #bg, */
 #c {
     z-index: -1;
     position: fixed;
