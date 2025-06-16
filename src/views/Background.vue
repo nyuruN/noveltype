@@ -26,7 +26,6 @@ function animate(time: number) {
             || canvas.clientHeight !== previousCanvasSize[1]
             || renderScale.value !== previousRenderScale) {
             renderer.setSize(canvas.clientWidth * renderScale.value, canvas.clientHeight * renderScale.value, false);
-            console.log('resize')
         }
         previousCanvasSize = [canvas.clientWidth, canvas.clientHeight]
         previousRenderScale = renderScale.value;

@@ -6,6 +6,7 @@ import { removeFancyTypography, scrollToNextCaretPos, type Offset } from './util
 import { useStatsStore, } from '@/stores/typing';
 import { useSettingsStore } from '@/stores/settings';
 import { nextTick } from 'vue';
+import path from './path';
 
 export class Book {
     constructor(filename: string, epub: EPub, nav: Navigation, metadata: PackagingMetadataObject) {
@@ -47,6 +48,98 @@ export class Book {
         let doc = await this.epub.load(href) as XMLDocument
 
         return new Chapter(this, n, doc)
+    }
+    /**
+     * The allow-same-origin sandbox property is needed in case of an iframe element
+     * @returns 
+     */
+    async getCoverDocument(): Promise<XMLDocument> {
+        const item = this.epub.spine.get(0);
+        const doc = await this.epub.load(item.href) as XMLDocument;
+
+        // Inject <base> tag to set document-relative URL resolution
+        const baseTag = doc.createElement("base");
+        baseTag.href = this.epub.path.resolve(item.href); // Absolute path to the spine item
+        doc.head.prepend(baseTag);
+
+        // Process all elements with resource references
+        for (const { name, attr } of [
+            { name: "img", attr: "src" },
+            { name: "image", attr: "href" },
+            { name: "link", attr: "href" },
+            { name: "script", attr: "src" },
+        ]) {
+            for (const element of doc.documentElement.querySelectorAll(name)) {
+                const XLINK_NS = 'http://www.w3.org/1999/xlink' as const;
+                const dir = path.dirname(item.canonical)
+                const xlinkPath = element.getAttributeNS(XLINK_NS, 'href');
+                const normalPath = element.getAttribute(attr);
+                const relativePath = xlinkPath || normalPath;
+
+                if (relativePath) {
+                    const absolutePath = path.resolve(dir, relativePath)
+                    const blob = await this.epub.archive.getBlob(absolutePath);
+                    const blobUrl = URL.createObjectURL(blob);
+                    element.setAttribute(attr, blobUrl); // Replace with Blob URL
+                }
+
+                // Because of an undocumented optimization on chromium based browsers
+                // If both 'xlink:href' and 'href' are present, 'href' will be omitted!
+                // As such we must either:
+                // - remove 'xlink:href' for data in 'href' to take precedence OR
+                // - set data url before html-to-image
+                if (xlinkPath) {
+                    element.removeAttributeNS(XLINK_NS, 'href');
+                }
+            }
+        }
+        return doc
+    }
+    async getFirstImage(canonical: string, doc: XMLDocument): Promise<Blob | undefined> {
+        // Process all elements with resource references
+        for (const { name, attr } of [
+            { name: "img", attr: "src" },
+            { name: "image", attr: "href" },
+        ]) {
+            for (const element of doc.documentElement.querySelectorAll(name)) {
+                const XLINK_NS = 'http://www.w3.org/1999/xlink' as const;
+                const dir = path.dirname(canonical)
+                const xlinkPath = element.getAttributeNS(XLINK_NS, 'href');
+                const normalPath = element.getAttribute(attr);
+                const relativePath = xlinkPath || normalPath;
+
+                if (relativePath) {
+                    const absolutePath = path.resolve(dir, relativePath)
+                    const blob = await this.epub.archive.getBlob(absolutePath);
+                    return blob;
+                }
+            }
+        }
+        return undefined;
+    }
+    async getCover(): Promise<Blob | undefined> {
+        const coverPath = await this.epub.loaded.cover;
+
+        // CASE 1: The cover is a xhtml document -> extract the first image
+        if (coverPath && coverPath.endsWith('.xhtml')) {
+            const doc = await this.epub.load(coverPath) as XMLDocument;
+
+            return this.getFirstImage(coverPath, doc)
+        }
+
+        // CASE 2: The cover is any other file -> hope the browser can display it
+        if (coverPath) {
+            const blob = await this.epub.archive.getBlob(coverPath)
+            if (blob.type.startsWith('image/')) {
+                return blob
+            }
+        }
+
+        // CASE 3: No cover is provided -> Try and extract first image from first chapter
+        const item = this.epub.spine.get(0);
+        const doc = await this.epub.load(item.href) as XMLDocument;
+
+        return this.getFirstImage(item.canonical, doc)
     }
 }
 

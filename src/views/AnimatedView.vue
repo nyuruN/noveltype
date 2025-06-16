@@ -13,22 +13,22 @@ const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimat
     <div class="content-container flex-col" style="gap: 1rem">
         <h2>General</h2>
 
-        <div class="flex">
-            <div class="content-texts grow align-center">
+        <div class="flex align-center">
+            <div class="content-texts grow">
                 <div>Enable animated background</div>
                 <span>Animates the background using real time shaders</span>
             </div>
             <ToggleSwitch v-model="enabled"></ToggleSwitch>
         </div>
-        <div class="flex">
-            <div class="content-texts grow align-center">
+        <div class="flex align-center">
+            <div class="content-texts grow">
                 <div>Render scale</div>
                 <span>Renders the output image at a fraction of viewport size</span>
             </div>
             <span style="margin-right: .5rem;">{{ (renderScale * 100).toFixed(0) }}%</span>
             <Slider :min="0.05" :max="1" :step="0.01" v-model="renderScale" />
         </div>
-        <div class="flex">
+        <div class="flex align-center">
             <div class="content-texts">
                 <div>Render fps</div>
                 <span>Limits the frame(s) per second of the shader</span>

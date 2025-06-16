@@ -71,3 +71,34 @@ export function scrollToNextCaretPos(offset: number) {
         })
     }
 }
+
+// Helper: Calculate scaled dimensions
+function calculateScaledDimensions(img: ImageBitmap, maxWidth: number, maxHeight: number) {
+    const ratio = Math.min(
+        maxWidth / img.width,
+        maxHeight / img.height
+    );
+    return {
+        width: Math.floor(img.width * ratio),
+        height: Math.floor(img.height * ratio)
+    };
+}
+
+export async function scaleImageBlob(blob: Blob, maxWidth: number, maxHeight: number, quality = 0.8) {
+    // Decode Blob to ImageBitmap (more efficient than Image)
+    const bitmap = await createImageBitmap(blob);
+
+    // Calculate dimensions
+    const { width, height } = calculateScaledDimensions(bitmap, maxWidth, maxHeight);
+
+    // Draw on canvas
+    const canvas = new OffscreenCanvas(width, height); // or document.createElement('canvas')
+    const ctx = canvas.getContext('2d') as OffscreenCanvasRenderingContext2D;
+    ctx.drawImage(bitmap, 0, 0, width, height);
+
+    // Convert to Blob
+    return canvas.convertToBlob({
+        type: 'image/webp',
+        quality
+    });
+}

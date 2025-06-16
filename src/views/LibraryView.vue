@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { saveEpubFile, loadEpubFile } from '@/lib/db'
+import { saveEpubFile, loadEpubFile, saveCover, loadCover } from '@/lib/db'
+import { scaleImageBlob } from '@/lib/utils'
 import { useLibraryStore, type BookRecord } from '@/stores/library'
 import { useTypingStore } from '@/stores/typing'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const library = useLibraryStore()
@@ -19,6 +20,13 @@ async function loadEpub(file: File) {
 
         book.value = epub
         chapter.value = await epub.getChapter(0)
+
+        // Caching covers
+        const blob = await epub.getCover() as Blob;
+        const scaled = await scaleImageBlob(blob, 400, 600)
+        const url = URL.createObjectURL(scaled);
+        saveCover(file.name, scaled);
+        cachedImages.value.set(file.name, url)
 
         await saveEpubFile(file)
     }
@@ -74,11 +82,30 @@ function dropHandler(event: Event) {
 function dragenterHandler(_event: Event) {
     dropping.value = true
 }
+function getCover(filename: string) {
+    return cachedImages.value.get(filename);
+}
 const dropping = ref(false)
+const cachedImages = ref(new Map<string, string>())
+
+onMounted(() => {
+    for (const book of library.books) {
+        loadCover(book.filename).then((coverImage) => {
+            if (coverImage) {
+                const url = URL.createObjectURL(coverImage)
+                cachedImages.value.set(book.filename, url)
+            }
+        })
+    }
+})
 </script>
 
 <template>
     <h1>Library</h1>
+
+    <div id="test" class="content-container relative" style="min-height: 30rem; overflow: clip;">
+
+    </div>
 
     <div class="content-container" v-if="library.hasBookmarks">
         <h2 style="margin-bottom: 1rem;">Bookmarks</h2>
@@ -139,8 +166,13 @@ const dropping = ref(false)
                 <div class="card-more" @click.stop="inspectBook(book)">
                     <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
                 </div>
-                <div class="card-image relative">
-                    <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
+                <div class="card-image-container relative">
+                    <template v-if="getCover(book.filename)">
+                        <img class="card-image" :src="getCover(book.filename)"></img>
+                    </template>
+                    <div class="card-image-fallback" v-else>
+                        <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
+                    </div>
                 </div>
                 <div class="card-text">{{ book.title }}</div>
             </div>
@@ -218,6 +250,18 @@ const dropping = ref(false)
     background-color: var(--ui-card-hover);
 }
 
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.card-image-fallback {
+    background-color: hsl(0 0 55);
+    width: 100%;
+    height: 100%;
+}
+
 .card-more {
     position: absolute;
     top: 0;
@@ -242,8 +286,7 @@ const dropping = ref(false)
 }
 
 
-.card-image {
-    background-color: hsl(0 0 55);
+.card-image-container {
     color: hsl(0 0 90);
     height: 75%;
     border-radius: 8px;
