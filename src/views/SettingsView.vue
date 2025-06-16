@@ -2,7 +2,7 @@
 import Prompt from '@/components/widgets/Prompt.vue';
 import ToggleSwitch from '@/components/widgets/ToggleSwitch.vue';
 import Dropdown from '@/components/widgets/Dropdown.vue';
-import { deleteDB, isStoragePersistant, persist } from '@/lib/db';
+import db from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
 import { statsDisplayOptions, stopOnErrorOptions, useSettingsStore } from '@/stores/settings';
@@ -15,7 +15,7 @@ let { typing } = storeToRefs(useSettingsStore())
 let isPersistant = ref(false)
 
 onMounted(async () => {
-    isPersistant.value = await isStoragePersistant()
+    isPersistant.value = await db.isStoragePersistant()
     console.log('Storage persistance status: ' + isPersistant.value)
 })
 
@@ -23,7 +23,7 @@ async function deleteProgramData() {
     let confirm = await usePromptStore().openPrompt('Confirm Action', 'This will permanently erase all site data including your books, bookmarks and user config!', true)
 
     if (confirm) {
-        deleteDB()
+        db.deleteDB()
         useLibraryStore().$reset()
         useSettingsStore().$reset()
         useTypingStore().$reset()
@@ -33,7 +33,7 @@ async function deleteProgramData() {
     }
 }
 async function acceptPersistantToggle(persistant: boolean) {
-    return persistant ? (await persist()) : false
+    return persistant ? (await db.persist()) : false
 }
 </script>
 

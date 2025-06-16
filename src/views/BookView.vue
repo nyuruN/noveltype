@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Prompt from '@/components/widgets/Prompt.vue';
-import { deleteCover, deleteEpubFile } from '@/lib/db';
+import db from '@/lib/db';
 import { useLibraryStore } from '@/stores/library';
 import { usePromptStore } from '@/stores/prompt';
 import { storeToRefs } from 'pinia';
@@ -21,8 +21,8 @@ async function deleteBook() {
 
     if (confirm) {
         console.log(books.value.splice(bookIdx.value, 1))
-        await deleteEpubFile(book.filename)
-        await deleteCover(book.filename)
+        await db.deleteEpubFile(book.filename)
+        await db.deleteCover(book.filename)
         book = undefined
         bookIdx.value = -1
         router.back()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { saveEpubFile, loadEpubFile, saveCover, loadCover } from '@/lib/db'
+import db from '@/lib/db'
 import { scaleImageBlob } from '@/lib/utils'
 import { useLibraryStore, type BookRecord } from '@/stores/library'
 import { useTypingStore } from '@/stores/typing'
@@ -25,10 +25,10 @@ async function loadEpub(file: File) {
         const blob = await epub.getCover() as Blob;
         const scaled = await scaleImageBlob(blob, 400, 600)
         const url = URL.createObjectURL(scaled);
-        saveCover(file.name, scaled);
+        db.saveCover(file.name, scaled);
         cachedImages.value.set(file.name, url)
 
-        await saveEpubFile(file)
+        await db.saveEpubFile(file)
     }
 }
 async function fileInputHandler(e: Event) {
@@ -42,7 +42,7 @@ async function fileInputHandler(e: Event) {
 async function openBook(filename: string, chapterIdx?: number, paragraphIdx?: number) {
     // Open book if not already
     if (book.value?.record.filename != filename) {
-        let file = await loadEpubFile(filename)
+        let file = await db.loadEpubFile(filename)
         let epub = await library.loadBook(file)
 
         book.value = epub
@@ -90,7 +90,7 @@ const cachedImages = ref(new Map<string, string>())
 
 onMounted(() => {
     for (const book of library.books) {
-        loadCover(book.filename).then((coverImage) => {
+        db.loadCover(book.filename).then((coverImage) => {
             if (coverImage) {
                 const url = URL.createObjectURL(coverImage)
                 cachedImages.value.set(book.filename, url)
