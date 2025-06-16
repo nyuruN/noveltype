@@ -37,7 +37,7 @@ const { showTyper } = storeToRefs(useTypingStore())
 .nav-item {
     width: 100%;
     padding: 0.7rem 1rem;
-    font-size: 1.2rem;
+    font-size: 1.175rem;
     background-color: transparent;
     color: var(--ui-nav-text);
     border: none;

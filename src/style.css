@@ -48,8 +48,8 @@
   --ui-prompt-bg: hsl(from var(--primary) h s l / calc(2.5 * var(--opacity)));
 
   /* COMMON TRANSITIONS */
+  --ui-bg-transition: background 0.1s ease;
   --ui-border-transition: border 0.2s ease;
-  --ui-bg-transition: background 0.2s ease;
   --ui-text-transition: color 0.2s ease;
   --typing-bg-transition: background 0.25s ease;
   --typing-text-transition: color 0.25s ease;
