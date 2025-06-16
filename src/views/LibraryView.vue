@@ -103,10 +103,6 @@ onMounted(() => {
 <template>
     <h1>Library</h1>
 
-    <div id="test" class="content-container relative" style="min-height: 30rem; overflow: clip;">
-
-    </div>
-
     <div class="content-container" v-if="library.hasBookmarks">
         <h2 style="margin-bottom: 1rem;">Bookmarks</h2>
         <div class="bookmarks flex-col" style="gap: 0.5rem;">
