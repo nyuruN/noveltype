@@ -139,7 +139,7 @@ h3 {
 
 /* General container/section for content in a page */
 .content-container {
-  border-radius: 12px;
+  border-radius: 10px;
   margin-bottom: 1rem;
   padding: 1rem;
   background-color: var(--ui-content-bg);

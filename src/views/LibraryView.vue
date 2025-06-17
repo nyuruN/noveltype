@@ -158,7 +158,7 @@ onMounted(() => {
         <input id='file-input' type="file" accept=".epub" @change="fileInputHandler" style="display: none;" />
 
         <div class="cards flex">
-            <div class="card relative" @click="openBook(book.filename)" v-for="(book) in library.books">
+            <div class="card relative flex-col" @click="openBook(book.filename)" v-for="(book) in library.books">
                 <div class="card-more" @click.stop="inspectBook(book)">
                     <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
                 </div>
@@ -170,7 +170,9 @@ onMounted(() => {
                         <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
                     </div>
                 </div>
-                <div class="card-text">{{ book.title }}</div>
+                <div class="card-text grow flex align-center">
+                    <span>{{ book.title }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -260,11 +262,11 @@ onMounted(() => {
 
 .card-more {
     position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.4rem 0.5rem;
-    font-size: 1.3rem;
-    border-radius: 8px;
+    top: 0.2rem;
+    right: 0.2rem;
+    padding: 0.2rem 0.2rem;
+    font-size: 1.2rem;
+    border-radius: 6px;
     z-index: 1;
     opacity: 0;
     color: var(--ui-card-more-text);
@@ -284,7 +286,7 @@ onMounted(() => {
 
 .card-image-container {
     color: hsl(0 0 90);
-    height: 75%;
+    height: 73%;
     border-radius: 8px;
     font-size: 8rem;
     overflow: hidden;
@@ -293,7 +295,6 @@ onMounted(() => {
 .card-text {
     text-align: center;
     width: 100%;
-    margin-top: 0.5rem;
 }
 
 .card {
@@ -303,7 +304,7 @@ onMounted(() => {
     background-color: var(--ui-card);
     color: var(--text-dimmed);
     border: none;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
 
     transition: var(--ui-bg-transition);
