@@ -6,25 +6,36 @@
     <link rel="icon" type="image/svg+xml" href="/noveltype/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>noveltype</title>
-  <script type="module" crossorigin src="/noveltype/assets/index-CY32X6YO.js"></script>
-  <link rel="stylesheet" crossorigin href="/noveltype/assets/index-D6AjMf7d.css">
+
+    <script type="text/javascript">
+        // Single Page Apps for GitHub Pages
+        // MIT License
+        // https://github.com/rafgraph/spa-github-pages
+        // This script checks to see if a redirect is present in the query string,
+        // converts it back into the correct url and adds it to the
+        // browser's history using window.history.replaceState(...),
+        // which won't cause the browser to attempt to load the new url.
+        // When the single page app is loaded further down in this file,
+        // the correct url will be waiting in the browser's history for
+        // the single page app to route accordingly.
+        (function (l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function (s) {
+                    return s.replace(/~and~/g, '&')
+                }).join('?');
+                window.history.replaceState(null, null,
+                    l.pathname.slice(0, -1) + decoded + l.hash
+                );
+            }
+        }(window.location))
+    </script>
+  <script type="module" crossorigin src="/noveltype/assets/index-DGEw9bcf.js"></script>
+  <link rel="stylesheet" crossorigin href="/noveltype/assets/index-Bkr6WEbQ.css">
 </head>
 
 <body>
     <div id="app"></div>
     <script src="/noveltype/neutralino.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js"></script>
-    <script>
-    VANTA.CLOUDS({
-      el: "#bg",
-      mouseControls: true,
-      touchControls: true,
-      gyroControls: false,
-      minHeight: 1000.00,
-      minWidth: 1800.00
-    })
-  </script> -->
 </body>
 
 </html>
