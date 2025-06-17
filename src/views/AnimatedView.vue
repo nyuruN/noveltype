@@ -33,7 +33,7 @@ const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimat
                 <div>Render fps</div>
                 <span>Limits the frame(s) per second of the shader</span>
             </div>
-            <span style="margin-right: .5rem;">{{ renderFps.toFixed(0) }}fps</span>
+            <span style="margin-right: .5rem;">{{ (renderFps * 1).toFixed(0) }}fps</span>
             <Slider :min="5" :max="60" :step="1" v-model="renderFps" />
         </div>
     </div>
