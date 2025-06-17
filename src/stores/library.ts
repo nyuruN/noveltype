@@ -2,6 +2,9 @@ import { defineStore } from 'pinia'
 import { Book } from '../lib/book'
 import ePub from 'epubjs'
 import { computed, ref } from 'vue'
+import db from '@/lib/db'
+import { scaleImageBlob } from '@/lib/utils'
+import { useCacheStore } from './cacheStore'
 
 export interface Bookmark {
     chapter: number
@@ -46,10 +49,25 @@ export const useLibraryStore = defineStore('library', () => {
         let nav = await epub.loaded.navigation
         let book = new Book(file.name, epub, nav, metadata)
 
-        // Load epub file from book records
         if (!exists(file.name)) {
+            // Create new record for the book
             books.value.push(book.record)
+
+            // Save to larger storage
+            await db.saveEpubFile(file)
+
+            // Load book covers asynchronously
+            book.getCover().then(async (blob) => {
+                if (!blob) return;
+
+                const scaled = await scaleImageBlob(blob, 400, 600)
+                const url = URL.createObjectURL(scaled);
+                await db.saveCover(file.name, scaled);
+
+                useCacheStore().images.set(file.name, url)
+            })
         } else {
+            // Have book.record point to the record in library
             book.record = books.value.find(b => b.filename == file.name) as BookRecord;
         }
 

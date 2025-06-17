@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import db from '@/lib/db'
-import { scaleImageBlob } from '@/lib/utils'
+import DropZone from '@/components/DropZone.vue'
 import { useLibraryStore, type BookRecord } from '@/stores/library'
 import { useTypingStore } from '@/stores/typing'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import DropOverlay from '@/components/DropOverlay.vue'
+import { useCacheStore } from '@/stores/cacheStore'
 
 const library = useLibraryStore()
 const { book, chapter, showTyper } = storeToRefs(useTypingStore())
 const router = useRouter()
 
+/**
+ * Loads the specifies epub file
+ * @param file 
+ */
 async function loadEpub(file: File) {
     if (file.type !== 'application/epub+zip') return
 
@@ -20,24 +26,12 @@ async function loadEpub(file: File) {
 
         book.value = epub
         chapter.value = await epub.getChapter(0)
-
-        // Caching covers
-        const blob = await epub.getCover() as Blob;
-        const scaled = await scaleImageBlob(blob, 400, 600)
-        const url = URL.createObjectURL(scaled);
-        db.saveCover(file.name, scaled);
-        cachedImages.value.set(file.name, url)
-
-        await db.saveEpubFile(file)
     }
 }
 async function fileInputHandler(e: Event) {
     var input = e.target as HTMLInputElement
-
-    if (!input.files || !input.files[0]) return
-
-    // Load book
-    loadEpub(input.files[0])
+    if (input.files && input.files[0])
+        loadEpub(input.files[0])
 }
 async function openBook(filename: string, chapterIdx?: number, paragraphIdx?: number) {
     // Open book if not already
@@ -66,38 +60,13 @@ async function inspectBook(rec: BookRecord) {
 function removeBookmark(rec: BookRecord, idx: number) {
     rec.bookmarks.splice(idx, 1)
 }
-function dropHandler(event: Event) {
-    dropping.value = false
-    let ev = event as DragEvent;
-
-    if (!ev.dataTransfer) return;
-
-    // Use DataTransfer interface to access the file(s)
-    [...ev.dataTransfer.files].forEach((file, i) => {
-        console.log(`… file[${i}].name = ${file.name}`);
-        loadEpub(file)
-    });
-}
-// Only begin Drag&Drop if data is a file
-function dragenterHandler(_event: Event) {
-    dropping.value = true
-}
 function getCover(filename: string) {
-    return cachedImages.value.get(filename);
+    return useCacheStore().images.get(filename);
 }
-const dropping = ref(false)
-const cachedImages = ref(new Map<string, string>())
 
-onMounted(() => {
-    for (const book of library.books) {
-        db.loadCover(book.filename).then((coverImage) => {
-            if (coverImage) {
-                const url = URL.createObjectURL(coverImage)
-                cachedImages.value.set(book.filename, url)
-            }
-        })
-    }
-})
+onMounted(() => useCacheStore().loadImages())
+
+const dropping = ref(false)
 </script>
 
 <template>
@@ -129,65 +98,53 @@ onMounted(() => {
         </div>
     </div>
 
-    <div class="content-container relative" style="min-height: 30rem; overflow: clip;"
-        @dragenter.prevent="dragenterHandler">
-        <div class="flex">
-            <h2 class="grow" style="margin-bottom: .5rem;">My Books</h2>
-            <button class="button" @click="triggerInput" v-if="library.books.length">
-                <font-awesome-icon :icon="['fas', 'upload']" fixed-width />
-                <span style="margin-left: 0.5rem;">Upload</span>
-            </button>
-        </div>
-        <div class="absolute-center" style="font-size: 2rem;" v-if="!library.books.length">
-            <div class="flex-col align-center" style="gap: 1rem; text-align: center;">
-                <div style="font-size: 6rem;">
-                    <font-awesome-icon :icon="['fas', 'cloud-arrow-up']" fixed-width />
-                </div>
-                <span>Drag & Drop to Upload EPUB</span>
-                <div>OR</div>
-                <button class="button" style="font-size: 1.5rem;" @click="triggerInput">Browse File</button>
-            </div>
-        </div>
+    <DropZone v-model="dropping">
+        <div class="content-container relative" style="min-height: 30rem; overflow: clip;">
+            <DropOverlay v-model="dropping" :file-dropped="loadEpub"></DropOverlay>
+            <input id='file-input' type="file" accept=".epub" @change="fileInputHandler" style="display: none;" />
 
-        <div class="drop-zone absolute-fill" v-show="dropping" @dragleave.prevent="dropping = false" @dragover.prevent
-            @drop.prevent="dropHandler">
-            <div class="absolute-center" style="pointer-events: none;">
-                <font-awesome-icon :icon="['fas', 'right-to-bracket']" fixed-width class="fa-rotate-90" />
+            <div class="flex">
+                <h2 class="grow" style="margin-bottom: .5rem;">My Books</h2>
+                <button class="button" @click="triggerInput" v-if="library.books.length">
+                    <font-awesome-icon :icon="['fas', 'upload']" fixed-width />
+                    <span style="margin-left: 0.5rem;">Upload</span>
+                </button>
             </div>
-        </div>
-        <input id='file-input' type="file" accept=".epub" @change="fileInputHandler" style="display: none;" />
 
-        <div class="cards flex">
-            <div class="card relative flex-col" @click="openBook(book.filename)" v-for="(book) in library.books">
-                <div class="card-more" @click.stop="inspectBook(book)">
-                    <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
+            <div class="absolute-center" style="font-size: 2rem;" v-if="!library.books.length">
+                <div class="flex-col align-center" style="gap: 1rem; text-align: center;">
+                    <div style="font-size: 6rem;">
+                        <font-awesome-icon :icon="['fas', 'cloud-arrow-up']" fixed-width />
+                    </div>
+                    <span>Drag & Drop to Upload EPUB</span>
+                    <div>OR</div>
+                    <button class="button" style="font-size: 1.5rem;" @click="triggerInput">Browse File</button>
                 </div>
-                <div class="card-image-container relative">
-                    <template v-if="getCover(book.filename)">
-                        <img class="card-image" :src="getCover(book.filename)"></img>
-                    </template>
-                    <div class="card-image-fallback" v-else>
-                        <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
+            </div>
+
+            <div class="cards flex">
+                <div class="card relative flex-col" @click="openBook(book.filename)" v-for="(book) in library.books">
+                    <div class="card-more" @click.stop="inspectBook(book)">
+                        <font-awesome-icon :icon="['fas', 'ellipsis']" fixed-width />
+                    </div>
+                    <div class="card-image-container relative">
+                        <template v-if="getCover(book.filename)">
+                            <img class="card-image" :src="getCover(book.filename)"></img>
+                        </template>
+                        <div class="card-image-fallback" v-else>
+                            <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
+                        </div>
+                    </div>
+                    <div class="card-text grow flex align-center">
+                        <span>{{ book.title }}</span>
                     </div>
                 </div>
-                <div class="card-text grow flex align-center">
-                    <span>{{ book.title }}</span>
-                </div>
             </div>
         </div>
-    </div>
+    </DropZone>
 </template>
 
 <style scoped>
-.drop-zone {
-    /* Above .card-more */
-    z-index: 2;
-    font-size: 7rem;
-    background-color: #00000099;
-    outline: 8px dashed var(--text-dimmed);
-    outline-offset: -2rem;
-}
-
 .entry-text:hover {
     cursor: default;
 }
@@ -286,7 +243,7 @@ onMounted(() => {
 
 .card-image-container {
     color: hsl(0 0 90);
-    height: 73%;
+    height: 75%;
     border-radius: 8px;
     font-size: 8rem;
     overflow: hidden;
@@ -294,12 +251,13 @@ onMounted(() => {
 
 .card-text {
     text-align: center;
+    justify-content: center;
     width: 100%;
 }
 
 .card {
     height: 18rem;
-    width: 13rem;
+    width: 14rem;
     padding: 0.5rem;
     background-color: var(--ui-card);
     color: var(--text-dimmed);
