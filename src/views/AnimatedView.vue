@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Slider from '@/components/widgets/Slider.vue';
 import ToggleSwitch from '@/components/widgets/ToggleSwitch.vue';
-import { useAnimatedStore, SHADERS, type Shader } from '@/stores/animated';
+import { useAnimatedStore } from '@/stores/animated';
+import SHADERS, { type Shader } from '@/lib/shaders';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 import { useCacheStore } from '@/stores/cacheStore';

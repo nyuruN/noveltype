@@ -2,8 +2,9 @@ import * as THREE from "three"
 import { defineStore } from "pinia";
 import { useLibraryStore } from "./library";
 import db from "@/lib/db";
-import { SHADERS, useAnimatedStore } from "./animated";
+import { useAnimatedStore } from "./animated";
 import { ShaderToy } from "@/lib/shadertoy";
+import SHADERS from "@/lib/shaders";
 
 export const useCacheStore = defineStore('cache', {
     state: () => ({

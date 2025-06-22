@@ -1,5 +1,6 @@
-import { useAnimatedStore, type Shader } from '@/stores/animated';
+import { useAnimatedStore } from '@/stores/animated';
 import * as THREE from 'three'
+import type { Shader } from './shaders';
 
 const UNIFORM_DEFS = `
 uniform float iTime;

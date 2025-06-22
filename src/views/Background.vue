@@ -41,7 +41,7 @@ onMounted(() => {
     const canvas = document.getElementById('c') as HTMLCanvasElement
     renderer = new THREE.WebGLRenderer({
         canvas: canvas,
-        // antialias: false,
+        premultipliedAlpha: false,
     })
 
     if (enabled.value) animate(0)
