@@ -64,7 +64,7 @@ export const useLibraryStore = defineStore('library', () => {
                 const url = URL.createObjectURL(scaled);
                 await db.saveCover(file.name, scaled);
 
-                useCacheStore().images.set(file.name, url)
+                useCacheStore().bookCovers.set(file.name, url)
             })
         } else {
             // Have book.record point to the record in library
