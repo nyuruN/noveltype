@@ -72,13 +72,18 @@ document.addEventListener('mousemove', ev => {
 
     windowStore.applyLayout()
 })
-// function fitWindow() {
-//     pos.value.x = (window.innerWidth - size.value.x) / 2
-//     pos.value.y = (window.innerHeight - size.value.y) / 2
-//     windowStore.applyLayout()
-// }
 document.addEventListener('mouseup', _ => {
     if (drag) {
+        fitWindow()
+        drag = false
+        move = false
+    }
+})
+function fitWindow(center?: boolean) {
+    if (center) {
+        pos.value.x = (window.innerWidth - size.value.x) / 2
+        pos.value.y = (window.innerHeight - size.value.y) / 2
+    } else {
         // horizontal clipping
         if (pos.value.x < 0) {
             pos.value.x = 0
@@ -101,12 +106,17 @@ document.addEventListener('mouseup', _ => {
                 pos.value.y = 0;
             }
         }
-
-        windowStore.applyLayout()
-        drag = false
-        move = false
     }
-})
+    windowStore.applyLayout()
+}
+let time = 0
+function grabClicked() {
+    let current = Date.now()
+    if (current - time < 250) {
+        fitWindow(true)
+    }
+    time = current
+}
 </script>
 
 <template>
@@ -124,10 +134,10 @@ document.addEventListener('mouseup', _ => {
                 <TypingView v-show="showTyper"></TypingView>
             </div>
 
-            <div class="grab w" @mousedown="dragStart({ y: true })"></div>
-            <div class="grab e" @mousedown="dragStart({ y: true })"></div>
-            <div class="grab n" @mousedown="dragStart({}, true)"></div>
-            <div class="grab s" @mousedown="dragStart({ x: true })"></div>
+            <div class="grab w" @mousedown="dragStart({ y: true })" @click="grabClicked"></div>
+            <div class="grab e" @mousedown="dragStart({ y: true })" @click="grabClicked"></div>
+            <div class="grab n" @mousedown="dragStart({}, true)" @click="grabClicked"></div>
+            <div class="grab s" @mousedown="dragStart({ x: true })" @click="grabClicked"></div>
 
             <div class="grab corner nw" @mousedown="dragStart({})"></div>
             <div class="grab corner ne" @mousedown="dragStart({})"></div>
