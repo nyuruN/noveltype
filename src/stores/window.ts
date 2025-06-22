@@ -9,6 +9,7 @@ export const useWindowStore = defineStore('window', () => {
     let pos = ref({ x: 0, y: 0, })
     let size = ref({ x: 600, y: 400, })
     let collapse = ref(false)
+    let fullscreen = ref(false)
 
     function $reset() {
         pos.value = { x: 0, y: 0, }
@@ -23,6 +24,14 @@ export const useWindowStore = defineStore('window', () => {
     }
     function applyLayout() {
         let app = document.getElementById('app-window') as HTMLElement
+
+        if (fullscreen.value) {
+            app.style['top'] = `${0}%`
+            app.style['left'] = `${0}%`
+            app.style['width'] = `${100}%`
+            app.style['height'] = `${100}%`
+            return
+        }
 
         collapse.value = size.value.x < window.innerWidth * 0.4;
 
@@ -56,6 +65,7 @@ export const useWindowStore = defineStore('window', () => {
         // States
         pos,
         size,
+        fullscreen,
         // Functions
         $reset,
         applyLayout,

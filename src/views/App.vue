@@ -9,7 +9,7 @@ import Background from './Background.vue';
 
 const { showTyper } = storeToRefs(useTypingStore())
 const windowStore = useWindowStore()
-const { pos, size } = storeToRefs(windowStore)
+const { pos, size, fullscreen } = storeToRefs(windowStore)
 
 // Init theme
 useThemeStore()
@@ -32,6 +32,9 @@ let lock = {
 };
 
 function dragStart(axisLock: { x?: boolean, y?: boolean }, moveOnly?: boolean) {
+    if (fullscreen.value)
+        return
+
     lock = {
         x: Boolean(axisLock.x),
         y: Boolean(axisLock.y)
@@ -117,13 +120,21 @@ function grabClicked() {
     }
     time = current
 }
+function toggleFullscreen() {
+    let current = Date.now()
+    if (current - time < 250) {
+        fullscreen.value = !fullscreen.value
+        windowStore.applyLayout()
+    }
+    time = current
+}
 </script>
 
 <template>
     <div>
         <Background />
         <div id="app-window">
-            <div id="app-container" class="relative">
+            <div id="app-container" class="relative" :style="{ borderRadius: fullscreen ? '0px' : '16px' }">
                 <div class="center-container" v-show="!showTyper">
                     <Nav></Nav>
                     <main class="view-container">
@@ -136,7 +147,7 @@ function grabClicked() {
 
             <div class="grab w" @mousedown="dragStart({ y: true })" @click="grabClicked"></div>
             <div class="grab e" @mousedown="dragStart({ y: true })" @click="grabClicked"></div>
-            <div class="grab n" @mousedown="dragStart({}, true)" @click="grabClicked"></div>
+            <div class="grab n" @mousedown="dragStart({}, true)" @click="toggleFullscreen"></div>
             <div class="grab s" @mousedown="dragStart({ x: true })" @click="grabClicked"></div>
 
             <div class="grab corner nw" @mousedown="dragStart({})"></div>
@@ -161,7 +172,7 @@ function grabClicked() {
 #app-container {
     width: 100%;
     height: 100%;
-    border-radius: 16px;
+    /* border-radius: 16px; */
 
     -webkit-backdrop-filter: blur(var(--blur-amount));
     backdrop-filter: blur(var(--blur-amount));
