@@ -17,6 +17,9 @@ export const useWindowStore = defineStore('window', () => {
         collapse.value = false
     }
     function fromWindow() {
+        if (fullscreen.value)
+            return
+
         let app = document.getElementById('app-window') as HTMLElement
         pos.value = { x: app.offsetLeft, y: app.offsetTop }
         size.value = { x: app.clientWidth, y: app.clientHeight }
@@ -48,6 +51,8 @@ export const useWindowStore = defineStore('window', () => {
 
     let resizeTimeout = setTimeout(() => { })
     onMounted(() => {
+        applyLayout()
+
         window.addEventListener('resize', _ => {
             clearTimeout(resizeTimeout)
             resizeTimeout = setTimeout(() => {
@@ -71,5 +76,5 @@ export const useWindowStore = defineStore('window', () => {
         applyLayout,
     }
 }, {
-    // persist: true,
+    persist: true,
 })
