@@ -79,7 +79,11 @@ const dropping = ref(false)
                 <div class="bookmark-entry flex" v-for="(bookmark, idx) in book.bookmarks">
                     <button class="cover relative"
                         @click="openBook(book.filename, bookmark.chapter, bookmark.paragraph)">
-                        <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" />
+                        <template v-if="getCover(book.filename)">
+                            <img class="bookmark-image" :src="getCover(book.filename)"></img>
+                        </template>
+                        <font-awesome-icon :icon="['fas', 'book']" fixed-width class="absolute-center" v-else/>
+
                         <div class="play-icon">
                             <font-awesome-icon :icon="['fas', 'play']" fixed-width class="absolute-center" />
                         </div>
@@ -157,6 +161,17 @@ const dropping = ref(false)
     border-right: 1px solid var(--ui-border);
 }
 
+.bookmark-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
 .cover:hover,
 .cover:focus-visible {
     border-color: var(--ui-border-active);
@@ -170,6 +185,7 @@ const dropping = ref(false)
     border: 1px solid var(--ui-border);
     aspect-ratio: 1 / 1;
     min-width: 3rem;
+    width: 3rem;
     font-size: 1.5rem;
     cursor: pointer;
 
