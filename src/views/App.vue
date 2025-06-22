@@ -50,12 +50,10 @@ document.addEventListener('mousemove', ev => {
         return
     }
 
-    let app = document.getElementById('app-window') as HTMLElement
-
     // Center of simulated window
     let center = {
-        x: pos.value.x + app.clientWidth / 2,
-        y: pos.value.y + app.clientHeight / 2
+        x: pos.value.x + size.value.x / 2,
+        y: pos.value.y + size.value.y / 2
     }
 
     // Determines resize property
@@ -74,10 +72,40 @@ document.addEventListener('mousemove', ev => {
 
     windowStore.applyLayout()
 })
+// function fitWindow() {
+//     pos.value.x = (window.innerWidth - size.value.x) / 2
+//     pos.value.y = (window.innerHeight - size.value.y) / 2
+//     windowStore.applyLayout()
+// }
 document.addEventListener('mouseup', _ => {
-    if (drag)
+    if (drag) {
+        // horizontal clipping
+        if (pos.value.x < 0) {
+            pos.value.x = 0
+        }
+        if (pos.value.x + size.value.x > window.innerWidth) {
+            pos.value.x = window.innerWidth - size.value.x;
+            if (size.value.x > window.innerWidth) {
+                size.value.x = window.innerWidth
+                pos.value.x = 0;
+            }
+        }
+        // vertical clipping
+        if (pos.value.y < 0) {
+            pos.value.y = 0
+        }
+        if (pos.value.y + size.value.y > window.innerHeight) {
+            pos.value.y = window.innerHeight - size.value.y;
+            if (size.value.y > window.innerHeight) {
+                size.value.y = window.innerHeight
+                pos.value.y = 0;
+            }
+        }
+
+        windowStore.applyLayout()
         drag = false
-    move = false
+        move = false
+    }
 })
 </script>
 
