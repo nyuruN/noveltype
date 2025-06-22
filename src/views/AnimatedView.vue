@@ -65,7 +65,7 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="card-text">{{ shader.name }}</div>
-                <div class="card-text" style="color: var(--text)">{{ shader.author }}</div>
+                <a class="card-text" target="_blank" :href="shader.link" style="color: var(--text)">{{ shader.author }}</a>
             </div>
         </div>
     </div>
@@ -113,8 +113,15 @@ onMounted(() => {
 
 .card-text {
     text-align: center;
+    display: inline-block;
+    text-decoration: none;
     width: 100%;
 }
+
+a.card-text:hover {
+    text-decoration: underline;
+}
+
 
 .card {
     height: 16rem;
