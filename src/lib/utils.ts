@@ -16,11 +16,12 @@ export function removeFancyTypography(textToClean: string) {
         ",": ",", // &sbquo;	&#8218;
         "—": "-", // &mdash;    &#8212;
         "…": "...", // &hellip; &#8230;
+        " ": " ", // &nbsp;
         "«": "<<",
         "»": ">>",
         "–": "-",
     };
-    return textToClean.replace(/[“”’‘—,…«»–]/g, (char) => {
+    return textToClean.replace(/[“”’‘—,…«»– ]/g, (char) => {
         return specials[char as keyof object] || "";
     });
 }
