@@ -61,10 +61,10 @@ function removeBookmark(rec: BookRecord, idx: number) {
     rec.bookmarks.splice(idx, 1)
 }
 function getCover(filename: string) {
-    return useCacheStore().images.get(filename);
+    return useCacheStore().bookCovers.get(filename);
 }
 
-onMounted(() => useCacheStore().loadImages())
+onMounted(() => useCacheStore().loadBookCovers())
 
 const dropping = ref(false)
 </script>

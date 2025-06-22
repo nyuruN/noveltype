@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import Slider from '@/components/widgets/Slider.vue';
 import ToggleSwitch from '@/components/widgets/ToggleSwitch.vue';
-import { useAnimatedStore, SHADERS } from '@/stores/animated';
+import { useAnimatedStore, SHADERS, type Shader } from '@/stores/animated';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
+import { useCacheStore } from '@/stores/cacheStore';
 
-const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimatedStore()) 
+const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimatedStore())
+
+function getCover(shader: Shader) {
+    return useCacheStore().shaderCovers.get(shader.name)
+}
+
+onMounted(() => {
+    useCacheStore().loadShaderCovers()
+})
 </script>
 
 <template>
@@ -46,8 +56,13 @@ const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimat
                 <div class="card-check">
                     <font-awesome-icon :icon="['fas', 'check']" fixed-width />
                 </div>
-                <div class="card-image relative">
-                    <font-awesome-icon :icon="['fas', 'brush']" fixed-width class="absolute-center" />
+                <div class="card-image-container relative">
+                    <template v-if="getCover(shader)">
+                        <img class="card-image" :src="getCover(shader)"></img>
+                    </template>
+                    <div class="card-image-fallback" v-else>
+                        <font-awesome-icon :icon="['fas', 'brush']" fixed-width class="absolute-center" />
+                    </div>
                 </div>
                 <div class="card-text">{{ shader.name }}</div>
                 <div class="card-text" style="color: var(--text)">{{ shader.author }}</div>
@@ -76,7 +91,18 @@ const { enabled, renderFps, renderScale, currentShader } = storeToRefs(useAnimat
 }
 
 .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.card-image-fallback {
     background-color: hsl(0 0 55);
+    width: 100%;
+    height: 100%;
+}
+
+.card-image-container {
     color: hsl(0 0 90);
     height: 80%;
     border-radius: 8px;
