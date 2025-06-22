@@ -44,14 +44,14 @@ export function scrollToNextCaretPos(offset: number) {
     scrollY += (caretR.height / 2)
 
     // Height of the app window
-    let max = store.size.y
+    let max = store.fullscreen ? window.innerHeight : store.size.y
 
     /**
      * TODO: Let users tweak these values according to their typing preferences
     */
 
     // Convert from relative to viewport to relative to app window
-    caretTop = caretTop - store.pos.y;
+    caretTop = caretTop - (store.fullscreen ? 0 : store.pos.y);
     // Caret is inside upper 30% (of app window)
     let scroll = (caretTop < max * 0.30)
         // Caret is inside lower 37% (of app window)
